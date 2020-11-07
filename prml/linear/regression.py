@@ -4,24 +4,23 @@ import numpy as np
 
 class Regression(metaclass=abc.ABCMeta):
     """
-    Regression is an abstract class that should be extended
-    by any algorithm for early time-series classification.
+    Regression base abstract class.
     """
 
     @abc.abstractmethod
     def fit(self, x: np.ndarray, t: np.ndarray) -> None:
         """
-        Trains the classifier.
+        Trains the model.
 
-        :param x: training time-series data
-        :param t: training time-series labels
+        :param x: (N, D) numpy array holding the input training data
+        :param t: (N,) numpy array holding the target values
         """
 
     @abc.abstractmethod
     def predict(self, x: np.ndarray) -> np.ndarray:
         """
-        Predict the class of the given time-series as early as possible.
+        Makes a prediction given an input.
 
-        :param x: time-series to predict
-        :return
+        :param x: (N, D) numpy array sample to predict their output
+        :return (N,) numpy array holding the prediction of each input
         """

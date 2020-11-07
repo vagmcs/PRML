@@ -1,10 +1,12 @@
-# Pattern Recognition and Machine Learning (PRML)
+# PMRL
 
-Notes and Python code implementing algorithms described in Bishop's book "Pattern Recognition and Machine Learning".
+Notes, proofs and Python code implementing algorithms as described in the book 
+"Pattern Recognition and Machine Learning" by Christopher Bishop.
 
 ## License
 
-This program comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under certain conditions; See the [GNU General Public License v3 for more details](http://www.gnu.org/licenses/gpl-3.0.en.html).
+This program comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under certain conditions;
+ See the [GNU General Public License v3 for more details](http://www.gnu.org/licenses/gpl-3.0.en.html).
 
 ## Notebooks
 
