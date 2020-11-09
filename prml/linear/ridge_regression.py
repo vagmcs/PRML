@@ -22,7 +22,7 @@ class RidgeRegression(Regression):
         """
 
         eye = np.eye(np.size(x, 1))
-        self.w = np.linalg.solve(self.alpha * eye + x.T @ x, x.T @ t)
+        self.w = np.linalg.pinv(x.T @ x + self.alpha * eye) @ x.T @ t
 
     def predict(self, x: np.ndarray):
         """
