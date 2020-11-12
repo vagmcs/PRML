@@ -6,6 +6,9 @@ from prml.distribution.distribution import Distribution
 
 class Gaussian(Distribution):
     """
+    The Gaussian distribution
+
+    p(x|mu, var) = exp{-0.5 * (x - mu)^2 / var} / sqrt(2pi * var)
     """
 
     def __init__(self, mu: Optional[float], var: Optional[float]):
