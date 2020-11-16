@@ -22,9 +22,9 @@ class Gaussian(Distribution):
         else:
             self.var = np.var(x)
 
-    def pdf(self, x):
+    def pdf(self, x: float):
         d = x - self.mu
         return np.exp(-d ** 2 / (2 * self.var)) / np.sqrt(2 * np.pi * self.var)
 
-    def sample(self, sample_size):
+    def sample(self, sample_size: int):
         return np.random.normal(loc=self.mu, scale=math.sqrt(self.var), size=(sample_size,))
