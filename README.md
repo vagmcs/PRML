@@ -9,3 +9,4 @@ This program comes with ABSOLUTELY NO WARRANTY. This is free software, and you a
 ## Notebooks
 
 * [1. Introduction](https://nbviewer.jupyter.org/github/vagmcs/PRML/blob/master/notebooks/ch1_introduction.ipynb)
+* [2. Probability Distributions](https://nbviewer.jupyter.org/github/vagmcs/PRML/blob/master/notebooks/ch2_probability_distributions.ipynb)
