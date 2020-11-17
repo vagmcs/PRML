@@ -1,6 +1,8 @@
-# PMRL
+# Pattern Recognition and Machine Learning (PMRL)
 
-Notes, proofs and Python code implementing algorithms as described in the book "Pattern Recognition and Machine Learning" by Christopher Bishop.
+[![nbviewer](https://raw.githubusercontent.com/jupyter/design/master/logos/Badges/nbviewer_badge.svg)](https://nbviewer.jupyter.org/github/vagmcs/prml/tree/master/)
+
+The project contains notes and proofs as Jupyter notebooks, as well as, Python code implementing algorithms as presented in the book "Pattern Recognition and Machine Learning" by Christopher Bishop.
 
 ## License
 
@@ -10,3 +12,8 @@ This program comes with ABSOLUTELY NO WARRANTY. This is free software, and you a
 
 * [1. Introduction](https://nbviewer.jupyter.org/github/vagmcs/PRML/blob/master/notebooks/ch1_introduction.ipynb)
 * [2. Probability Distributions](https://nbviewer.jupyter.org/github/vagmcs/PRML/blob/master/notebooks/ch2_probability_distributions.ipynb)
+
+## Resources
+
+* [PRML Book](https://www.microsoft.com/en-us/research/publication/pattern-recognition-machine-learning)
+* [PRML Errata](https://www.microsoft.com/en-us/research/wp-content/uploads/2016/05/prml-errata-3rd-20110921.pdf)
