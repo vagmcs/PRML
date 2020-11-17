@@ -1,6 +1,7 @@
 # Pattern Recognition and Machine Learning (PMRL)
 
 [![nbviewer](https://raw.githubusercontent.com/jupyter/design/master/logos/Badges/nbviewer_badge.svg)](https://nbviewer.jupyter.org/github/vagmcs/prml/tree/master/)
+[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 
 The project contains notes and proofs as Jupyter notebooks, as well as, Python code implementing algorithms as presented in the book "Pattern Recognition and Machine Learning" by Christopher Bishop.
 
