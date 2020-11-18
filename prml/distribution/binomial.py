@@ -1,7 +1,7 @@
 import numpy as np
 from scipy.special import factorial
 from typing import Union
-from prml.distribution.distribution import Distribution
+from prml.distribution import Distribution
 
 
 class Binomial(Distribution):

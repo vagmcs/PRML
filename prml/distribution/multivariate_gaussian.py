@@ -1,6 +1,6 @@
 import numpy as np
 from typing import Optional, Union
-from prml.distribution.distribution import Distribution
+from prml.distribution import Distribution
 
 
 class MultivariateGaussian(Distribution):
