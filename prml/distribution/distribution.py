@@ -8,6 +8,14 @@ class Distribution(metaclass=abc.ABCMeta):
     Probability distribution base abstract class.
     """
 
+    @property
+    @abc.abstractmethod
+    def formula(self):
+        """
+        :return: the symbolic formula of the distribution
+        """
+        pass
+
     @abc.abstractmethod
     def ml(self, x: np.ndarray) -> None:
         """
@@ -58,3 +66,16 @@ class Distribution(metaclass=abc.ABCMeta):
         :return: (N, D) array holding the samples
         """
         pass
+
+    @abc.abstractmethod
+    def __mul__(self, other: 'Distribution') -> 'Distribution':
+        """
+        Symbolic multiplication of distributions.
+
+        :param other: another distribution
+        :return: a GenericDistribution object
+        """
+        pass
+
+    def __str__(self):
+        return str(self.formula)

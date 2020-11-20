@@ -1,4 +1,5 @@
 from prml.distribution.distribution import Distribution
+from prml.distribution.generic_distribution import GenericDistribution
 from prml.distribution.bernoulli import Bernoulli
 from prml.distribution.binomial import Binomial
 from prml.distribution.beta import Beta
