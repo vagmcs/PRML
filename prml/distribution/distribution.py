@@ -1,5 +1,6 @@
 import abc
 import numpy as np
+import sympy as sym
 from typing import Union
 
 
@@ -10,11 +11,18 @@ class Distribution(metaclass=abc.ABCMeta):
 
     @property
     @abc.abstractmethod
-    def formula(self):
+    def formula(self) -> sym.Expr:
         """
         :return: the symbolic formula of the distribution
         """
         pass
+
+    @property
+    def to_latex(self) -> str:
+        """
+        :return: the latex representation of the distribution
+        """
+        return "$" + sym.latex(self.formula) + "$"
 
     @abc.abstractmethod
     def ml(self, x: np.ndarray) -> None:
