@@ -18,7 +18,7 @@ class Categorical(GenericDistribution):
         :param mu: the probability of the binary random variable to be True
         """
         if mu is None and dim is not None:
-            self.D = mu
+            self.D = dim
             mu = sym.MatrixSymbol('mu', self.D, 1)
             self.mu = None
         elif mu is not None:
