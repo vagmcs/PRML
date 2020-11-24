@@ -42,7 +42,7 @@ class Distribution(metaclass=abc.ABCMeta):
         :param x: (N, D) array of data values or a single data value
         :return: the likelihood of the distribution
         """
-        return np.prod(self.pdf(x))
+        return np.product(self.pdf(x))
 
     def log_likelihood_iid(self, x: Union[np.ndarray, float]) -> float:
         """
