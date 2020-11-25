@@ -1,6 +1,5 @@
 import numpy as np
 import sympy as sym
-import sympy.abc as symbols
 from typing import Union, Optional
 from scipy.special import gamma
 from prml.distribution import GenericDistribution
@@ -13,14 +12,24 @@ class Dirichlet(GenericDistribution):
     p(x|a) = (Γ(a0) / Γ(a1)...Γ(ak)) * prod_k x_k ^ (a_k - 1)
     """
 
-    def __init__(self, a: Optional[np.ndarray] = None):
+    def __init__(self, alpha: Optional[np.ndarray] = None, dim: Optional[int] = None):
         """
         Create a *Dirichlet* distribution.
 
-        :param a: the alpha parameters
+        :param alpha: the alpha parameters
         """
-        self.a = a
-        super().__init__((gamma(np.sum(a)) * np.prod(symbols.x ** (self.a - 1))) / np.prod(gamma(a)))
+        if alpha is None and dim is not None:
+            self.D = dim
+            alpha = sym.MatrixSymbol('alpha', self.D, 1)
+            self.alpha = None
+        elif alpha is not None:
+            self.D = alpha.shape[0]
+            self.alpha = alpha
+        else:
+            raise AttributeError("Either provide the 'dim' argument or the parameters 'alpha'.")
+
+        x = sym.MatrixSymbol('x', self.D, 1)
+        super().__init__((gamma(np.sum(alpha)) * np.prod(x ** (alpha - 1))) / np.prod(gamma(alpha)))
 
     def ml(self, x: np.ndarray) -> None:
         """
@@ -39,19 +48,19 @@ class Dirichlet(GenericDistribution):
         :param x: (N, D) array of values or a single value for the random variables
         :return: the probability density function value
         """
-        if self.a is None:
+        if self.alpha is None:
             if isinstance(x, float):
-                return GenericDistribution(self._formula.subs(symbols.x, x))
+                return GenericDistribution(self._formula.subs(sym.MatrixSymbol('x', self.D, 1), sym.Matrix(x)))
             else:
                 raise ValueError(
                     "Dirichlet random variables should be of type float, but you gave " + str(type(x)) + ".\n"
-                    "Since the parameters 'a' is undefined, the PDF is transformed into another generic\n"
+                    "Since the parameters 'alpha' is undefined, the PDF is transformed into another generic\n"
                     "distribution over the undefined parameters after the random variable 'x' is fixed. Thus, if\n"
                     "an array of N random variables if given, N distributions should be generated,\n"
                     "which is currently not supported."
                 )
         else:
-            return gamma(np.sum(self.a)) * np.prod(x ** (self.a - 1)) / np.prod(gamma(self.a))
+            return gamma(np.sum(self.alpha)) * np.prod(x ** (self.alpha - 1), axis=1) / np.prod(gamma(self.alpha))
 
     def draw(self, sample_size: int) -> np.ndarray:
         """
@@ -60,6 +69,6 @@ class Dirichlet(GenericDistribution):
         :param sample_size: the size of the sample
         :return: (N, D) array holding the samples
         """
-        if self.a is None:
-            raise ValueError("The parameter 'a' is undefined.")
-        return np.random.dirichlet(alpha=self.a, size=sample_size)
+        if self.alpha is None:
+            raise ValueError("The parameter 'alpha' is undefined.")
+        return np.random.dirichlet(alpha=self.alpha, size=sample_size)
