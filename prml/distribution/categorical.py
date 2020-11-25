@@ -28,7 +28,7 @@ class Categorical(GenericDistribution):
             raise AttributeError("Either provide the 'dim' argument or the parameters 'mu'.")
 
         x = sym.MatrixSymbol('x', self.D, 1)
-        super().__init__(sym.prod(mu ** x))
+        super().__init__(sym.prod(np.power(mu, x)))
 
     def ml(self, x: np.ndarray) -> None:
         """
@@ -39,9 +39,9 @@ class Categorical(GenericDistribution):
         """
         # The maximum likelihood estimator for mu parameter in a Bernoulli
         # distribution is the sample mean.
-        self.mu = np.mean(x)
+        self.mu = np.mean(x, axis=0)
         # Update the formula to use the sample mean.
-        self._formula = sym.prod(self.mu ** sym.MatrixSymbol('x', self.D, 1))
+        self._formula = sym.prod(np.power(self.mu, sym.MatrixSymbol('x', self.D, 1)))
 
     def pdf(self, x: Union[np.ndarray]) -> Union[GenericDistribution, np.ndarray, float]:
         """
