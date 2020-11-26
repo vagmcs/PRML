@@ -32,7 +32,7 @@ class Multinomial(GenericDistribution):
             raise AttributeError("Either provide the 'dim' argument or the parameters 'mu'.")
 
         x = sym.MatrixSymbol('x', self.D, 1)
-        super().__init__(sym.binomial(n, sym.prod(x)) * sym.prod(np.power(mu, x)))
+        super().__init__(sym.binomial(n, sym.prod(x)) * sym.prod(np.power(mu, x)[0]))
 
     def ml(self, x: np.ndarray) -> None:
         pass
@@ -46,7 +46,7 @@ class Multinomial(GenericDistribution):
         :return: the probability density function value
         """
         if self.mu is None:
-            if x.shape == (self.D, 1):
+            if x.shape[0] == self.D:
                 return GenericDistribution(self._formula.subs(sym.MatrixSymbol('x', self.D, 1), sym.Matrix(x)))
             else:
                 raise ValueError(
