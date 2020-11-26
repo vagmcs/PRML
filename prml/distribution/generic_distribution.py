@@ -61,7 +61,14 @@ class GenericDistribution(Distribution):
         if not all([str(v) in kwargs for v in free_variables]) or len(free_variables) != len(kwargs):
             raise ValueError("Data not given for all variables.")
 
-        return (sym.lambdify(free_variables, self._formula))(*[kwargs[str(v)] for v in free_variables])
+        result = np.array([sym.lambdify(free_variables, self._formula)])
+        for v in free_variables:
+            if isinstance(v, sym.MatrixSymbol):
+                result = np.array([f(sym.Matrix(x)) for x in kwargs[str(v)] for f in result])
+            else:
+                result = np.array([f(kwargs[str(v)]) for f in result][0])
+
+        return result.astype(float)
 
     def draw(self, sample_size: int) -> np.ndarray:
         """
