@@ -28,7 +28,7 @@ class MultivariateGaussian(GenericDistribution):
         elif not dim and (mu is not None or cov is not None):
             self.D = mu.shape[0] if mu is not None else cov.shape[0]
             self.mu = mu
-            mu = mu if mu is not None else sym.MatrixSymbol('mu', self.D, 1)
+            mu = sym.Matrix(mu) if mu is not None else sym.MatrixSymbol('mu', self.D, 1)
             self.cov = cov
             cov = sym.Matrix(cov) if cov is not None else sym.MatrixSymbol('Sigma', self.D, self.D)
         elif mu is not None and cov is not None and dim is not None:
