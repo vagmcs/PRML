@@ -14,16 +14,16 @@ class Gaussian(GenericDistribution):
     """
 
     def __init__(self,
-                 mu: Union[sym.Symbol, float] = symbols.mu,
-                 var: Union[sym.Symbol, float] = sym.symbols('sigma^2')):
+                 mu: Union[sym.Symbol, int, float] = symbols.mu,
+                 var: Union[sym.Symbol, int, float] = sym.symbols('sigma^2')):
         """
         Create a *Gaussian* distribution.
 
         :param mu: the mean value
         :param var: the variance
         """
-        self.mu = mu if isinstance(mu, float) else None
-        self.var = var if isinstance(var, float) else None
+        self.mu = mu if isinstance(mu, (int, float)) else None
+        self.var = var if isinstance(var, (int, float)) else None
         super().__init__(sym.exp(-(symbols.x - mu) ** 2 / (2 * var)) / sym.sqrt(2 * np.pi * var))
 
     def ml(self, x: np.ndarray, unbiased: bool = False) -> None:
