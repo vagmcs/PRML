@@ -31,7 +31,14 @@ class GenericDistribution(Distribution):
         :param theta_substitution: a dictionary mapping variable names into other names
         :return: a GenericDistribution object having changed variable names
         """
-        return GenericDistribution(self._formula.subs(theta_substitution))
+        # Map vector variables into matrix symbols
+        theta = {
+            v: sym.MatrixSymbol(theta_substitution[str(v)], v.shape[0], v.shape[1])
+            if isinstance(v, sym.MatrixSymbol) else theta_substitution[str(v)]
+            for v in self._formula.free_symbols
+        }
+
+        return GenericDistribution(self._formula.subs(theta))
 
     def ml(self, x: np.ndarray) -> None:
         """
