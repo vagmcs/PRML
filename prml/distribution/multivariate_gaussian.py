@@ -25,7 +25,7 @@ class MultivariateGaussian(GenericDistribution):
             mu = sym.MatrixSymbol('mu', self.D, 1)
             self.cov = None
             cov = sym.MatrixSymbol('Sigma', self.D, self.D)
-        elif not dim and (mu is not None or cov is not None):
+        elif dim is None and (mu is not None or cov is not None):
             self.D = mu.shape[0] if mu is not None else cov.shape[0]
             self.mu = mu
             mu = sym.Matrix(mu) if mu is not None else sym.MatrixSymbol('mu', self.D, 1)
@@ -39,10 +39,13 @@ class MultivariateGaussian(GenericDistribution):
             raise AttributeError("Either provide the 'dim' argument or one of the parameters ('mu' or 'cov').")
 
         x = sym.MatrixSymbol('x', self.D, 1)
-        super().__init__(
-            1 / (sym.sqrt((2 * np.pi) ** 2 * sym.det(cov))) *
-            sym.exp(-0.5 * ((x - mu).T * cov.inv() * (x - mu)))
-        )
+        try:
+            super().__init__(
+                1 / (sym.sqrt((2 * np.pi) ** 2 * sym.det(cov))) *
+                sym.exp(-0.5 * ((x - mu).T * cov.inv() * (x - mu)))
+            )
+        except:
+            super().__init__(None)
 
     def ml(self, x: np.ndarray, unbiased: bool = False) -> None:
         """
@@ -54,8 +57,8 @@ class MultivariateGaussian(GenericDistribution):
         """
         # The maximum likelihood estimator for mu and sigma squared parameters in a Gaussian
         # distribution is the sample mean, and the sample variance (biased or unbiased).
-        self.mu = np.mean(x, axis=0)
-        self.cov = np.cov(x, bias=unbiased)
+        self.mu = np.mean(x, axis=1)
+        self.cov = np.cov(x.T, bias=unbiased)
         # Update the formula to use the sample mean and variance.
         self._formula = (
             1 / (sym.sqrt((2 * np.pi) ** 2 * sym.det(sym.Matrix(self.cov)))) *
