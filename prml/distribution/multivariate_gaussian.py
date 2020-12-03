@@ -57,12 +57,13 @@ class MultivariateGaussian(GenericDistribution):
         """
         # The maximum likelihood estimator for mu and sigma squared parameters in a Gaussian
         # distribution is the sample mean, and the sample variance (biased or unbiased).
-        self.mu = np.mean(x, axis=1)
+        self.mu = np.mean(x, axis=0).reshape(self.D, 1)
         self.cov = np.cov(x.T, bias=unbiased)
         # Update the formula to use the sample mean and variance.
+        xx = sym.MatrixSymbol('x', self.D, 1)
         self._formula = (
             1 / (sym.sqrt((2 * np.pi) ** 2 * sym.det(sym.Matrix(self.cov)))) *
-            sym.exp(-0.5 * ((x - sym.Matrix(self.mu)).T * sym.Matrix(self.cov).inv() * (x - sym.Matrix(self.mu))))
+            sym.exp(-0.5 * ((xx - sym.Matrix(self.mu)).T * sym.Matrix(self.cov).inv() * (xx - sym.Matrix(self.mu))))
         )
 
     def pdf(self, x: np.ndarray) -> Union[GenericDistribution, np.ndarray, float]:
