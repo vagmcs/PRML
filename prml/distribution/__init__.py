@@ -7,4 +7,6 @@ from prml.distribution.categorical import Categorical
 from prml.distribution.multinomial import Multinomial
 from prml.distribution.dirichlet import Dirichlet
 from prml.distribution.gaussian import Gaussian
+from prml.distribution.gamma import Gamma
+from prml.distribution.student_t import StudentT
 from prml.distribution.multivariate_gaussian import MultivariateGaussian

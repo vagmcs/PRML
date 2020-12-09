@@ -32,6 +32,7 @@ class StudentT(GenericDistribution):
 
         :param x: an (N, D) array of data values
         """
+        # TODO: Requires Expectation-Maximization
         pass
 
     def pdf(self, x: Union[np.ndarray, float]) -> Union[GenericDistribution, np.ndarray, float]:
@@ -55,7 +56,7 @@ class StudentT(GenericDistribution):
                 )
         else:
             return (
-                ((gamma((self.nu + 1) / 2) * sym.sqrt(1 / (np.pi * self.nu))) / gamma(self.nu / 2)) *
+                ((gamma((self.nu + 1) / 2) * np.sqrt(1 / (np.pi * self.nu))) / gamma(self.nu / 2)) *
                 (1 + (x**2 / self.nu)) ** (-(self.nu + 1) / 2)
             )
 
