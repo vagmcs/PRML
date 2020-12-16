@@ -23,7 +23,7 @@ class PolynomialFeature(object):
 
     def __init__(self, degree: int = 2):
         """
-        Construct polynomial features
+        Create polynomial features
 
         :param degree: the degree of polynomial
         """
@@ -32,17 +32,17 @@ class PolynomialFeature(object):
 
     def transform(self, x):
         """
-        Transforms input array with polynomial features
+        Transforms input array using polynomial features
 
         :param x: (sample_size, n) numpy array
         :return: (sample_size, 1 + nC1 + ... + nCd) numpy array of polynomial features
         """
 
-        if x.ndim == 1:
-            x = x[:, None]
-        x_t = x.transpose()
+        # Proper shape for 1-dimensional vectors
+        x = x[:, None] if x.ndim == 1 else x
+
         features = [np.ones(len(x))]
         for degree in range(1, self.degree + 1):
-            for items in itertools.combinations_with_replacement(x_t, degree):
+            for items in itertools.combinations_with_replacement(x.T, degree):
                 features.append(functools.reduce(lambda a, b: a * b, items))
-        return np.asarray(features).transpose()
+        return np.asarray(features).T
