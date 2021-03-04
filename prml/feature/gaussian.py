@@ -1,46 +1,65 @@
 import numpy as np
+from typing import Union
+from prml.feature.basis_function import BasisFunction
 
 
-class GaussianFeature(object):
+class GaussianBasis(BasisFunction):
     """
-    Gaussian basis function
+    Gaussian basis functions.
 
     exp(-0.5 * (x - mean) / var)
     """
 
-    def __init__(self, mean: np.ndarray, var: np.ndarray):
+    def __init__(self, mean: Union[int, float, np.ndarray], var: Union[int, float]):
         """
-        Create Gaussian basis function
+        Create Gaussian basis functions.
 
-        :param mean: (n_features, ndim) or (n_features,) numpy array places to locate gaussian function at
-        :param var: float variance of the gaussian function
+        :param mean: (M, 2) or (M, 1) array of Gaussian function locations (mean)
+        :param var: variance (spatial scale) of the gaussian basis functions
         """
-        if mean.ndim == 1:
+
+        assert isinstance(mean, int) or isinstance(mean, float) or isinstance(mean, np.ndarray), \
+            f"mean should be of type 'Union[int, float, array]', but type '{type(mean)}' was found."
+
+        if isinstance(mean, int) or isinstance(mean, float):
+            mean = np.array([[mean]])
+        elif mean.ndim == 1:
             mean = mean[:, None]
         else:
-            assert mean.ndim == 2
-        assert isinstance(var, float) or isinstance(var, int)
+            assert mean.ndim == 2, "Each mean should be vector not a matrix."
+
+        assert isinstance(var, float) or isinstance(var, int), "Variance (spatial scale) should be 'float' or 'int'."
+
         self.mean = mean
         self.var = var
 
     def _gauss(self, x, mean):
         return np.exp(-0.5 * np.sum(np.square(x - mean), axis=-1) / self.var)
 
-    def transform(self, x):
+    def transform(self, x: Union[int, float, np.ndarray]) -> np.ndarray:
         """
-        Transform input array using gaussian features
+        Transform input array using gaussian basis functions.
 
-        :param x: (sample_size, n) numpy array
-        :return: (sample_size, n_features) numpy array of gaussian features
+        :param x: (N, D) array of values, float or int
+        :return: (N, D) array of gaussian features
         """
 
-        if x.ndim == 1:
-            x = x[:, None]
+        if isinstance(x, np.ndarray):
+            if x.ndim == 1:
+                x = x[:, None]
+            else:
+                assert x.ndim == 2, "Input data should be an (N, D) array, where N is the number of samples" \
+                                    " and D is the dimension of each sample."
+        elif isinstance(x, int) or isinstance(x, float):
+            x = np.array([[x]])
         else:
-            assert x.ndim == 2
-        assert np.size(x, 1) == np.size(self.mean, 1)
+            raise ValueError(f'Incompatible type {type(x)}.')
 
-        features = [np.ones(len(x))]
+        assert np.size(x, 1) == np.size(self.mean, 1), \
+            "Input data should have the same dimension as the mean of the Gaussian basis function."
+
+        features = [] #[np.ones(len(x))]
         for m in self.mean:
             features.append(self._gauss(x, m))
+
         return np.asarray(features).T

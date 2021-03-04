@@ -1,9 +1,9 @@
-from prml.feature.gaussian import GaussianFeature
-from prml.feature.polynomial import PolynomialFeature
-from prml.feature.sigmoidal import SigmoidFeature
+from prml.feature.gaussian import GaussianBasis
+from prml.feature.polynomial import PolynomialBasis
+from prml.feature.sigmoidal import SigmoidBasis
 
 __all__ = [
-    "GaussianFeature",
-    "PolynomialFeature",
-    "SigmoidFeature"
+    "GaussianBasis",
+    "PolynomialBasis",
+    "SigmoidBasis"
 ]
