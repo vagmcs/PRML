@@ -101,4 +101,4 @@ class MultivariateGaussian(GenericDistribution):
         """
         if self.mu is None or self.cov is None:
             raise ValueError("The parameter 'mu' and/or 'cov' is undefined.")
-        return np.random.multivariate_normal(mean=self.mu, cov=self.cov, size=sample_size)
+        return np.random.multivariate_normal(mean=self.mu.flatten(), cov=self.cov, size=sample_size)

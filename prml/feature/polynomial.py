@@ -15,7 +15,7 @@ class PolynomialBasis(BasisFunction):
     =======
     x = [[a, b], [c, d]]
 
-    y = PolynomialFeatures(degree=2).transform(x)
+    y = PolynomialBasis(degree=2).transform(x)
 
     y =
     [[1, a, b, a^2, a * b, b^2],
