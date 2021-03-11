@@ -22,11 +22,12 @@ class BayesianRegression(Regression):
     def fit(self, x: np.ndarray, t: np.ndarray) -> None:
         """
 
+        TODO: Each time fit is called the prior knowledge is retained!
         """
 
         if self.mean is None and self.precision is None:
-            self.mean = np.zeros(x.ndim)
-            self.precision = self.alpha * np.eye(x.ndim)
+            self.mean = np.zeros(x.shape[1])
+            self.precision = self.alpha * np.eye(x.shape[1])
 
         mean_prev, precision_prev = self.mean, self.precision
 
