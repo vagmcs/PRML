@@ -1,9 +1,9 @@
 import numpy as np
 from typing import Union
-from prml.feature.basis_function import BasisFunction
+from prml.preprocessing.basis_function import BasisFunction
 
 
-class SigmoidBasis(BasisFunction):
+class SigmoidFeature(BasisFunction):
     """
     Sigmoid basis functions.
 
@@ -56,7 +56,7 @@ class SigmoidBasis(BasisFunction):
         else:
             raise ValueError(f'Incompatible type {type(x)}.')
 
-        features = [] #[np.ones(len(x))]
+        features = [np.ones(len(x))]  # create a list of ones for the bias parameter
         for m in self.mean:
             features.append(self._sigmoid(x, m))
 

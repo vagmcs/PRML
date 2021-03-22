@@ -1,9 +1,9 @@
 import numpy as np
 from typing import Union
-from prml.feature.basis_function import BasisFunction
+from prml.preprocessing.basis_function import BasisFunction
 
 
-class GaussianBasis(BasisFunction):
+class GaussianFeature(BasisFunction):
     """
     Gaussian basis functions.
 
@@ -40,7 +40,7 @@ class GaussianBasis(BasisFunction):
         """
         Transform input array using gaussian basis functions.
 
-        :param x: (N, D) array of values, float or int
+        :param x: (N, D) array of values or a single float or int value
         :return: (N, D) array of gaussian features
         """
 
@@ -58,7 +58,7 @@ class GaussianBasis(BasisFunction):
         assert np.size(x, 1) == np.size(self.mean, 1), \
             "Input data should have the same dimension as the mean of the Gaussian basis function."
 
-        features = [] #[np.ones(len(x))]
+        features = [np.ones(len(x))]  # create a list of ones for the bias parameter
         for m in self.mean:
             features.append(self._gauss(x, m))
 

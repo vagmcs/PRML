@@ -2,10 +2,10 @@ import itertools
 import functools
 import numpy as np
 from typing import Union
-from prml.feature.basis_function import BasisFunction
+from prml.preprocessing.basis_function import BasisFunction
 
 
-class PolynomialBasis(BasisFunction):
+class PolynomialFeature(BasisFunction):
     """
     Polynomial basis functions.
 
@@ -13,6 +13,7 @@ class PolynomialBasis(BasisFunction):
 
     Example
     =======
+
     x = [[a, b], [c, d]]
 
     y = PolynomialBasis(degree=2).transform(x)
@@ -24,7 +25,7 @@ class PolynomialBasis(BasisFunction):
 
     def __init__(self, degree: int = 2):
         """
-        Create polynomial basis functions
+        Create polynomial basis functions.
 
         :param degree: the degree of polynomial (default is 2)
         """
@@ -36,7 +37,7 @@ class PolynomialBasis(BasisFunction):
         """
         Transforms input array using polynomial basis functions
 
-        :param x: (N, D) array of values, float or int
+        :param x: (N, D) array of values or a single float or int value
         :return: (N, 1 + nC1 + ... + nCd) array of polynomial features
         """
 
@@ -54,3 +55,26 @@ class PolynomialBasis(BasisFunction):
                 features.append(functools.reduce(lambda a, b: a * b, items))
 
         return np.asarray(features).T
+
+
+class LinearFeature(PolynomialFeature):
+    """
+    Linear basis functions.
+
+    Transforms the input array by adding a bias. Identical to::
+
+        PolynomialFeature(degree=1)
+
+    Example
+    =======
+    x = [[a, b], [c, d]]
+
+    y = PolynomialBasis(degree=2).transform(x)
+
+    y =
+    [[1, a, b, a^2, a * b, b^2],
+    [1, c, d, c^2, c * d, d^2]]
+    """
+
+    def __init__(self):
+        super().__init__(degree=1)
