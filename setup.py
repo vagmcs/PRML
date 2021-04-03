@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="PRML",
-    version="0.1",
+    version="0.1.0",
     author="Evangelos Michelioudakis",
     description="PRML notes and algorithms implemented in Python",
     long_description=long_text,

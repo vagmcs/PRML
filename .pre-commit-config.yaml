@@ -15,3 +15,15 @@ repos:
     entry: pipenv run flake8 --max-line-length 120
     types: [python]
     exclude: setup.py
+
+- repo: https://github.com/commitizen-tools/commitizen
+  rev: v2.17.0
+  hooks:
+    - id: commitizen
+      stages: [commit-msg]
+
+#  - id: commitizen
+#    name: commitizen
+#    stages: [commit-msg]
+#    repo: https://github.com/commitizen-tools/commitizen
+#    rev: v2.17.0
