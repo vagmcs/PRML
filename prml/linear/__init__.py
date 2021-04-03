@@ -1,7 +1,7 @@
-from prml.linear.linear_regression import LinearRegression
-from prml.linear.ridge_regression import RidgeRegression
-from prml.linear.bayesian_regression import BayesianRegression
-from prml.linear.evidence_approximation import EvidenceApproximation
+from .bayesian_regression import BayesianRegression
+from .evidence_approximation import EvidenceApproximation
+from .linear_regression import LinearRegression
+from .ridge_regression import RidgeRegression
 
 __all__ = [
     "LinearRegression",

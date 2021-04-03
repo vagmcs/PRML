@@ -1,9 +1,10 @@
+from typing import Union
+
 import numpy as np
 import sympy as sym
 import sympy.abc as symbols
+from generic_distribution import GenericDistribution
 from scipy.special import factorial
-from typing import Union
-from prml.distribution import GenericDistribution
 
 
 class Binomial(GenericDistribution):

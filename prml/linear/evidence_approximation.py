@@ -1,6 +1,7 @@
-import numpy as np
 from typing import Union
-from prml.linear import BayesianRegression
+
+import numpy as np
+from bayesian_regression import BayesianRegression
 
 
 class EvidenceApproximation(BayesianRegression):

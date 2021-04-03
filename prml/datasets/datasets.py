@@ -1,5 +1,6 @@
+from typing import Callable, Tuple, Union
+
 import numpy as np
-from typing import Callable, Union, Tuple
 
 
 def generate_toy_data(f: Callable, sample_size: int, std: Union[int, float], domain: Tuple[int, float] = (0, 1)):

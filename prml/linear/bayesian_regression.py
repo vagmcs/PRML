@@ -1,6 +1,7 @@
-import numpy as np
 from typing import Union
-from prml.linear.regression import Regression
+
+import numpy as np
+from regression import Regression
 
 
 class BayesianRegression(Regression):

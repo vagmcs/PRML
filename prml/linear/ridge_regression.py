@@ -1,5 +1,6 @@
 import numpy as np
-from prml.linear.regression import Regression
+
+from .regression import Regression
 
 
 class RidgeRegression(Regression):

@@ -1,8 +1,9 @@
-import itertools
 import functools
-import numpy as np
+import itertools
 from typing import Union
-from prml.preprocessing.basis_function import BasisFunction
+
+import numpy as np
+from basis_function import BasisFunction
 
 
 class PolynomialFeature(BasisFunction):

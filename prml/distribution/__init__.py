@@ -1,12 +1,27 @@
-from prml.distribution.distribution import Distribution
-from prml.distribution.generic_distribution import GenericDistribution
-from prml.distribution.bernoulli import Bernoulli
-from prml.distribution.binomial import Binomial
-from prml.distribution.beta import Beta
-from prml.distribution.categorical import Categorical
-from prml.distribution.multinomial import Multinomial
-from prml.distribution.dirichlet import Dirichlet
-from prml.distribution.gaussian import Gaussian
-from prml.distribution.gamma import Gamma
-from prml.distribution.student_t import StudentT
-from prml.distribution.multivariate_gaussian import MultivariateGaussian
+from .bernoulli import Bernoulli
+from .beta import Beta
+from .binomial import Binomial
+from .categorical import Categorical
+from .dirichlet import Dirichlet
+from .distribution import Distribution
+from .gamma import Gamma
+from .gaussian import Gaussian
+from .generic_distribution import GenericDistribution
+from .multinomial import Multinomial
+from .multivariate_gaussian import MultivariateGaussian
+from .student_t import StudentT
+
+__all__ = [
+    "Bernoulli",
+    "Beta",
+    "Binomial",
+    "Categorical",
+    "Dirichlet",
+    "Distribution",
+    "Gamma",
+    "Gaussian",
+    "GenericDistribution",
+    "Multinomial",
+    "MultivariateGaussian",
+    "StudentT"
+]

@@ -1,7 +1,6 @@
-from prml.preprocessing.polynomial import LinearFeature
-from prml.preprocessing.polynomial import PolynomialFeature
-from prml.preprocessing.gaussian import GaussianFeature
-from prml.preprocessing.sigmoidal import SigmoidFeature
+from .gaussian import GaussianFeature
+from .polynomial import LinearFeature, PolynomialFeature
+from .sigmoidal import SigmoidFeature
 
 __all__ = [
     "LinearFeature",

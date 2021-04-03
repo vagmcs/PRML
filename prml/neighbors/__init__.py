@@ -1,2 +1,7 @@
-from prml.neighbors.neighbors_density import NearestNeighborsDensity
-from prml.neighbors.nearest_neighbor import KNearestNeighborsClassifier
+from .nearest_neighbor import KNearestNeighborsClassifier
+from .neighbors_density import NearestNeighborsDensity
+
+__all__ = [
+    "KNearestNeighborsClassifier",
+    "NearestNeighborsDensity"
+]

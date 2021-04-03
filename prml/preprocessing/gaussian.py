@@ -1,6 +1,7 @@
-import numpy as np
 from typing import Union
-from prml.preprocessing.basis_function import BasisFunction
+
+import numpy as np
+from basis_function import BasisFunction
 
 
 class GaussianFeature(BasisFunction):

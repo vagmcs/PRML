@@ -1,7 +1,8 @@
+from typing import Dict, Union
+
 import numpy as np
 import sympy as sym
-from typing import Union, Dict
-from prml.distribution import Distribution
+from distribution import Distribution
 
 
 class GenericDistribution(Distribution):

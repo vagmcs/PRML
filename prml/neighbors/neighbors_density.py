@@ -1,9 +1,9 @@
 import abc
-import numpy as np
-from scipy.special import gamma
-from scipy.spatial import distance_matrix
-from prml.neighbors.neighbors import Neighbors
 from typing import Union
+
+import numpy as np
+from scipy.spatial import distance_matrix
+from scipy.special import gamma
 
 
 class NearestNeighborsDensity:

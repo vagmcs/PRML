@@ -43,4 +43,6 @@ class KNearestNeighborsClassifier:
         """
         d = distance_matrix(x, self.x)
         indices = d.argsort()[:, :self.k]
-        return np.apply_along_axis(lambda row: np.bincount(row, minlength=2), axis=1, arr=self.t[indices]).argmax(axis=1)
+        return np.apply_along_axis(
+            lambda row: np.bincount(row, minlength=2), axis=1, arr=self.t[indices]
+        ).argmax(axis=1)

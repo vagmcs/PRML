@@ -1,7 +1,8 @@
+from typing import Optional, Union
+
 import numpy as np
 import sympy as sym
-from typing import Optional, Union
-from prml.distribution import GenericDistribution
+from generic_distribution import GenericDistribution
 
 
 class MultivariateGaussian(GenericDistribution):
@@ -44,7 +45,7 @@ class MultivariateGaussian(GenericDistribution):
                 1 / (sym.sqrt((2 * np.pi) ** 2 * sym.det(cov))) *
                 sym.exp(-0.5 * ((x - mu).T * cov.inv() * (x - mu)))
             )
-        except:
+        except ModuleNotFoundError:
             super().__init__(None)
 
     def ml(self, x: np.ndarray, unbiased: bool = False) -> None:

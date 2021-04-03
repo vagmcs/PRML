@@ -1,7 +1,8 @@
+from typing import Optional, Union
+
 import numpy as np
 import sympy as sym
-from typing import Union, Optional
-from prml.distribution import GenericDistribution
+from generic_distribution import GenericDistribution
 
 
 class Categorical(GenericDistribution):

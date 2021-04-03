@@ -1,4 +1,5 @@
 import abc
+
 import numpy as np
 
 
@@ -27,4 +28,3 @@ class Neighbors(metaclass=abc.ABCMeta):
         :param x: (N, D) numpy array sample to predict their output
         :return (N,) numpy array holding the prediction of each input
         """
-

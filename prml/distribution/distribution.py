@@ -1,7 +1,8 @@
 import abc
+from typing import Union
+
 import numpy as np
 import sympy as sym
-from typing import Union
 
 
 class Distribution(metaclass=abc.ABCMeta):

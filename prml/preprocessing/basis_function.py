@@ -1,6 +1,7 @@
 import abc
-import numpy as np
 from typing import Union
+
+import numpy as np
 
 
 class BasisFunction(metaclass=abc.ABCMeta):

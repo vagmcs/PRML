@@ -1,8 +1,9 @@
+from typing import Optional, Union
+
 import numpy as np
 import sympy as sym
-from typing import Union, Optional
+from generic_distribution import GenericDistribution
 from scipy.special import gamma
-from prml.distribution import GenericDistribution
 
 
 class Dirichlet(GenericDistribution):

@@ -1,8 +1,9 @@
+from typing import Union
+
 import numpy as np
 import sympy as sym
 import sympy.abc as symbols
-from typing import Union
-from prml.distribution import GenericDistribution
+from generic_distribution import GenericDistribution
 
 
 class Bernoulli(GenericDistribution):
