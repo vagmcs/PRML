@@ -2,14 +2,14 @@ repos:
 - repo: local
   hooks:
   - id: isort
-    name: isort
+    name: Sorting imports
     stages: [commit]
     language: system
     entry: pipenv run isort
     types: [python]
 
   - id: flake8
-    name: flake8
+    name: Checking code style
     stages: [commit]
     language: system
     entry: pipenv run flake8 --max-line-length 120
@@ -20,10 +20,5 @@ repos:
   rev: v2.17.0
   hooks:
     - id: commitizen
+      name: Checking commit message
       stages: [commit-msg]
-
-#  - id: commitizen
-#    name: commitizen
-#    stages: [commit-msg]
-#    repo: https://github.com/commitizen-tools/commitizen
-#    rev: v2.17.0
