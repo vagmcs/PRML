@@ -70,7 +70,6 @@ color = true
 profile = "black"
 line_length = 120
 multi_line_output = 3
-use_parenthesis = true
 include_trailing_comma = true
 color_output = true
 
@@ -81,6 +80,7 @@ import_heading_stdlib = "Standard Library"
 import_heading_typing = "Types"
 import_heading_thirdparty = "Dependencies"
 import_heading_firstparty = "Project"
+import_heading_localfolder = "Project"
 
 [tool.commitizen]
 name = "cz_conventional_commits"
