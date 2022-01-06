@@ -1,5 +1,7 @@
+# Dependencies
 import numpy as np
 
+# Project
 from .regression import Regression
 
 

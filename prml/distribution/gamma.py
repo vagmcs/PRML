@@ -1,10 +1,14 @@
+# Types
 from typing import Union
 
+# Dependencies
 import numpy as np
 import sympy as sym
 import sympy.abc as symbols
-from generic_distribution import GenericDistribution
 from scipy.special import gamma
+
+# Project
+from .generic_distribution import GenericDistribution
 
 
 class Gamma(GenericDistribution):

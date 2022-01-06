@@ -1,7 +1,11 @@
+# Types
 from typing import Union
 
+# Dependencies
 import numpy as np
-from regression import Regression
+
+# Project
+from .regression import Regression
 
 
 class BayesianRegression(Regression):

@@ -1,10 +1,16 @@
-import math
+# Types
 from typing import Union
 
+# Standard Library
+import math
+
+# Dependencies
 import numpy as np
 import sympy as sym
 import sympy.abc as symbols
-from generic_distribution import GenericDistribution
+
+# Project
+from .generic_distribution import GenericDistribution
 
 
 class Gaussian(GenericDistribution):

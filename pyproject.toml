@@ -18,6 +18,7 @@ sympy = "^1.9"
 mpmath = "^1.2.1"
 matplotlib = "^3.5.1"
 jupyter = "^1.0.0"
+scikit-learn = "^1.0.2"
 
 [tool.poetry.dev-dependencies]
 isort = "^5.10.1"

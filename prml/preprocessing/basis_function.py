@@ -1,6 +1,10 @@
-import abc
+# Types
 from typing import Union
 
+# Standard Library
+import abc
+
+# Dependencies
 import numpy as np
 
 

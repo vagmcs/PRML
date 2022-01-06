@@ -1,9 +1,15 @@
-import functools
-import itertools
+# Types
 from typing import Union
 
+# Standard Library
+import functools
+import itertools
+
+# Dependencies
 import numpy as np
-from basis_function import BasisFunction
+
+# Project
+from .basis_function import BasisFunction
 
 
 class PolynomialFeature(BasisFunction):

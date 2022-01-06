@@ -1,5 +1,7 @@
+# Standard Library
 import abc
 
+# Dependencies
 import numpy as np
 
 

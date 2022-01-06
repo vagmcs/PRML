@@ -1,7 +1,11 @@
+# Types
 from typing import Union
 
+# Dependencies
 import numpy as np
-from basis_function import BasisFunction
+
+# Project
+from .basis_function import BasisFunction
 
 
 class SigmoidFeature(BasisFunction):

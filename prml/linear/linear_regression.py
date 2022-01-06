@@ -1,5 +1,8 @@
+# Dependencies
 import numpy as np
-from regression import Regression
+
+# Project
+from .regression import Regression
 
 
 class LinearRegression(Regression):

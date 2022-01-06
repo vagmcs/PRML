@@ -1,8 +1,12 @@
+# Types
 from typing import Dict, Union
 
+# Dependencies
 import numpy as np
 import sympy as sym
-from distribution import Distribution
+
+# Project
+from .distribution import Distribution
 
 
 class GenericDistribution(Distribution):

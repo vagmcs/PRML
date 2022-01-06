@@ -1,7 +1,11 @@
+# Types
 from typing import Union
 
+# Dependencies
 import numpy as np
-from bayesian_regression import BayesianRegression
+
+# Project
+from .bayesian_regression import BayesianRegression
 
 
 class EvidenceApproximation(BayesianRegression):

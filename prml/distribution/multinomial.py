@@ -1,9 +1,13 @@
+# Types
 from typing import Optional, Union
 
+# Dependencies
 import numpy as np
 import sympy as sym
-from generic_distribution import GenericDistribution
 from scipy.special import factorial
+
+# Project
+from .generic_distribution import GenericDistribution
 
 
 class Multinomial(GenericDistribution):
