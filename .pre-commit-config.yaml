@@ -1,21 +1,21 @@
 repos:
-- repo: local
-  hooks:
-  - id: isort
-    name: Sorting imports
-    stages: [commit]
-    language: system
-    entry: pipenv run isort
-    types: [python]
-
-  - id: flake8
-    name: Checking code style
-    stages: [commit]
-    language: system
-    entry: pipenv run flake8 --max-line-length 120
-    types: [python]
-    exclude: setup.py
-
+#- repo: local
+#  hooks:
+#  - id: isort
+#    name: Sorting imports
+#    stages: [commit]
+#    language: system
+#    entry: pipenv run isort
+#    types: [python]
+#
+#  - id: flake8
+#    name: Checking code style
+#    stages: [commit]
+#    language: system
+#    entry: pipenv run flake8 --max-line-length 120
+#    types: [python]
+#    exclude: setup.py
+#
 - repo: https://github.com/commitizen-tools/commitizen
   rev: v2.17.0
   hooks:

@@ -1,7 +1,93 @@
+[tool.poetry]
+name = "PRML"
+version = "0.1.0"
+license = "GPL-3.0-only"
+description = "PRML notes and algorithms implemented in Python."
+authors = ["Evangelos Michelioudakis <vagmcs@gmail.com>"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "GNU General Public License v3': 'License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+]
+
+[tool.poetry.dependencies]
+python = "3.9"
+numpy = "^1.22.0"
+scipy = "^1.7.3"
+sympy = "^1.9"
+mpmath = "^1.2.1"
+matplotlib = "^3.5.1"
+jupyter = "^1.0.0"
+
+[tool.poetry.dev-dependencies]
+isort = "^5.10.1"
+mypy = "^0.930"
+black = "^21.12b0"
+pre-commit = "^2.16.0"
+commitizen = "^2.20.3"
+
+# enforce types for safety
+[tool.mypy]
+python_version = 3.9
+exclude = '(.*\.pyi)|(dist)'
+
+pretty = true
+show_column_numbers = true
+show_error_codes = true
+show_error_context = true
+
+# warnings
+warn_unused_configs = true
+warn_redundant_casts = true
+warn_return_any = true
+warn_unreachable = true
+warn_unused_ignores = true
+warn_no_return = true
+
+# ignore discovery
+ignore_missing_imports = true
+
+# disallow dynamic typing
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+disallow_untyped_decorators = true
+check_untyped_defs = true
+
+# none and optional
+no_implicit_optional = true
+
+# strictness flags
+strict_equality = true
+implicit_reexport = true
+
+# code style
+[tool.black]
+line_length = 120
+target_version = ["py39"]
+color = true
+
+[tool.isort]
+profile = "black"
+line_length = 120
+multi_line_output = 3
+use_parenthesis = true
+include_trailing_comma = true
+color_output = true
+
+sections = ["FUTURE", "TYPING", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
+known_typing = ["typing", "types", "typing_extensions", "mypy", "mypy_extensions"]
+import_heading_future = "Futures"
+import_heading_stdlib = "Standard Library"
+import_heading_typing = "Types"
+import_heading_thirdparty = "Dependencies"
+import_heading_firstparty = "Project"
+
 [tool.commitizen]
 name = "cz_conventional_commits"
 version = "0.1.0"
 tag_format = "$version"
 annotated_tag = false
-version_files = ["setup.py"]
 
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
