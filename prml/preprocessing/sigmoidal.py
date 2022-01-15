@@ -15,35 +15,30 @@ class SigmoidFeature(BasisFunction):
     1 / (1 + exp(c @ (mean - x))
     """
 
-    def __init__(self, mean: Union[int, float, np.ndarray], c: Union[int, float, np.ndarray] = 1):
+    def __init__(self, mean: Union[int, float, np.ndarray], sigma: Union[int, float] = 1):
         """
-        Create sigmoid basis functions.
+        Create sigmoid basis functions. Each basis function can either have a uni-variate
+        or a multivariate mean and constant a constant coefficient. In the former case,
+        the mean of each sigmoid is a single number, resulting in a 1-dimensional array,
+        while the multivariate case, the mean of each sigmoid is an 1-dimensional array,
+        resulting in a 2-dimensional array of means for all basis functions.
 
         :param mean: (D, 2) or (D, 1) array sigmoid function centers
-        :param c : (D, 1) array, int or float coefficient
+        :param sigma: the spatial scale of the sigmoid basis functions
         """
 
-        if isinstance(mean, int) or isinstance(mean, float):
-            mean = np.array([[mean]])
-        elif mean.ndim == 1:
-            mean = mean[:, None]
+        if isinstance(mean, (int, float)):
+            self._mean = np.array([[mean]])
+        elif isinstance(mean, np.ndarray) and mean.ndim <= 2:
+            self._mean = mean[:, None] if mean.ndim == 1 else mean
+        elif isinstance(mean, np.ndarray) and mean.ndim > 2:
+            raise ValueError("Each mean should be an 1-dimensional array not a matrix (N-dimensional).")
         else:
-            assert mean.ndim == 2, "Each mean should be vector not a matrix."
+            raise ValueError(f"Mean should be either an array or a number, but type '{type(mean)}' is given.")
 
-        if isinstance(c, int) or isinstance(c, float):
-            if np.size(mean, 1) == 1:
-                c = np.array([c])
-            else:
-                raise ValueError(f"Parameter c is a single value, while mean is of dimension {np.size(mean, 1)}.")
-        else:
-            assert c.ndim == 1, "Parameter c should be a vector."
-            assert np.size(mean, 1) == len(c), "Mean and c should have the same dimension."
-
-        self.mean = mean
-        self.c = c
-
-    def _sigmoid(self, x, mean):
-        return np.tanh((x - mean) @ self.c * 0.5) * 0.5 + 0.5
+        if not isinstance(sigma, (int, float)):
+            raise ValueError(f"Spatial scale should be a number, but '{type(sigma)}' is given.")
+        self._sigma = sigma
 
     def transform(self, x: Union[int, float, np.ndarray]) -> np.ndarray:
         """
@@ -53,16 +48,13 @@ class SigmoidFeature(BasisFunction):
         :return: (N, D) array of sigmoid features
         """
 
-        # Proper shape for 1-dimensional vectors
-        if isinstance(x, np.ndarray):
-            x = x[:, None] if x.ndim == 1 else x
-        elif isinstance(x, int) or isinstance(x, float):
-            x = np.array([[x]])
-        else:
-            raise ValueError(f'Incompatible type {type(x)}.')
+        # check if proper array is given or create one if not
+        x = self._make_array(x)
+        # create a list of ones for the bias parameter
+        features = [np.ones(len(x))]
 
-        features = [np.ones(len(x))]  # create a list of ones for the bias parameter
-        for m in self.mean:
-            features.append(self._sigmoid(x, m))
+        for mean in self._mean:
+            phi = 1 / (1 + np.exp(- np.sum(x - mean, axis=1) / self._sigma))
+            features.append(phi)
 
         return np.asarray(features).T

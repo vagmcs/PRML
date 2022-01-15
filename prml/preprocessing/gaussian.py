@@ -12,59 +12,59 @@ class GaussianFeature(BasisFunction):
     """
     Gaussian basis functions.
 
-    exp(-0.5 * (x - mean) / var)
+    exp(-0.5 * ||x - mean||^2 / sigma)
     """
 
-    def __init__(self, mean: Union[int, float, np.ndarray], var: Union[int, float]):
+    def __init__(self, mean: Union[int, float, np.ndarray], sigma: Union[int, float]):
         """
-        Create Gaussian basis functions.
+        Create Gaussian basis functions. Each basis function can either be a uni-variate
+        or a multivariate Gaussian having constant across dimensions. In the former case,
+        the mean of each Gaussian is a single number, resulting in a 1-dimensional array,
+        while the multivariate case, the mean of each Gaussian is an 1-dimensional array,
+        resulting in a 2-dimensional array of means for all basis functions.
 
-        :param mean: (M, 2) or (M, 1) array of Gaussian function locations (mean)
-        :param var: variance (spatial scale) of the gaussian basis functions
+        Note that 1 / sigma is sometimes also called gamma.
+
+        :param mean: array of Gaussian function locations (mean)
+        :param sigma: the spatial scale of the gaussian basis functions
         """
 
-        assert isinstance(mean, int) or isinstance(mean, float) or isinstance(mean, np.ndarray), \
-            f"mean should be of type 'Union[int, float, array]', but type '{type(mean)}' was found."
-
-        if isinstance(mean, int) or isinstance(mean, float):
-            mean = np.array([[mean]])
-        elif mean.ndim == 1:
-            mean = mean[:, None]
+        if isinstance(mean, (int, float)):
+            self._mean = np.array([[mean]])
+        elif isinstance(mean, np.ndarray) and mean.ndim <= 2:
+            self._mean = mean[:, None] if mean.ndim == 1 else mean
+        elif isinstance(mean, np.ndarray) and mean.ndim > 2:
+            raise ValueError("Each mean should be an 1-dimensional array not a matrix (N-dimensional).")
         else:
-            assert mean.ndim == 2, "Each mean should be vector not a matrix."
+            raise ValueError(f"Mean should be either an array or a number, but type '{type(mean)}' is given.")
 
-        assert isinstance(var, float) or isinstance(var, int), "Variance (spatial scale) should be 'float' or 'int'."
-
-        self.mean = mean
-        self.var = var
-
-    def _gauss(self, x, mean):
-        return np.exp(-0.5 * np.sum(np.square(x - mean), axis=-1) / self.var)
+        if not isinstance(sigma, (int, float)):
+            raise ValueError(f"Spatial scale should be a number, but '{type(sigma)}' is given.")
+        self._sigma = sigma
 
     def transform(self, x: Union[int, float, np.ndarray]) -> np.ndarray:
         """
         Transform input array using gaussian basis functions.
 
-        :param x: (N, D) array of values or a single float or int value
+        :param x: (N, D) array of values, float or int
         :return: (N, D) array of gaussian features
         """
 
-        if isinstance(x, np.ndarray):
-            if x.ndim == 1:
-                x = x[:, None]
-            else:
-                assert x.ndim == 2, "Input data should be an (N, D) array, where N is the number of samples" \
-                                    " and D is the dimension of each sample."
-        elif isinstance(x, int) or isinstance(x, float):
-            x = np.array([[x]])
-        else:
-            raise ValueError(f'Incompatible type {type(x)}.')
+        # check if proper array is given or create one if not
+        x = self._make_array(x)
 
-        assert np.size(x, 1) == np.size(self.mean, 1), \
-            "Input data should have the same dimension as the mean of the Gaussian basis function."
+        # check if the given input array has the same dimension as the mean of the Gaussian
+        if np.size(x, 1) != np.size(self._mean, 1):
+            raise ValueError(
+                "Input data instances must have the same dimension as the mean of each Gaussian basis function."
+            )
 
-        features = [np.ones(len(x))]  # create a list of ones for the bias parameter
-        for m in self.mean:
-            features.append(self._gauss(x, m))
+        # create a list of ones for the bias parameter
+        features = [np.ones(len(x))]
+
+        for mean in self._mean:
+            # in the general case the numerator equals to ||x - mu||^2
+            phi = np.exp(-0.5 * np.linalg.norm(x - mean, axis=1)**2 / self._sigma)
+            features.append(phi)
 
         return np.asarray(features).T

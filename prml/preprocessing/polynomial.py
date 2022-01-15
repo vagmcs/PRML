@@ -20,14 +20,11 @@ class PolynomialFeature(BasisFunction):
 
     Example
     =======
-
     x = [[a, b], [c, d]]
 
     y = PolynomialBasis(degree=2).transform(x)
 
-    y =
-    [[1, a, b, a^2, a * b, b^2],
-    [1, c, d, c^2, c * d, d^2]]
+    y = [[1, a, b, a^2, a * b, b^2], [1, c, d, c^2, c * d, d^2]]
     """
 
     def __init__(self, degree: int = 2):
@@ -36,28 +33,24 @@ class PolynomialFeature(BasisFunction):
 
         :param degree: the degree of polynomial (default is 2)
         """
+        if not isinstance(degree, int):
+            raise ValueError(f"Degree should be of type 'int', but type '{type(degree)}' is given.")
+        self._degree = degree
 
-        assert isinstance(degree, int), f"Degree should be of type 'int', but type '{type(degree)}' was found."
-        self.degree = degree
-
-    def transform(self, x: Union[int, float, np.ndarray]) -> np.ndarray:
+    def transform(self, x: Union[float, np.ndarray]) -> np.ndarray:
         """
-        Transforms input array using polynomial basis functions
+        Transforms input array using polynomial basis functions.
 
-        :param x: (N, D) array of values or a single float or int value
+        :param x: (N, D) array of values, float or int
         :return: (N, 1 + nC1 + ... + nCd) array of polynomial features
         """
 
-        # Proper shape for 1-dimensional vectors
-        if isinstance(x, np.ndarray):
-            x = x[:, None] if x.ndim == 1 else x
-        elif isinstance(x, int) or isinstance(x, float):
-            x = np.array([[x]])
-        else:
-            raise ValueError(f'Incompatible type {type(x)}.')
+        # check if proper array is given or create one if not
+        x = self._make_array(x)
+        # create a list of ones for the zero powers
+        features = [np.ones(len(x))]
 
-        features = [np.ones(len(x))]  # create a list of ones for the zero powers
-        for degree in range(1, self.degree + 1):
+        for degree in range(1, self._degree + 1):
             for items in itertools.combinations_with_replacement(x.T, degree):
                 features.append(functools.reduce(lambda a, b: a * b, items))
 
@@ -68,7 +61,7 @@ class LinearFeature(PolynomialFeature):
     """
     Linear basis functions.
 
-    Transforms the input array by adding a bias. Identical to::
+    Transforms the input array by adding a bias. Identical to
 
         PolynomialFeature(degree=1)
 
@@ -76,11 +69,9 @@ class LinearFeature(PolynomialFeature):
     =======
     x = [[a, b], [c, d]]
 
-    y = PolynomialBasis(degree=2).transform(x)
+    y = PolynomialBasis(degree=1).transform(x)
 
-    y =
-    [[1, a, b, a^2, a * b, b^2],
-    [1, c, d, c^2, c * d, d^2]]
+    y = [[1, a, b], [1, c, d]]
     """
 
     def __init__(self):
