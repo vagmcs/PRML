@@ -54,7 +54,7 @@ class SigmoidFeature(BasisFunction):
         features = [np.ones(len(x))]
 
         for mean in self._mean:
-            phi = 1 / (1 + np.exp(- np.sum(x - mean, axis=1) / self._sigma))
+            phi = 1 / (1 + np.exp(-np.sum(x - mean, axis=1) / self._sigma))
             features.append(phi)
 
         return np.asarray(features).T

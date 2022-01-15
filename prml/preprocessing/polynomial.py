@@ -74,5 +74,5 @@ class LinearFeature(PolynomialFeature):
     y = [[1, a, b], [1, c, d]]
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(degree=1)

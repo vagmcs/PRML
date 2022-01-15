@@ -64,7 +64,7 @@ class GaussianFeature(BasisFunction):
 
         for mean in self._mean:
             # in the general case the numerator equals to ||x - mu||^2
-            phi = np.exp(-0.5 * np.linalg.norm(x - mean, axis=1)**2 / self._sigma)
+            phi = np.exp(-0.5 * np.linalg.norm(x - mean, axis=1) ** 2 / self._sigma)
             features.append(phi)
 
         return np.asarray(features).T
