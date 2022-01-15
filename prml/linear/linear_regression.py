@@ -45,7 +45,8 @@ class LinearRegression(Regression):
 
         self.w = np.random.random(d)
         for _ in range(n_iter):
-            indices = np.random.permutation(indices)  # shuffle the data
+            # shuffle the data
+            indices = np.random.permutation(indices)
             for i in indices:
                 self.w = self.w + eta * (t[i] - np.dot(self.w.T, x[i])) * x[i]
 
