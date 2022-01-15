@@ -19,7 +19,7 @@ class LinearRegression(Regression):
 
     def fit(self, x: np.ndarray, t: np.ndarray):
         """
-        Performs least squares fitting
+        Performs the least squares fitting
 
         :param x: (N, D) numpy array holding the input training data
         :param t: (N,) numpy array holding the target values
@@ -31,7 +31,7 @@ class LinearRegression(Regression):
     def fit_lms(self, x: np.ndarray, t: np.ndarray, eta: float = 0.01, n_iter: int = 1000):
         """
         Stochastic gradient descent using the sum of squares error
-        function is called Least Mean Squares (LMS).
+        function is called the Least Mean Squares (LMS).
 
         :param x: (N, D) numpy array holding the input training data
         :param t: (N,) numpy array holding the target values
