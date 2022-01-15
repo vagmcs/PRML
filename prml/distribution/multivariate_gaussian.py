@@ -27,15 +27,15 @@ class MultivariateGaussian(GenericDistribution):
         if mu is None and cov is None and dim is not None:
             self.D = dim
             self.mu = None
-            mu = sym.MatrixSymbol('mu', self.D, 1)
+            mu = sym.MatrixSymbol("mu", self.D, 1)
             self.cov = None
-            cov = sym.MatrixSymbol('Sigma', self.D, self.D)
+            cov = sym.MatrixSymbol("Sigma", self.D, self.D)
         elif dim is None and (mu is not None or cov is not None):
             self.D = mu.shape[0] if mu is not None else cov.shape[0]
             self.mu = mu
-            mu = sym.Matrix(mu) if mu is not None else sym.MatrixSymbol('mu', self.D, 1)
+            mu = sym.Matrix(mu) if mu is not None else sym.MatrixSymbol("mu", self.D, 1)
             self.cov = cov
-            cov = sym.Matrix(cov) if cov is not None else sym.MatrixSymbol('Sigma', self.D, self.D)
+            cov = sym.Matrix(cov) if cov is not None else sym.MatrixSymbol("Sigma", self.D, self.D)
         elif mu is not None and cov is not None and dim is not None:
             self.D = dim
             self.mu = mu
@@ -43,11 +43,10 @@ class MultivariateGaussian(GenericDistribution):
         else:
             raise AttributeError("Either provide the 'dim' argument or one of the parameters ('mu' or 'cov').")
 
-        x = sym.MatrixSymbol('x', self.D, 1)
+        x = sym.MatrixSymbol("x", self.D, 1)
         try:
             super().__init__(
-                1 / (sym.sqrt((2 * np.pi) ** 2 * sym.det(cov))) *
-                sym.exp(-0.5 * ((x - mu).T * cov.inv() * (x - mu)))
+                1 / (sym.sqrt((2 * np.pi) ** 2 * sym.det(cov))) * sym.exp(-0.5 * ((x - mu).T * cov.inv() * (x - mu)))
             )
         except ModuleNotFoundError:
             super().__init__(None)
@@ -65,10 +64,11 @@ class MultivariateGaussian(GenericDistribution):
         self.mu = np.mean(x, axis=0).reshape(self.D, 1)
         self.cov = np.cov(x.T, bias=unbiased)
         # Update the formula to use the sample mean and variance.
-        xx = sym.MatrixSymbol('x', self.D, 1)
+        xx = sym.MatrixSymbol("x", self.D, 1)
         self._formula = (
-            1 / (sym.sqrt((2 * np.pi) ** 2 * sym.det(sym.Matrix(self.cov)))) *
-            sym.exp(-0.5 * ((xx - sym.Matrix(self.mu)).T * sym.Matrix(self.cov).inv() * (xx - sym.Matrix(self.mu))))
+            1
+            / (sym.sqrt((2 * np.pi) ** 2 * sym.det(sym.Matrix(self.cov))))
+            * sym.exp(-0.5 * ((xx - sym.Matrix(self.mu)).T * sym.Matrix(self.cov).inv() * (xx - sym.Matrix(self.mu))))
         )
 
     def pdf(self, x: np.ndarray) -> Union[GenericDistribution, np.ndarray, float]:
@@ -81,20 +81,21 @@ class MultivariateGaussian(GenericDistribution):
         """
         if self.mu is None or self.cov is None:
             if x.shape[0] == self.D:
-                return GenericDistribution(self._formula.subs(sym.MatrixSymbol('x', self.D, 1), sym.Matrix(x)))
+                return GenericDistribution(self._formula.subs(sym.MatrixSymbol("x", self.D, 1), sym.Matrix(x)))
             else:
                 raise ValueError(
-                    "Multivariate Gaussian random variables should have dimensions (1, " + str(self.D) + "),\n"
-                    "but you gave " + str(x.shape) + ". Since the parameters 'mu' or 'cov' are undefined, the PDF is\n"
+                    f"Multivariate Gaussian random variables should have dimensions (1, {str(self.D)}),\n"
+                    f"but you gave {str(x.shape)}. Since the parameters 'mu' or 'cov' are undefined, the PDF is\n"
                     "transformed into another generic distribution over the undefined parameters after the random\n"
-                    "variable 'x' is fixed. Thus, if a matrix of N random variables of dimension (1, " + str(self.D) +
-                    ") if given, N distributions should be generated, which is currently not supported."
+                    f"variable 'x' is fixed. Thus, if a matrix of N random variables of dimension (1, {str(self.D)})\n"
+                    "if given, N distributions should be generated, which is currently not supported."
                 )
         else:
             d = x - self.mu
             return (
-                1 / (np.sqrt((2 * np.pi) ** self.D * np.linalg.det(self.cov))) *
-                np.exp(-0.5 * (np.linalg.solve(self.cov, d).T.dot(d)))
+                1
+                / (np.sqrt((2 * np.pi) ** self.D * np.linalg.det(self.cov)))
+                * np.exp(-0.5 * (np.linalg.solve(self.cov, d).T.dot(d)))
             )
 
     def draw(self, sample_size: int) -> np.ndarray:

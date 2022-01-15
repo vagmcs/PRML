@@ -20,9 +20,11 @@ class Gaussian(GenericDistribution):
     p(x|mu,var) = exp{-0.5 * (x - mu)^2 / var} / sqrt(2pi * var)
     """
 
-    def __init__(self,
-                 mu: Union[sym.Symbol, int, float] = symbols.mu,
-                 var: Union[sym.Symbol, int, float] = sym.symbols('sigma^2')):
+    def __init__(
+        self,
+        mu: Union[sym.Symbol, int, float] = symbols.mu,
+        var: Union[sym.Symbol, int, float] = sym.symbols("sigma^2"),
+    ):
         """
         Create a *Gaussian* distribution.
 
@@ -31,7 +33,7 @@ class Gaussian(GenericDistribution):
         """
         self.mu = mu if isinstance(mu, (int, float)) else None
         self.var = var if isinstance(var, (int, float)) else None
-        super().__init__(sym.exp(-(symbols.x - mu) ** 2 / (2 * var)) / sym.sqrt(2 * np.pi * var))
+        super().__init__(sym.exp(-((symbols.x - mu) ** 2) / (2 * var)) / sym.sqrt(2 * np.pi * var))
 
     def ml(self, x: np.ndarray, unbiased: bool = False) -> None:
         """
@@ -46,7 +48,7 @@ class Gaussian(GenericDistribution):
         self.mu = np.mean(x)
         self.var = np.sum(np.power(x - self.mu, 2)) / (x.size - 1) if unbiased else np.var(x)
         # Update the formula to use the sample mean and variance.
-        self._formula = sym.exp(-(symbols.x - self.mu) ** 2 / (2 * self.var)) / sym.sqrt(2 * np.pi * self.var)
+        self._formula = sym.exp(-((symbols.x - self.mu) ** 2) / (2 * self.var)) / sym.sqrt(2 * np.pi * self.var)
 
     def pdf(self, x: Union[np.ndarray, float]) -> Union[GenericDistribution, np.ndarray, float]:
         """
@@ -68,7 +70,7 @@ class Gaussian(GenericDistribution):
                     "which is currently not supported."
                 )
         else:
-            return np.exp(-(x - self.mu) ** 2 / (2 * self.var)) / np.sqrt(2 * np.pi * self.var)
+            return np.exp(-((x - self.mu) ** 2) / (2 * self.var)) / np.sqrt(2 * np.pi * self.var)
 
     def draw(self, sample_size: int) -> np.ndarray:
         """

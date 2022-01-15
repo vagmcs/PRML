@@ -25,7 +25,7 @@ class Dirichlet(GenericDistribution):
         """
         if alpha is None and dim is not None:
             self.D = dim
-            alpha = sym.MatrixSymbol('alpha', self.D, 1)
+            alpha = sym.MatrixSymbol("alpha", self.D, 1)
             self.alpha = None
         elif alpha is not None:
             self.D = alpha.shape[0]
@@ -33,7 +33,7 @@ class Dirichlet(GenericDistribution):
         else:
             raise AttributeError("Either provide the 'dim' argument or the parameters 'alpha'.")
 
-        x = sym.MatrixSymbol('x', self.D, 1)
+        x = sym.MatrixSymbol("x", self.D, 1)
         super().__init__((gamma(np.sum(alpha)) * np.prod(x ** (alpha - 1))) / np.prod(gamma(alpha)))
 
     def ml(self, x: np.ndarray) -> None:
@@ -55,7 +55,7 @@ class Dirichlet(GenericDistribution):
         """
         if self.alpha is None:
             if isinstance(x, float):
-                return GenericDistribution(self._formula.subs(sym.MatrixSymbol('x', self.D, 1), sym.Matrix(x)))
+                return GenericDistribution(self._formula.subs(sym.MatrixSymbol("x", self.D, 1), sym.Matrix(x)))
             else:
                 raise ValueError(
                     "Dirichlet random variables should be of type float, but you gave " + str(type(x)) + ".\n"

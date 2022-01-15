@@ -24,7 +24,7 @@ class Categorical(GenericDistribution):
         """
         if mu is None and dim is not None:
             self.D = dim
-            mu = sym.MatrixSymbol('mu', self.D, 1)
+            mu = sym.MatrixSymbol("mu", self.D, 1)
             self.mu = None
         elif mu is not None:
             self.D = mu.shape[0]
@@ -32,7 +32,7 @@ class Categorical(GenericDistribution):
         else:
             raise AttributeError("Either provide the 'dim' argument or the parameters 'mu'.")
 
-        x = sym.MatrixSymbol('x', self.D, 1)
+        x = sym.MatrixSymbol("x", self.D, 1)
         super().__init__(sym.prod(np.power(mu, x)))
 
     def ml(self, x: np.ndarray) -> None:
@@ -46,7 +46,7 @@ class Categorical(GenericDistribution):
         # distribution is the sample mean.
         self.mu = np.mean(x, axis=0)
         # Update the formula to use the sample mean.
-        self._formula = sym.prod(np.power(self.mu, sym.MatrixSymbol('x', self.D, 1)))
+        self._formula = sym.prod(np.power(self.mu, sym.MatrixSymbol("x", self.D, 1)))
 
     def pdf(self, x: Union[np.ndarray]) -> Union[GenericDistribution, np.ndarray, float]:
         """
@@ -60,14 +60,14 @@ class Categorical(GenericDistribution):
         # generic distribution over the mu parameter.
         if self.mu is None:
             if x.shape[0] == self.D:
-                return GenericDistribution(self._formula.subs(sym.MatrixSymbol('x', self.D, 1), sym.Matrix(x)))
+                return GenericDistribution(self._formula.subs(sym.MatrixSymbol("x", self.D, 1), sym.Matrix(x)))
             else:
                 raise ValueError(
-                    "Categorical random variables should be one-hot vectors having dimensions (1, " + str(self.D) +
-                    "),\nbut you gave " + str(x.shape) + ". Since the parameters 'mu' are undefined, the PDF is\n"
+                    f"Categorical random variables should be one-hot vectors having dimensions (1, {str(self.D)})\n"
+                    f"but you gave {str(x.shape)}. Since the parameters 'mu' are undefined, the PDF is\n"
                     "transformed into another generic distribution over the undefined parameters after the random\n"
-                    "variable 'x' is fixed. Thus, if a matrix of N random variables of dimension (1, " + str(self.D) +
-                    ") if given, N distributions should be generated, which is currently not supported."
+                    f"variable 'x' is fixed. Thus, if a matrix of N random variables of dimension (1, {str(self.D)})\n"
+                    "if given, N distributions should be generated, which is currently not supported."
                 )
         else:
             return np.prod(self.mu ** x, axis=1)

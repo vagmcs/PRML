@@ -61,8 +61,10 @@ class Beta(GenericDistribution):
                 )
         else:
             return (
-                gamma(self.a + self.b) / (gamma(self.a) * gamma(self.b))
-                * np.power(x, self.a - 1) * np.power(1 - x, self.b - 1)
+                gamma(self.a + self.b)
+                / (gamma(self.a) * gamma(self.b))
+                * np.power(x, self.a - 1)
+                * np.power(1 - x, self.b - 1)
             )
 
     def draw(self, sample_size: int) -> np.ndarray:

@@ -81,7 +81,7 @@ class Distribution(metaclass=abc.ABCMeta):
         pass
 
     @abc.abstractmethod
-    def __mul__(self, other: 'Distribution') -> 'Distribution':
+    def __mul__(self, other: "Distribution") -> "Distribution":
         """
         Symbolic multiplication of distributions.
 

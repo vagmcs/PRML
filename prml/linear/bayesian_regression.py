@@ -39,15 +39,10 @@ class BayesianRegression(Regression):
         self.precision = precision_prev + self.beta * x.T @ x
         self.cov = np.linalg.inv(self.precision)
 
-        self.mean = np.linalg.solve(
-            self.precision,
-            precision_prev @ mean_prev + self.beta * x.T @ t
-        )
+        self.mean = np.linalg.solve(self.precision, precision_prev @ mean_prev + self.beta * x.T @ t)
 
     def predict(self, x: np.ndarray, return_std: bool = False):
-        """
-
-        """
+        """ """
         y = x @ self.mean
 
         if return_std:
@@ -57,7 +52,5 @@ class BayesianRegression(Regression):
         return y
 
     def draw(self, sample_size: int) -> np.ndarray:
-        """
-
-        """
+        """ """
         return np.random.multivariate_normal(self.mean, self.cov, size=sample_size)

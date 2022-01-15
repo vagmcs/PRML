@@ -28,7 +28,7 @@ class Multinomial(GenericDistribution):
         self.n = n
         if mu is None and dim is not None:
             self.D = dim
-            mu = sym.MatrixSymbol('mu', self.D, 1)
+            mu = sym.MatrixSymbol("mu", self.D, 1)
             self.mu = None
         elif mu is not None:
             self.D = mu.shape[0]
@@ -36,7 +36,7 @@ class Multinomial(GenericDistribution):
         else:
             raise AttributeError("Either provide the 'dim' argument or the parameters 'mu'.")
 
-        x = sym.MatrixSymbol('x', self.D, 1)
+        x = sym.MatrixSymbol("x", self.D, 1)
         super().__init__(sym.binomial(n, sym.prod(x)) * sym.prod(np.power(mu, x)[0]))
 
     def ml(self, x: np.ndarray) -> None:
@@ -52,14 +52,14 @@ class Multinomial(GenericDistribution):
         """
         if self.mu is None:
             if x.shape[0] == self.D:
-                return GenericDistribution(self._formula.subs(sym.MatrixSymbol('x', self.D, 1), sym.Matrix(x)))
+                return GenericDistribution(self._formula.subs(sym.MatrixSymbol("x", self.D, 1), sym.Matrix(x)))
             else:
                 raise ValueError(
-                    "Multinomial random variables should be one-hot vectors having dimensions (1, " + str(self.D) +
-                    "),\nbut you gave " + str(x.shape) + ". Since the parameters 'mu' are undefined, the PDF is\n"
+                    f"Multinomial random variables should be one-hot vectors having dimensions (1, {str(self.D)})\n"
+                    f"but you gave {str(x.shape)}. Since the parameters 'mu' are undefined, the PDF is\n"
                     "transformed into another generic distribution over the undefined parameters after the random\n"
-                    "variable 'x' is fixed. Thus, if a matrix of N random variables of dimension (1, " + str(self.D) +
-                    ") if given, N distributions should be generated, which is currently not supported."
+                    f"variable 'x' is fixed. Thus, if a matrix of N random variables of dimension (1, {str(self.D)})\n"
+                    "if given, N distributions should be generated, which is currently not supported."
                 )
         else:
             multinomial_coefficient = factorial(self.n) / np.product(factorial(x))

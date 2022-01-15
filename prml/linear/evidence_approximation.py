@@ -9,14 +9,10 @@ from .bayesian_regression import BayesianRegression
 
 
 class EvidenceApproximation(BayesianRegression):
-    """
-
-    """
+    """ """
 
     def __init__(self, alpha: Union[int, float] = 1, beta: Union[int, float] = 1):
-        """
-
-        """
+        """ """
         super().__init__(alpha, beta)
 
     def fit(self, x: np.ndarray, t: np.ndarray, n_iter: int = 100) -> None:
@@ -62,8 +58,8 @@ class EvidenceApproximation(BayesianRegression):
         n = len(t)
         d = np.size(x, 1)
         return 0.5 * (
-                d * np.log(self.alpha)
-                + n * np.log(self.beta)
-                - np.linalg.slogdet(self.precision)[1]
-                - n * np.log(2 * np.pi)
+            d * np.log(self.alpha)
+            + n * np.log(self.beta)
+            - np.linalg.slogdet(self.precision)[1]
+            - n * np.log(2 * np.pi)
         ) + self._log_posterior(x, t, self.mean)

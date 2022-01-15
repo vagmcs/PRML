@@ -29,7 +29,7 @@ class GenericDistribution(Distribution):
         """
         return self._formula
 
-    def change_notation(self, theta_substitution: Dict[str, str]) -> 'GenericDistribution':
+    def change_notation(self, theta_substitution: Dict[str, str]) -> "GenericDistribution":
         """
         Change the notation of variables in the PDF function.
 
@@ -39,7 +39,8 @@ class GenericDistribution(Distribution):
         # Map vector variables into matrix symbols
         theta = {
             v: sym.MatrixSymbol(theta_substitution[str(v)], v.shape[0], v.shape[1])
-            if isinstance(v, sym.MatrixSymbol) else theta_substitution[str(v)]
+            if isinstance(v, sym.MatrixSymbol)
+            else theta_substitution[str(v)]
             for v in self._formula.free_symbols
         }
 
@@ -84,7 +85,7 @@ class GenericDistribution(Distribution):
         """
         raise Exception("Sampling from a generic distribution is not supported.")
 
-    def __mul__(self, other: Distribution) -> 'GenericDistribution':
+    def __mul__(self, other: Distribution) -> "GenericDistribution":
         """
         Symbolic multiplication of distributions.
 

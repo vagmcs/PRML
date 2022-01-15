@@ -26,8 +26,8 @@ class StudentT(GenericDistribution):
         """
         self.nu = nu
         super().__init__(
-            ((gamma((nu + 1) / 2) * sym.sqrt(1 / (sym.pi * nu))) / gamma(nu / 2)) *
-            (1 + (symbols.x**2 / nu)) ** (-(nu+1) / 2)
+            ((gamma((nu + 1) / 2) * sym.sqrt(1 / (sym.pi * nu))) / gamma(nu / 2))
+            * (1 + (symbols.x ** 2 / nu)) ** (-(nu + 1) / 2)
         )
 
     def ml(self, x: np.ndarray) -> None:
@@ -60,10 +60,9 @@ class StudentT(GenericDistribution):
                     "which is currently not supported."
                 )
         else:
-            return (
-                ((gamma((self.nu + 1) / 2) * np.sqrt(1 / (np.pi * self.nu))) / gamma(self.nu / 2)) *
-                (1 + (x**2 / self.nu)) ** (-(self.nu + 1) / 2)
-            )
+            return ((gamma((self.nu + 1) / 2) * np.sqrt(1 / (np.pi * self.nu))) / gamma(self.nu / 2)) * (
+                1 + (x ** 2 / self.nu)
+            ) ** (-(self.nu + 1) / 2)
 
     def draw(self, sample_size: int) -> np.ndarray:
         """

@@ -31,7 +31,7 @@ class KNearestNeighborsClassifier:
         :return (N,) numpy array holding the prediction of each input
         """
         d = distance_matrix(x, self.x)
-        indices = d.argsort()[:, :self.k]
+        indices = d.argsort()[:, : self.k]
         counts_per_class = np.apply_along_axis(lambda row: np.bincount(row, minlength=2), axis=1, arr=self.t[indices])
         return counts_per_class / self.k
 
@@ -43,7 +43,7 @@ class KNearestNeighborsClassifier:
         :return (N,) numpy array holding the prediction of each input
         """
         d = distance_matrix(x, self.x)
-        indices = d.argsort()[:, :self.k]
-        return np.apply_along_axis(
-            lambda row: np.bincount(row, minlength=2), axis=1, arr=self.t[indices]
-        ).argmax(axis=1)
+        indices = d.argsort()[:, : self.k]
+        return np.apply_along_axis(lambda row: np.bincount(row, minlength=2), axis=1, arr=self.t[indices]).argmax(
+            axis=1
+        )

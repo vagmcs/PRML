@@ -21,7 +21,7 @@ class Bernoulli(GenericDistribution):
         """
         Create a *Bernoulli* distribution.
 
-        :param mu: the probability of the binary random variable to be True
+        :param mu: the probability of the binary random variable to be true
         """
         self.mu = mu if isinstance(mu, (int, float)) else None
         super().__init__(mu ** symbols.x * (1 - mu) ** (1 - symbols.x))

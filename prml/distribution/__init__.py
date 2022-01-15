@@ -24,5 +24,5 @@ __all__ = [
     "GenericDistribution",
     "Multinomial",
     "MultivariateGaussian",
-    "StudentT"
+    "StudentT",
 ]
