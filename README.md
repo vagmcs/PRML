@@ -16,6 +16,7 @@ This program comes with ABSOLUTELY NO WARRANTY. This is free software, and you a
 * [1. Introduction](https://nbviewer.jupyter.org/github/vagmcs/PRML/blob/master/notebooks/ch1_introduction.ipynb)
 * [2. Probability Distributions](https://nbviewer.jupyter.org/github/vagmcs/PRML/blob/master/notebooks/ch2_probability_distributions.ipynb)
 * [3. Linear Models for Regression](https://nbviewer.jupyter.org/github/vagmcs/PRML/blob/master/notebooks/ch3_linear_models_for_regression.ipynb)
+* [4. Linear Models for Classification](https://nbviewer.jupyter.org/github/vagmcs/PRML/blob/master/notebooks/ch4_linear_models_for_classification.ipynb)
 
 ## Resources
 
