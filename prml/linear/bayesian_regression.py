@@ -1,5 +1,5 @@
 # Types
-from typing import Union
+from typing import Optional, Tuple, Union
 
 # Dependencies
 import numpy as np
@@ -18,39 +18,52 @@ class BayesianRegression(Regression):
     """
 
     def __init__(self, alpha: Union[int, float], beta: Union[int, float]):
-        self.alpha = alpha
-        self.beta = beta
-        self.mean = None
-        self.precision = None
-        self.cov = None
+        self._alpha = alpha
+        self._beta = beta
+        self._mean: Optional[np.ndarray] = None
+        self._precision: Optional[np.ndarray] = None
+        self._cov: Optional[np.ndarray] = None
 
     def fit(self, x: np.ndarray, t: np.ndarray) -> None:
         """
+        Trains the model by estimating the posterior distribution (3.49).
 
-        TODO: Each time fit is called the prior knowledge is retained!
+        :param x: (N, D) array holding the input training data
+        :param t: (N,) array holding the target values
         """
 
-        if self.mean is None and self.precision is None:
-            self.mean = np.zeros(x.shape[1])
-            self.precision = self.alpha * np.eye(x.shape[1])
+        # assume zero-mean, isotropic Gaussian prior
+        if self._mean is None or self._precision is None:
+            self._mean = np.zeros(x.shape[1])
+            self._precision = self._alpha * np.eye(x.shape[1])
 
-        mean_prev, precision_prev = self.mean, self.precision
+        mean_prev, precision_prev = self._mean, self._precision
 
-        self.precision = precision_prev + self.beta * x.T @ x
-        self.cov = np.linalg.inv(self.precision)
+        self._precision = precision_prev + self._beta * x.T @ x
+        self._cov = np.linalg.inv(self._precision)  # type: ignore
 
-        self.mean = np.linalg.solve(self.precision, precision_prev @ mean_prev + self.beta * x.T @ t)
+        self._mean = np.linalg.solve(self._precision, precision_prev @ mean_prev + self._beta * x.T @ t)  # type: ignore
 
-    def predict(self, x: np.ndarray, return_std: bool = False):
-        """ """
-        y = x @ self.mean
+    def predict(self, x: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
+        """
+        Makes a prediction given an input.
 
-        if return_std:
-            y_var = 1 / self.beta + np.sum(x @ self.cov * x, axis=1)
-            y_std = np.sqrt(y_var)
-            return y, y_std
-        return y
+        :param x: (N, D) array of samples to predict their output
+        :return a tuple of (N,) arrays, one holding the predictions, and one the variance
+        """
+        if self._mean is None or self._cov is None:
+            raise ValueError("The model is not trained, thus predictions cannot be made!")
+
+        # the maximum posterior weight vector is simply the mean of the distribution
+        y = x @ self._mean
+        y_std = np.sqrt(1 / self._beta + np.sum(x @ self._cov * x, axis=1))
+        return y, y_std
 
     def draw(self, sample_size: int) -> np.ndarray:
-        """ """
-        return np.random.multivariate_normal(self.mean, self.cov, size=sample_size)
+        """
+        Draw samples from the underlying Gaussian distribution.
+
+        :param sample_size: number of samples
+        :return: an array holding the drawn samples
+        """
+        return np.random.multivariate_normal(self._mean, self._cov, size=sample_size)  # type: ignore

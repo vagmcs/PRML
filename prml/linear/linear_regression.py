@@ -1,3 +1,6 @@
+# Types
+from typing import Optional, Tuple
+
 # Dependencies
 import numpy as np
 
@@ -13,22 +16,25 @@ class LinearRegression(Regression):
     t ~ N(t|X @ w, var)
     """
 
-    def __init__(self):
-        self.w = None
-        self.var = None
-
-    def fit(self, x: np.ndarray, t: np.ndarray):
+    def __init__(self) -> None:
         """
-        Performs the least squares fitting
+        Creates a linear regression model.
+        """
+        self._w: Optional[np.ndarray] = None
+        self._var: Optional[np.ndarray] = None
+
+    def fit(self, x: np.ndarray, t: np.ndarray) -> None:
+        """
+        Performs the least squares fitting.
 
         :param x: (N, D) numpy array holding the input training data
         :param t: (N,) numpy array holding the target values
         """
 
-        self.w = np.linalg.pinv(x) @ t
-        self.var = np.mean(np.square(x @ self.w - t))
+        self._w = np.linalg.pinv(x) @ t
+        self._var = np.mean(np.square(x @ self._w - t))
 
-    def fit_lms(self, x: np.ndarray, t: np.ndarray, eta: float = 0.01, n_iter: int = 1000):
+    def fit_lms(self, x: np.ndarray, t: np.ndarray, eta: float = 0.01, n_iter: int = 1000) -> None:
         """
         Stochastic gradient descent using the sum of squares error
         function is called the Least Mean Squares (LMS).
@@ -43,26 +49,26 @@ class LinearRegression(Regression):
         n, d = x.shape
         indices = np.arange(n)
 
-        self.w = np.random.random(d)
+        self._w = np.random.random(d)
         for _ in range(n_iter):
             # shuffle the data
             indices = np.random.permutation(indices)
             for i in indices:
-                self.w = self.w + eta * (t[i] - np.dot(self.w.T, x[i])) * x[i]
+                self._w = self._w + eta * (t[i] - np.dot(self._w.T, x[i])) * x[i]  # type: ignore
 
-    def predict(self, x: np.ndarray, return_std: bool = False):
+        self._var = np.mean(np.square(x @ self._w - t))
+
+    def predict(self, x: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
         """
         Makes a prediction given an input.
 
-        :param x: (N, D) numpy array sample to predict their output
-        :param return_std: bool, optional returns standard deviation of each prediction if True
-        :return:
-        (N,) numpy array holding the prediction of each input, and
-        (N,) numpy array holding the standard deviation of each prediction
+        :param x: (N, D) array of samples to predict their output
+        :return a tuple of (N,) arrays, one holding the predictions, and one the variance
         """
 
-        y = x @ self.w
-        if return_std and self.var is not None:
-            y_std = np.sqrt(self.var) + np.zeros_like(y)
-            return y, y_std
-        return y
+        if self._w is None or self._var is None:
+            raise ValueError("The model is not trained, thus predictions cannot be made!")
+
+        y = x @ self._w
+        y_std = np.sqrt(self._var) + np.zeros_like(y)
+        return y, y_std

@@ -1,3 +1,6 @@
+# Types
+from typing import Union
+
 # Standard Library
 import abc
 
@@ -7,26 +10,31 @@ import numpy as np
 
 class Neighbors(metaclass=abc.ABCMeta):
     """
-    Regression base abstract class.
+    Nearest neighbors base abstract class.
     """
 
-    def __init__(self, k):
-        self.k = k
-
-    @abc.abstractmethod
-    def fit(self, x: np.ndarray, t: np.ndarray) -> None:
+    def __init__(self, k: int, data: Union[int, float, np.ndarray]):
         """
-        Trains the model.
-
-        :param x: (N, D) numpy array holding the input training data
-        :param t: (N,) numpy array holding the target values
+        :param k: number of nearest neighbors
+        :param data: (N, D) array holding the input training data
         """
+        self._k = k
+
+        if isinstance(data, (int, float)):
+            self._data = np.array([[data]])
+        elif isinstance(data, np.ndarray):
+            if data.ndim > 2:
+                raise ValueError(
+                    "Input data should be an (N, D) 2D array, where N is the number of samples "
+                    "and D is the dimension of each sample."
+                )
+            self._data = data[:, None] if data.ndim == 1 else data
 
     @abc.abstractmethod
     def predict(self, x: np.ndarray) -> np.ndarray:
         """
         Makes a prediction given an input.
 
-        :param x: (N, D) numpy array sample to predict their output
-        :return (N,) numpy array holding the prediction of each input
+        :param x: (N, D) array of samples to predict their output
+        :return (N,) array holding the predictions
         """

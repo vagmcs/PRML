@@ -11,7 +11,7 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = "3.9"
+python = "3.9.*"
 numpy = "^1.22.1"
 scipy = "^1.7.3"
 sympy = "^1.9"
@@ -28,6 +28,7 @@ mypy = "^0.931"
 black = "^21.12b0"
 pre-commit = "^2.16.0"
 commitizen = "^2.20.3"
+jupyter = "^1.0.0"
 
 # enforce types for safety
 [tool.mypy]

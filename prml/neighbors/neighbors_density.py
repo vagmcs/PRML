@@ -1,5 +1,5 @@
 # Types
-from typing import Union
+from typing import Optional, Union
 
 # Standard Library
 import abc
@@ -9,35 +9,33 @@ import numpy as np
 from scipy.spatial import distance_matrix
 from scipy.special import gamma
 
+# Project
+from .neighbors import Neighbors
 
-class NearestNeighborsDensity:
+
+class NearestNeighborsDensity(Neighbors):
     """
-    Regression base abstract class.
+    Nearest neighbour method for density estimation.
     """
 
-    def __init__(self, k):
-        self.k = k
-        self.x = None
-        self.D = None
-
-    def fit(self, x: Union[float, np.ndarray]) -> None:
+    def __init__(self, k: int, data: Union[int, float, np.ndarray]):
         """
-        Trains the model.
+        Creates a nearest neighbor estimator.
 
-        :param x: (N, D) numpy array holding the input training data
+        :param k: number of nearest neighbors
+        :param data: (N, D) array holding the input training data
         """
-        self.x = x
-        self.D = x.shape[1] if isinstance(x, np.ndarray) and x.ndim != 1 else 1
+        super().__init__(k, data)
+        self._D = data.shape[1] if isinstance(data, np.ndarray) and data.ndim != 1 else 1
 
-    @abc.abstractmethod
     def predict(self, x: np.ndarray) -> np.ndarray:
         """
         Makes a prediction given an input.
 
-        :param x: (N, D) numpy array sample to predict their output
-        :return (N,) numpy array holding the prediction of each input
+        :param x: (N, D) array of samples to predict their output
+        :return (N,) array holding the predictions
         """
-        d = distance_matrix(x.reshape(-1, 1), self.x.reshape(-1, 1))
-        radius = np.apply_along_axis(np.sort, 1, d)[:, self.k - 1]
-        volume = (np.pi ** (self.D / 2) * radius ** self.D) / gamma(self.D / 2 + 1)
-        return self.k / (volume * self.x.size)
+        d = distance_matrix(x.reshape(-1, 1), self._data.reshape(-1, 1))
+        radius = np.apply_along_axis(np.sort, 1, d)[:, self._k - 1]
+        volume = (np.pi ** (self._D / 2) * radius ** self._D) / gamma(self._D / 2 + 1)
+        return self._k / (volume * self._data.size)  # type: ignore

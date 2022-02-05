@@ -1,3 +1,6 @@
+# Types
+from typing import Tuple
+
 # Standard Library
 import abc
 
@@ -15,15 +18,15 @@ class Regression(metaclass=abc.ABCMeta):
         """
         Trains the model.
 
-        :param x: (N, D) numpy array holding the input training data
-        :param t: (N,) numpy array holding the target values
+        :param x: (N, D) array holding the input training data
+        :param t: (N,) array holding the target values
         """
 
     @abc.abstractmethod
-    def predict(self, x: np.ndarray) -> np.ndarray:
+    def predict(self, x: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
         """
         Makes a prediction given an input.
 
-        :param x: (N, D) numpy array sample to predict their output
-        :return (N,) numpy array holding the prediction of each input
+        :param x: (N, D) array of samples to predict their output
+        :return a tuple of (N,) arrays, one holding the predictions, and one the variance
         """
