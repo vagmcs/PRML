@@ -45,6 +45,11 @@ compile: pretty
 	@poetry check
 	@poetry run mypy .
 
+### jupyter: Start jupyter server
+.PHONY: jupyter
+jupyter:
+	@poetry run jupyter notebook -y --log-level=INFO
+
 ### clean:   Clean the dependency cache and remove generated files
 .PHONY: clean
 clean:
