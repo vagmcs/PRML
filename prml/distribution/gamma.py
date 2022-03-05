@@ -27,7 +27,7 @@ class Gamma(GenericDistribution):
         """
         self.a = a if isinstance(a, (int, float)) else None
         self.b = b if isinstance(b, (int, float)) else None
-        super().__init__((b ** a * symbols.x ** (a - 1) * sym.exp(-b * symbols.x)) / gamma(a))
+        super().__init__((b**a * symbols.x ** (a - 1) * sym.exp(-b * symbols.x)) / gamma(a))
 
     def ml(self, x: np.ndarray) -> None:
         """
@@ -58,7 +58,7 @@ class Gamma(GenericDistribution):
                     "which is currently not supported."
                 )
         else:
-            return (self.b ** self.a * x ** (self.a - 1) * np.exp(-self.b * x)) / gamma(self.a)
+            return (self.b**self.a * x ** (self.a - 1) * np.exp(-self.b * x)) / gamma(self.a)
 
     def draw(self, sample_size: int) -> np.ndarray:
         """

@@ -42,4 +42,4 @@ class LeastSquaresClassifier(Classifier):
         :param x: (N, D) array of samples to predict their output
         :return (N,) array holding the predicted classes
         """
-        return np.argmax(x @ self._w, axis=-1)
+        return np.argmax(x @ self._w, axis=-1)  # type: ignore

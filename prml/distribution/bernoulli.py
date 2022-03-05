@@ -24,7 +24,7 @@ class Bernoulli(GenericDistribution):
         :param mu: the probability of the binary random variable to be true
         """
         self.mu = mu if isinstance(mu, (int, float)) else None
-        super().__init__(mu ** symbols.x * (1 - mu) ** (1 - symbols.x))
+        super().__init__(mu**symbols.x * (1 - mu) ** (1 - symbols.x))
 
     def ml(self, x: np.ndarray) -> None:
         """
@@ -37,7 +37,7 @@ class Bernoulli(GenericDistribution):
         # distribution is the sample mean.
         self.mu = np.mean(x)
         # Update the formula to use the sample mean.
-        self._formula = self.mu ** symbols.x * (1 - self.mu) ** (1 - symbols.x)
+        self._formula = self.mu**symbols.x * (1 - self.mu) ** (1 - symbols.x)
 
     def pdf(self, x: Union[np.ndarray, bool, int]) -> Union[GenericDistribution, np.ndarray, float]:
         """
@@ -61,7 +61,7 @@ class Bernoulli(GenericDistribution):
                 )
 
         else:
-            return self.mu ** x * (1 - self.mu) ** (1 - x)
+            return self.mu**x * (1 - self.mu) ** (1 - x)
 
     def draw(self, sample_size: int) -> np.ndarray:
         """

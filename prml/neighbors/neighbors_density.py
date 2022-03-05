@@ -1,8 +1,5 @@
 # Types
-from typing import Optional, Union
-
-# Standard Library
-import abc
+from typing import Union
 
 # Dependencies
 import numpy as np
@@ -37,5 +34,5 @@ class NearestNeighborsDensity(Neighbors):
         """
         d = distance_matrix(x.reshape(-1, 1), self._data.reshape(-1, 1))
         radius = np.apply_along_axis(np.sort, 1, d)[:, self._k - 1]
-        volume = (np.pi ** (self._D / 2) * radius ** self._D) / gamma(self._D / 2 + 1)
+        volume = (np.pi ** (self._D / 2) * radius**self._D) / gamma(self._D / 2 + 1)
         return self._k / (volume * self._data.size)  # type: ignore

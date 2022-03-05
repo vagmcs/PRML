@@ -16,7 +16,7 @@ class FisherLinearDiscriminant(Classifier):
     Fisher's Linear discriminant classifier
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Creates a least squares classifier.
         """
@@ -46,9 +46,9 @@ class FisherLinearDiscriminant(Classifier):
 
         root = np.roots(
             [
-                g1.var - g0.var,
-                2 * (g0.var * g1.mu - g1.var * g0.mu),
-                g1.var * g0.mu ** 2 - g0.var * g1.mu ** 2 - g1.var * g0.var * np.log(g1.var / g0.var),
+                g1.var - g0.var,  # type: ignore
+                2 * (g0.var * g1.mu - g1.var * g0.mu),  # type: ignore
+                g1.var * g0.mu**2 - g0.var * g1.mu**2 - g1.var * g0.var * np.log(g1.var / g0.var),  # type: ignore
             ]
         )
 
@@ -62,4 +62,4 @@ class FisherLinearDiscriminant(Classifier):
         :param x: (N, D) array of samples to predict their output
         :return (N,) array holding the predicted classes
         """
-        return (x @ self._w > self._threshold).astype(np.int)
+        return (x @ self._w > self._threshold).astype(np.int)  # type: ignore

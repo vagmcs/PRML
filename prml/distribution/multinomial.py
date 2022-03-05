@@ -63,7 +63,7 @@ class Multinomial(GenericDistribution):
                 )
         else:
             multinomial_coefficient = factorial(self.n) / np.product(factorial(x))
-            return multinomial_coefficient * np.prod(self.mu ** x, axis=0)
+            return multinomial_coefficient * np.prod(self.mu**x, axis=0)
 
     def draw(self, sample_size: int) -> np.ndarray:
         """

@@ -70,7 +70,7 @@ class Categorical(GenericDistribution):
                     "if given, N distributions should be generated, which is currently not supported."
                 )
         else:
-            return np.prod(self.mu ** x, axis=1)
+            return np.prod(self.mu**x, axis=1)
 
     def draw(self, sample_size: int) -> np.ndarray:
         """

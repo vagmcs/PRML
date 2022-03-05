@@ -27,7 +27,7 @@ class Binomial(GenericDistribution):
         """
         self.n = n
         self.mu = mu if isinstance(mu, (int, float)) else None
-        super().__init__(sym.binomial(n, symbols.x) * mu ** symbols.x * (1 - mu) ** (n - symbols.x))
+        super().__init__(sym.binomial(n, symbols.x) * mu**symbols.x * (1 - mu) ** (n - symbols.x))
 
     def ml(self, x: np.ndarray) -> None:
         """
@@ -40,7 +40,7 @@ class Binomial(GenericDistribution):
         # distribution is the sample mean, the same as in the Bernoulli distribution.
         self.mu = np.mean(x)
         # Update the formula to use the sample mean.
-        self._formula = sym.binomial(self.n, symbols.x) * self.mu ** symbols.x * (1 - self.mu) ** (self.n - symbols.x)
+        self._formula = sym.binomial(self.n, symbols.x) * self.mu**symbols.x * (1 - self.mu) ** (self.n - symbols.x)
 
     def pdf(self, x: Union[np.ndarray, int]) -> Union[GenericDistribution, np.ndarray, float]:
         """
@@ -62,7 +62,7 @@ class Binomial(GenericDistribution):
                 )
         else:
             binomial_coefficient = factorial(self.n) / (factorial(x) * factorial(self.n - x))
-            return binomial_coefficient * (self.mu ** x) * (1 - self.mu) ** (self.n - x)
+            return binomial_coefficient * (self.mu**x) * (1 - self.mu) ** (self.n - x)
 
     def draw(self, sample_size: int) -> np.ndarray:
         """

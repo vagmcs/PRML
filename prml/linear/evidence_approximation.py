@@ -47,7 +47,7 @@ class EvidenceApproximation(BayesianRegression):
                 break
 
     def _log_posterior(self, x: np.ndarray, t: np.ndarray, w: np.ndarray) -> float:
-        log_prior = -0.5 * self._alpha * np.sum(w ** 2)
+        log_prior = -0.5 * self._alpha * np.sum(w**2)
         log_likelihood = -0.5 * self._beta * np.square(t - x @ w).sum()
         return log_likelihood + log_prior  # type: ignore
 
