@@ -51,8 +51,8 @@ compile: pretty
 jupyter:
 	@poetry run jupyter notebook -y --log-level=INFO
 
-.PHONY: book
-book:
+.PHONY: notes
+notes:
 	@cd notebooks; \
   	nbmerge \
   	ch1_introduction.ipynb \
@@ -65,7 +65,7 @@ book:
 	sed 's/section/section*/' \
 	prml.tex > prml_no_sections.tex; \
 	xelatex prml_no_sections.tex >/dev/null; \
-	rm -r prml.ipynb *.aux *.out *.log *.tex *.toc PRML_files; \
+	rm -r prml.ipynb *.aux *.out *.log *.tex PRML_files >/dev/null; \
 	mv prml_no_sections.pdf ../PRML.pdf
 
 ### clean:   Clean the dependency cache and remove generated files

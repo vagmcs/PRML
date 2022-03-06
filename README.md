@@ -11,6 +11,22 @@ The project contains notes and proofs as Jupyter notebooks, as well as, Python c
 
 This program comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under certain conditions; See the [GNU General Public License v3 for more details](http://www.gnu.org/licenses/gpl-3.0.en.html).
 
+
+## Instructions
+
+In order to run the notebooks locally type the following:
+
+```bash
+make install
+make jupyter
+```
+
+To generate a PDF document from the notebooks just type:
+
+```bash
+make notes
+```
+
 ## Notebooks
 
 * [1. Introduction](https://nbviewer.jupyter.org/github/vagmcs/PRML/blob/master/notebooks/ch1_introduction.ipynb)
