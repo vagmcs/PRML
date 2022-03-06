@@ -51,9 +51,25 @@ compile: pretty
 jupyter:
 	@poetry run jupyter notebook -y --log-level=INFO
 
+.PHONY: book
+book:
+	@cd notebooks; \
+  	nbmerge \
+  	ch1_introduction.ipynb \
+  	ch2_probability_distributions.ipynb \
+  	ch3_linear_models_for_regression.ipynb \
+	ch4_linear_models_for_classification.ipynb > PRML.ipynb; \
+	jupyter-nbconvert \
+	--log-level CRITICAL \
+	--to latex PRML.ipynb; \
+	sed 's/section/section*/' \
+	prml.tex > prml_no_sections.tex; \
+	xelatex prml_no_sections.tex >/dev/null; \
+	rm -r prml.ipynb *.aux *.out *.log *.tex *.toc PRML_files; \
+	mv prml_no_sections.pdf ../PRML.pdf
+
 ### clean:   Clean the dependency cache and remove generated files
 .PHONY: clean
 clean:
 	@poetry cache clear pypi --all -n
 	@if [ -d "dist" ]; then rm -Rf $(CURRENT_DIR)/dist; fi
-	@if [ -d ".generated" ]; then rm -Rf $(CURRENT_DIR)/.generated; fi

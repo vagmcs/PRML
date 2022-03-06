@@ -19,8 +19,6 @@ mpmath = "^1.2.1"
 matplotlib = "^3.5.1"
 jupyter = "^1.0.0"
 scikit-learn = "^1.0.2"
-nbconvert = "^6.4.0"
-pyppeteer = "^1.0.2"
 
 [tool.poetry.dev-dependencies]
 isort = "^5.10.1"
@@ -30,6 +28,9 @@ flake8 = "^4.0.1"
 pre-commit = "^2.16.0"
 commitizen = "^2.20.3"
 jupyter = "^1.0.0"
+nbconvert = "^6.4.0"
+nbmerge = "^0.0.4"
+pyppeteer = "^1.0.2"
 
 # enforce types for safety
 [tool.mypy]
