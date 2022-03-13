@@ -2,6 +2,7 @@
 from .bayesian_regression import BayesianRegression
 from .evidence_approximation import EvidenceApproximation
 from .fisher_linear_discriminant import FisherLinearDiscriminant
+from .generative_classifier import GenerativeClassifier
 from .least_square_classifier import LeastSquaresClassifier
 from .linear_regression import LinearRegression
 from .perceptron import Perceptron
@@ -15,4 +16,5 @@ __all__ = [
     "LeastSquaresClassifier",
     "FisherLinearDiscriminant",
     "Perceptron",
+    "GenerativeClassifier",
 ]
