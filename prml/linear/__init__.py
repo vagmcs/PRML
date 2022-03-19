@@ -7,6 +7,7 @@ from .least_square_classifier import LeastSquaresClassifier
 from .linear_regression import LinearRegression
 from .perceptron import Perceptron
 from .ridge_regression import RidgeRegression
+from .logistic_regression import LogisticRegression
 
 __all__ = [
     "LinearRegression",
@@ -17,4 +18,5 @@ __all__ = [
     "FisherLinearDiscriminant",
     "Perceptron",
     "GenerativeClassifier",
+    "LogisticRegression",
 ]
