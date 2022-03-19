@@ -1,7 +1,10 @@
+# Types
 from typing import Optional
 
+# Dependencies
 import numpy as np
 
+# Project
 from prml.linear.classifier import Classifier
 
 
