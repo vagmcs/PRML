@@ -6,6 +6,7 @@ from .generative_classifier import GenerativeClassifier
 from .least_square_classifier import LeastSquaresClassifier
 from .linear_regression import LinearRegression
 from .logistic_regression import LogisticRegression
+from .logistic_regression import SoftmaxRegression
 from .perceptron import Perceptron
 from .ridge_regression import RidgeRegression
 
@@ -19,4 +20,5 @@ __all__ = [
     "Perceptron",
     "GenerativeClassifier",
     "LogisticRegression",
+    "SoftmaxRegression",
 ]
