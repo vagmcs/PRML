@@ -59,7 +59,8 @@ notes:
   	ch1_introduction.ipynb \
   	ch2_probability_distributions.ipynb \
   	ch3_linear_models_for_regression.ipynb \
-	ch4_linear_models_for_classification.ipynb > PRML.ipynb; \
+	ch4_linear_models_for_classification.ipynb \
+	ch5_neural_networks.ipynb > PRML.ipynb; \
 	jupyter-nbconvert \
 	--log-level CRITICAL \
 	--to latex PRML.ipynb; \
