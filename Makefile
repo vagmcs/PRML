@@ -51,7 +51,7 @@ compile: pretty
 jupyter:
 	@poetry run jupyter notebook -y --log-level=INFO
 
-### notes: Create PDF from notebooks
+### notes:   Create PDF from notebooks
 .PHONY: notes
 notes:
 	@cd notebooks; \
