@@ -38,6 +38,7 @@ def load_old_faithful() -> np.ndarray:
     """
     return np.genfromtxt(datasets_dir / "old_faithful.csv", dtype=float, delimiter=",", skip_header=1)
 
+
 def load_planar_dataset(sample_size: int = 400) -> Tuple[np.ndarray, np.ndarray]:
     """
     Generates a binary class dataset having non-linear decision boundary.
@@ -52,7 +53,7 @@ def load_planar_dataset(sample_size: int = 400) -> Tuple[np.ndarray, np.ndarray]
     a = 4
 
     x = np.zeros((sample_size, 2))
-    y = np.zeros((sample_size, 1), dtype='uint8')
+    y = np.zeros((sample_size, 1), dtype="uint8")
 
     for j in range(2):
         ix = range(n * j, n * (j + 1))
