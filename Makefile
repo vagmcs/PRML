@@ -34,14 +34,14 @@ update: clean
 	@poetry update
 
 ### pretty:  Format sources and apply code style
-.PHONY: pretty
+.PHONY: format
 pretty:
 	@poetry run isort .
 	@poetry run black .
 
 ### compile: Apply code style and perform type checks
 .PHONY: compile
-compile: pretty
+compile: format
 	@poetry check
 	@poetry run flake8 --max-line-length 120 prml
 	@poetry run mypy .
