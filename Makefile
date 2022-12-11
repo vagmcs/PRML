@@ -35,7 +35,7 @@ update: clean
 
 ### pretty:  Format sources and apply code style
 .PHONY: format
-pretty:
+format:
 	@poetry run isort .
 	@poetry run black .
 
