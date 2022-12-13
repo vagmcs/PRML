@@ -42,11 +42,17 @@ class Module(metaclass=abc.ABCMeta):
 
 
 class LinearLayer(Module):
-    def __init__(self, in_features: int, out_features: int) -> None:
+    def __init__(self, in_features: int, out_features: int, random_initialization: bool = True) -> None:
         self._in_features = in_features
         self._out_features = out_features
-        self._weights = np.random.randn(out_features, in_features) * 0.01
-        self._bias = np.random.randn(out_features, 1) * 0.01
+        self._weights = (
+            np.random.randn(out_features, in_features) * 0.01
+            if random_initialization
+            else np.ones((out_features, in_features)) * 0.01
+        )
+        self._bias = (
+            np.random.randn(out_features, 1) * 0.01 if random_initialization else np.ones((out_features, 1)) * 0.01
+        )
         self._a: np.ndarray | None = None
         self._gradient = {}
 
