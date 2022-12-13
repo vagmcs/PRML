@@ -4,31 +4,24 @@ import abc
 # Dependencies
 import numpy as np
 
-# Project
-from .network import NeuralNetwork
-
 
 class Optimizer(metaclass=abc.ABCMeta):
-    def __init__(self, neural_net: NeuralNetwork):
+    def __init__(self):
         self.iter = 0
-        self._neural_net = neural_net
 
     @abc.abstractmethod
-    def update(self):
+    def _step(self, parameters: np.ndarray, gradient: np.ndarray) -> np.ndarray:
         pass
 
-    def step(self) -> None:
+    def update(self, parameters: np.ndarray, gradient: np.ndarray) -> np.ndarray:
         self.iter += 1
-        self.update()
+        return self._step(parameters, gradient)
 
 
 class GradientDescent(Optimizer):
-    def __init__(self, neural_net: NeuralNetwork, learning_rate: float = 0.1):
-        super().__init__(neural_net)
+    def __init__(self, learning_rate: float = 0.1):
+        super().__init__()
         self._learning_rate = learning_rate
 
-    def update(self):
-        for module in self._neural_net:
-            if module.gradient:
-                module.weights -= self._learning_rate * module.gradient["weights"]
-                module.bias -= self._learning_rate * module.gradient["bias"]
+    def _step(self, parameters: np.ndarray, gradient: np.ndarray):
+        return parameters - self._learning_rate * gradient

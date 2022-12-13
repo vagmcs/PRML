@@ -10,6 +10,7 @@ from .modules import Module
 # Find a small float to avoid division by zero
 _epsilon = np.finfo(float).eps
 
+
 class Loss(Module, metaclass=abc.ABCMeta):
     def derivative(self, _input: np.ndarray, _target: np.ndarray) -> np.ndarray:
         return self._backwards(_input, _target)

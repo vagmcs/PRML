@@ -20,7 +20,7 @@ class NeuralNetwork(Module):
 
     def __init__(self, *modules: Module) -> None:
         self._modules = list(modules)
-        self.optimizer = GradientDescent(self)
+        self.optimizer = GradientDescent()
 
     def __iter__(self) -> Iterator[Module]:
         return iter(self._modules)
@@ -66,7 +66,10 @@ class NeuralNetwork(Module):
             self._backwards(loss.derivative(y_hat, y))
 
             # Perform optimization step
-            self.optimizer.step()
+            for module in self._modules:
+                if module.gradient:
+                    module.weights = self.optimizer.update(module.weights, module.gradient["weights"])
+                    module.bias = self.optimizer.update(module.bias, module.gradient["bias"])
 
             # Print the cost every 1000 iterations
             if verbose and i % report_step == 0:
