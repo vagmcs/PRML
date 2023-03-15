@@ -25,4 +25,8 @@ class GradientDescent(Optimizer):
         self._weight_decay = weight_decay
 
     def _step(self, parameters: np.ndarray, gradient: np.ndarray):
-        return parameters - self._learning_rate * gradient if self._weight_decay == 0 else parameters - self._learning_rate * (gradient + self._weight_decay * parameters)
+        return (
+            parameters - self._learning_rate * gradient
+            if self._weight_decay == 0
+            else parameters - self._learning_rate * (gradient + self._weight_decay * parameters)
+        )

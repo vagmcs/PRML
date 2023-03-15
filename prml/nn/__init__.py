@@ -1,6 +1,6 @@
 # Project
 from .loss import CrossEntropyLoss, Loss, SSELoss
-from .modules import Linear, LinearLayer, Module, ReLU, Sigmoid, TanH
+from .modules import Dropout, Linear, LinearLayer, Module, ReLU, Sigmoid, TanH
 from .network import NeuralNetwork
 from .optimizer import GradientDescent, Optimizer
 
@@ -15,6 +15,6 @@ __all__ = [
     "ReLU",
     "Sigmoid",
     "TanH",
-    "Optimizer",
+    "Dropout" "Optimizer",
     "GradientDescent",
 ]

@@ -9,6 +9,9 @@ import numpy as np
 
 
 class Module(metaclass=abc.ABCMeta):
+    def __init__(self) -> None:
+        self._training_mode = False
+
     @property
     def weights(self) -> Optional[np.ndarray]:
         return None
@@ -30,7 +33,7 @@ class Module(metaclass=abc.ABCMeta):
         return {}
 
     @abc.abstractmethod
-    def _forward(self, *inputs: np.ndarray) -> np.ndarray:
+    def _forward(self, *inputs: np.ndarray, training_mode: bool = False) -> np.ndarray:
         pass
 
     @abc.abstractmethod
@@ -76,7 +79,7 @@ class LinearLayer(Module):
     def gradient(self) -> Dict[str, np.ndarray]:
         return self._gradient
 
-    def _forward(self, _input: np.ndarray) -> np.ndarray:
+    def _forward(self, _input: np.ndarray, training_mode: bool = False) -> np.ndarray:
         self._a = _input
         return self._weights @ self._a + self._bias
 
@@ -87,11 +90,26 @@ class LinearLayer(Module):
         return self._weights.T @ _input
 
 
+class Dropout(Module):
+    def __init__(self, p: float = 0.5):
+        if p < 0 or p > 1:
+            raise ValueError(f"Dropout probability has to be between 0 and 1, but got {p}.")
+        self._p = p
+        self._d = None
+
+    def _forward(self, _input: np.ndarray, training_mode: bool = False) -> np.ndarray:
+        self._d = (np.random.rand(_input.shape[0], _input.shape[1]) < self._p).astype(float)
+        return (self._d * _input) / self._p if training_mode else _input
+
+    def _backwards(self, _input: np.ndarray) -> np.ndarray:
+        return (self._d * _input) / self._p
+
+
 class Linear(Module):
     def __init__(self):
         self._z: np.ndarray | None = None
 
-    def _forward(self, _input: np.ndarray) -> np.ndarray:
+    def _forward(self, _input: np.ndarray, training_mode: bool = False) -> np.ndarray:
         self._z = _input
         return self._z
 
@@ -103,7 +121,7 @@ class ReLU(Module):
     def __init__(self):
         self._z: np.ndarray | None = None
 
-    def _forward(self, _input: np.ndarray) -> np.ndarray:
+    def _forward(self, _input: np.ndarray, training_mode: bool = False) -> np.ndarray:
         self._z = _input
         return np.maximum(0, self._z)
 
@@ -115,7 +133,7 @@ class TanH(Module):
     def __init__(self):
         self._z: np.ndarray | None = None
 
-    def _forward(self, _input: np.ndarray) -> np.ndarray:
+    def _forward(self, _input: np.ndarray, training_mode: bool = False) -> np.ndarray:
         self._z = _input
         return np.tanh(self._z)
 
@@ -127,7 +145,7 @@ class Sigmoid(Module):
     def __init__(self):
         self._z: np.ndarray | None = None
 
-    def _forward(self, _input: np.ndarray) -> np.ndarray:
+    def _forward(self, _input: np.ndarray, training_mode: bool = False) -> np.ndarray:
         self._z = _input
         return 1 / (1 + np.exp(-self._z))
 

@@ -20,7 +20,7 @@ class NeuralNetwork(Module):
 
     def __init__(self, *modules: Module) -> None:
         self._modules = list(modules)
-        self.optimizer = GradientDescent()
+        self._optimizer = GradientDescent()
 
     def __iter__(self) -> Iterator[Module]:
         return iter(self._modules)
@@ -30,9 +30,9 @@ class NeuralNetwork(Module):
             if module.weights is not None and module.bias is not None:
                 print(f"Weights: {module.weights.shape}, bias: {module.bias.shape}")
 
-    def _forward(self, _input: np.ndarray) -> np.ndarray:
+    def _forward(self, _input: np.ndarray, training_mode: bool = False) -> np.ndarray:
         for module in self:
-            _input = module(_input)
+            _input = module._forward(_input, training_mode)
         return _input
 
     def _backwards(self, _input: np.ndarray) -> np.ndarray:
@@ -50,14 +50,14 @@ class NeuralNetwork(Module):
         verbose: bool = True,
     ) -> None:
         if optimizer is not None:
-            self.optimizer = optimizer
+            self._optimizer = optimizer
 
         if loss is None:
             raise ValueError("Loss function is not defined.")
 
         report_step = iterations / 10
         for i in range(iterations):
-            y_hat = self(x)
+            y_hat = self._forward(x, True)
 
             # Compute the cost
             cost = loss(y_hat, y)
@@ -68,8 +68,8 @@ class NeuralNetwork(Module):
             # Perform optimization step
             for module in self._modules:
                 if module.gradient:
-                    module.weights = self.optimizer.update(module.weights, module.gradient["weights"])
-                    module.bias = self.optimizer.update(module.bias, module.gradient["bias"])
+                    module.weights = self._optimizer.update(module.weights, module.gradient["weights"])
+                    module.bias = self._optimizer.update(module.bias, module.gradient["bias"])
 
             # Print the cost every 1000 iterations
             if verbose and i % report_step == 0:
