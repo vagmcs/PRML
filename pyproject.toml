@@ -33,6 +33,10 @@ nbmerge = "^0.0.4"
 pyppeteer = "^1.0.2"
 
 # enforce types for safety
+
+[tool.poetry.group.dev.dependencies]
+pandas = "^1.5.3"
+
 [tool.mypy]
 python_version = 3.9
 exclude = '(.*\.pyi)|(dist)'
