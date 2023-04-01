@@ -40,3 +40,6 @@ make notes
 
 * [PRML Book](https://www.microsoft.com/en-us/research/publication/pattern-recognition-machine-learning)
 * [PRML Errata](https://www.microsoft.com/en-us/research/wp-content/uploads/2016/05/prml-errata-3rd-20110921.pdf)
+* [An overview of gradient descent optimization algorithms](https://www.ruder.io/optimizing-gradient-descent) by Sebastian Ruder
+* [An updated overview of recent gradient descent algorithms](https://johnchenresearch.github.io/demon) by John Chen
+* [3Blue1Brown YouTube Channel](https://www.youtube.com/@3blue1brown)
