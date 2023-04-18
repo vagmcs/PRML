@@ -48,4 +48,4 @@ class Perceptron(Classifier):
         :param x: (N, D) array of samples to predict their output
         :return (N,) array holding the predicted classes
         """
-        return np.sign(x @ self._w).astype(np.int)  # type: ignore
+        return np.sign(x @ self._w).astype(np.int32)  # type: ignore
