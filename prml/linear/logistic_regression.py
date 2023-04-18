@@ -18,7 +18,6 @@ class LogisticRegression(Classifier):
         return 1 / (1 + np.exp(-x))
 
     def fit_lms(self, x: np.ndarray, t: np.ndarray, eta: float, n_iter: int = 1000) -> None:
-
         x = x[:, None] if x.ndim == 1 else x
         n, d = x.shape
         indices = np.arange(n)

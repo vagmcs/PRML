@@ -43,7 +43,6 @@ format:
 .PHONY: compile
 compile: format
 	@poetry check
-	@poetry run flake8 --max-line-length 120 prml
 	@poetry run mypy .
 
 ### jupyter: Start jupyter server
@@ -60,12 +59,13 @@ notes:
   	ch2_probability_distributions.ipynb \
   	ch3_linear_models_for_regression.ipynb \
 	ch4_linear_models_for_classification.ipynb \
-	ch5_neural_networks.ipynb > PRML.ipynb; \
+	ch5_neural_networks.ipynb \
+	gradient_descent_algorithms.ipynb > PRML.ipynb; \
 	jupyter-nbconvert \
 	--log-level CRITICAL \
 	--to latex PRML.ipynb; \
 	sed 's/section/section*/' \
-	prml.tex > prml_no_sections.tex; \
+	PRML.tex > prml_no_sections.tex; \
 	xelatex prml_no_sections.tex >/dev/null; \
 	rm -r prml.ipynb *.aux *.out *.log *.tex PRML_files >/dev/null; \
 	mv prml_no_sections.pdf ../PRML.pdf

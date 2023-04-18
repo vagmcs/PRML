@@ -46,15 +46,18 @@ class Module(metaclass=abc.ABCMeta):
 
 class LinearLayer(Module):
     def __init__(self, in_features: int, out_features: int, random_initialization: bool = True) -> None:
+        super().__init__()
         self._in_features = in_features
         self._out_features = out_features
         self._weights = (
-            np.random.randn(out_features, in_features) * np.sqrt(1 / in_features) # Xavier initialization
+            np.random.randn(out_features, in_features) * np.sqrt(1 / in_features)  # Xavier initialization
             if random_initialization
             else np.ones((out_features, in_features)) * 0.01
         )
         self._bias = (
-            np.random.randn(out_features, 1) * np.sqrt(1 / in_features) if random_initialization else np.ones((out_features, 1)) * 0.01
+            np.random.randn(out_features, 1) * np.sqrt(1 / in_features)
+            if random_initialization
+            else np.ones((out_features, 1)) * 0.01
         )
         self._a: np.ndarray | None = None
         self._gradient = {}
