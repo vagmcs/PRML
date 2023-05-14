@@ -108,6 +108,79 @@ class Dropout(Module):
         return (self._d * _input) / self._p
 
 
+class BatchNorm(Module):
+    def __init__(self, momentum: float = 0.9, epsilon: float = 1e-5):
+        self._momentum = momentum
+        self._epsilon = epsilon
+        self._running_mean = None
+        self._running_var = None
+        self._cache = None
+        self._gamma = None
+        self._beta = None
+        self._gradient = {}
+
+    @property
+    def gamma(self) -> Optional[np.ndarray]:
+        return self._gamma
+
+    @gamma.setter
+    def gamma(self, gamma: np.ndarray) -> None:
+        self._gamma = gamma
+
+    @property
+    def beta(self) -> Optional[np.ndarray]:
+        return self._beta
+
+    @beta.setter
+    def beta(self, beta: np.ndarray) -> None:
+        self._beta = beta
+
+    @property
+    def gradient(self) -> Dict[str, np.ndarray]:
+        return self._gradient
+
+    def _forward(self, _inputs: np.ndarray, training_mode: bool = False) -> np.ndarray:
+        D, _ = _inputs.shape
+
+        self._gamma = np.ones((D, 1), dtype=_inputs.dtype) if self._gamma is None else self._gamma
+        self._beta = np.zeros((D, 1), dtype=_inputs.dtype) if self._beta is None else self._beta
+
+        running_mean = np.zeros((D, 1), dtype=_inputs.dtype) if self._running_mean is None else self._running_mean
+        running_var = np.zeros((D, 1), dtype=_inputs.dtype) if self._running_var is None else self._running_var
+
+        if training_mode:
+            sample_mean = _inputs.mean(axis=1, keepdims=True)
+            sample_var = _inputs.var(axis=1, keepdims=True)
+
+            self._running_mean = self._momentum * running_mean + (1 - self._momentum) * sample_mean
+            self._running_var = self._momentum * running_var + (1 - self._momentum) * sample_var
+
+            _centered_inputs = _inputs - sample_mean
+            _std = np.sqrt(sample_var + self._epsilon)
+            _inputs_norm = _centered_inputs / _std
+
+            self._cache = (_inputs_norm, _centered_inputs, _std, self._gamma)
+        else:
+            _inputs_norm = (_inputs - running_mean) / np.sqrt(running_var + self._epsilon)
+
+        return self._gamma * _inputs_norm + self._beta
+
+    def _backwards(self, _inputs: np.ndarray) -> np.ndarray:
+        N = _inputs.shape[1]
+        x_norm, x_centered, std, gamma = self._cache
+
+        self._gradient["gamma"] = (_inputs * x_norm).sum(axis=1, keepdims=True)
+        self._gradient["beta"] = _inputs.sum(axis=1, keepdims=True)
+
+        dx_norm = _inputs * gamma
+        dx_centered = dx_norm / std
+        dmean = -(dx_centered.sum(axis=1, keepdims=True) + 2 / N * x_centered.sum(axis=1, keepdims=True))
+        dstd = (dx_norm * x_centered * -(std ** (-2))).sum(axis=1, keepdims=True)
+        dvar = dstd / 2 / std
+
+        return dx_centered + (dmean + dvar * 2 * x_centered) / N
+
+
 class Linear(Module):
     def __init__(self):
         self._z: np.ndarray | None = None

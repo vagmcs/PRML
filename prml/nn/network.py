@@ -9,7 +9,7 @@ import numpy as np
 
 # Project
 from prml.nn.loss import Loss
-from prml.nn.modules import Module
+from prml.nn.modules import BatchNorm, LinearLayer, Module
 from prml.nn.optimizer import GradientDescent
 
 
@@ -68,8 +68,14 @@ class NeuralNetwork(Module):
             # Perform optimization step
             for module in self._modules:
                 if module.gradient:
-                    module.weights = self._optimizer.update(module.weights, module.gradient["weights"])
-                    module.bias = self._optimizer.update(module.bias, module.gradient["bias"])
+                    # linear layer
+                    if isinstance(module, LinearLayer):
+                        module.weights = self._optimizer.update(module.weights, module.gradient["weights"])
+                        module.bias = self._optimizer.update(module.bias, module.gradient["bias"])
+                    # batch normalization layer
+                    elif isinstance(module, BatchNorm):
+                        module.gamma = self._optimizer.update(module.gamma, module.gradient["gamma"])
+                        module.beta = self._optimizer.update(module.beta, module.gradient["beta"])
 
             # Print the cost every 1000 iterations
             if verbose and i % report_step == 0:
