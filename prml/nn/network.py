@@ -9,7 +9,7 @@ import numpy as np
 
 # Project
 from prml.nn.loss import Loss
-from prml.nn.modules import BatchNorm, LinearLayer, Module
+from prml.nn.modules import BatchNorm, ConvLayer, LinearLayer, Module
 from prml.nn.optimizer import GradientDescent
 
 
@@ -48,6 +48,7 @@ class NeuralNetwork(Module):
         loss: Loss | None = None,
         optimizer=None,
         verbose: bool = True,
+        report_steps: int = 10,
     ) -> None:
         if optimizer is not None:
             self._optimizer = optimizer
@@ -55,7 +56,7 @@ class NeuralNetwork(Module):
         if loss is None:
             raise ValueError("Loss function is not defined.")
 
-        report_step = iterations / 10
+        report_step = iterations / report_steps
         for i in range(iterations):
             y_hat = self._forward(x, True)
 
@@ -69,7 +70,7 @@ class NeuralNetwork(Module):
             for module in self._modules:
                 if module.gradient:
                     # linear layer
-                    if isinstance(module, LinearLayer):
+                    if isinstance(module, (LinearLayer, ConvLayer)):
                         module.weights = self._optimizer.update(module.weights, module.gradient["weights"])
                         module.bias = self._optimizer.update(module.bias, module.gradient["bias"])
                     # batch normalization layer

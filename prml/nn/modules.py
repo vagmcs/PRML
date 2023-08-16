@@ -181,50 +181,181 @@ class BatchNorm(Module):
         return dx_centered + (dmean + dvar * 2 * x_centered) / N
 
 
-class Linear(Module):
-    def __init__(self):
-        self._z: np.ndarray | None = None
+class ConvLayer(Module):
+    def __init__(
+        self, in_channels: int, out_channels: int, kernel_size: tuple[int, int], stride: int = 1, padding: int = 0
+    ) -> None:
+        self._in_channels = in_channels
+        self._out_channels = out_channels
+        self._kernel_size = kernel_size
+        self._stride = stride
+        self._padding = padding
+        self._weights = np.random.randn(kernel_size[0], kernel_size[1], in_channels, out_channels) * np.sqrt(
+            1 / in_channels
+        )  # Xavier initialization
+        self._bias = np.random.randn(1, 1, 1, out_channels) * np.sqrt(1 / in_channels)
+        self._a: np.ndarray | None = None
+        self._gradient = {}
+
+    @property
+    def weights(self) -> Optional[np.ndarray]:
+        return self._weights
+
+    @weights.setter
+    def weights(self, weights: np.ndarray) -> None:
+        self._weights = weights
+
+    @property
+    def bias(self) -> Optional[np.ndarray]:
+        return self._bias
+
+    @bias.setter
+    def bias(self, bias: np.ndarray) -> None:
+        self._bias = bias
+
+    @property
+    def gradient(self) -> Dict[str, np.ndarray]:
+        return self._gradient
+
+    def _forward(self, _inputs: np.ndarray, training_mode: bool = False) -> np.ndarray:
+        self._a = _inputs
+        (m, height, width, channels) = _inputs.shape
+
+        output_height = (height - self._kernel_size[0] + 2 * self._padding) // self._stride + 1
+        output_width = (width - self._kernel_size[1] + 2 * self._padding) // self._stride + 1
+        output = np.zeros((m, output_height, output_width, self._out_channels))
+
+        # apply padding
+        if self._padding > 0:
+            padded_image = np.zeros((m, height + self._padding * 2, width + self._padding * 2, channels))
+            padded_image[:, self._padding : -self._padding, self._padding : -self._padding, :] = _inputs
+        else:
+            padded_image = _inputs
+
+        for i in range(m):
+            for h in range(output_height):
+                for w in range(output_width):
+                    for c in range(self._out_channels):
+                        input_slice = padded_image[
+                            i,
+                            h * self._stride : h * self._stride + self._kernel_size[0],
+                            w * self._stride : w * self._stride + self._kernel_size[1],
+                            :,
+                        ]
+                        output[i, h, w, c] = np.sum(input_slice * self._weights[..., c] + self._bias[..., c])
+
+        return output
+
+    def _backwards(self, _input: np.ndarray) -> np.ndarray:
+        # dZ
+        (_, a_height, a_width, a_channels) = self._a.shape
+        (m, height, width, channels) = _input.shape
+
+        dA = np.zeros(self._a.shape)
+        dW = np.zeros(self._weights.shape)
+        db = np.zeros(self._bias.shape)
+
+        # apply padding
+        if self._padding > 0:
+            a_padded = np.zeros((m, a_height + self._padding * 2, a_width + self._padding * 2, a_channels))
+            a_padded[:, self._padding : -self._padding, self._padding : -self._padding, :] = self._a
+            dA_padded = np.zeros((m, a_height + self._padding * 2, a_width + self._padding * 2, a_channels))
+            dA_padded[:, self._padding : -self._padding, self._padding : -self._padding, :] = dA
+        else:
+            a_padded = self._a
+            dA_padded = dA
+
+        for i in range(m):
+            for h in range(height):
+                for w in range(width):
+                    for c in range(channels):
+                        a_slice = a_padded[
+                            i,
+                            h * self._stride : h * self._stride + self._kernel_size[0],
+                            w * self._stride : w * self._stride + self._kernel_size[1],
+                            :,
+                        ]
+
+                        dA_padded[
+                            i,
+                            h * self._stride : h * self._stride + self._kernel_size[0],
+                            w * self._stride : w * self._stride + self._kernel_size[1],
+                            :,
+                        ] += (
+                            self._weights[:, :, :, c] * _input[i, h, w, c]
+                        )
+
+                        dW[:, :, :, c] += a_slice * _input[i, h, w, c]
+                        db[:, :, :, c] += _input[i, h, w, c]
+
+            if self._padding > 0:
+                dA[i, :, :, :] = dA_padded[i, self._padding : -self._padding, self._padding : -self._padding, :]
+            else:
+                dA[i, :, :, :] = dA_padded[i, :, :, :]
+
+        self._gradient["weights"] = dW
+        self._gradient["bias"] = db
+
+        return dA
+
+
+class Flatten(Module):
+    def __init__(self) -> None:
+        self._original_shape = None
 
     def _forward(self, _input: np.ndarray, training_mode: bool = False) -> np.ndarray:
-        self._z = _input
-        return self._z
+        self._original_shape = _input.shape
+        return _input.reshape(_input.shape[0], -1).T
 
-    def _backwards(self, _input: np.ndarray):
-        return _input
-
-
-class ReLU(Module):
-    def __init__(self):
-        self._z: np.ndarray | None = None
-
-    def _forward(self, _input: np.ndarray, training_mode: bool = False) -> np.ndarray:
-        self._z = _input
-        return np.maximum(0, self._z)
-
-    def _backwards(self, _input: np.ndarray):
-        return _input * np.where(self._z > 0, 1, 0)
+    def _backwards(self, _input: np.ndarray) -> np.ndarray:
+        return _input.reshape(self._original_shape)
 
 
-class TanH(Module):
-    def __init__(self):
-        self._z: np.ndarray | None = None
+class MaxPooling(Module):
+    def __init__(self, pool_size: tuple[int, int], stride: int = 1) -> None:
+        self._pool_size: tuple[int, int] = pool_size
+        self._stride: int = stride
+        self._a: np.ndarray | None = None
 
     def _forward(self, _input: np.ndarray, training_mode: bool = False) -> np.ndarray:
-        self._z = _input
-        return np.tanh(self._z)
+        m, n_height, n_width, channels = _input.shape
+
+        # shape of output
+        output_height = (n_height - self._pool_size[0]) // self._stride + 1
+        output_width = (n_width - self._pool_size[1]) // self._stride + 1
+        output = np.zeros((m, output_height, output_width, channels))
+
+        for i in range(m):
+            for h in range(output_height):
+                for w in range(output_width):
+                    for channel in range(channels):
+                        output[i, h, w, channel] = np.max(
+                            _input[
+                                i,
+                                h * self._stride : h * self._stride + self._pool_size[0],
+                                w * self._stride : w * self._stride + self._pool_size[1],
+                                channel,
+                            ]
+                        )
+
+        self._a = output
+        return output
 
     def _backwards(self, _input: np.ndarray):
-        return _input * (1 - self._forward(self._z) ** 2)
+        m, n_height, n_width, channels = self._a.shape
 
+        dA = np.zeros(self._a.shape)
 
-class Sigmoid(Module):
-    def __init__(self):
-        self._z: np.ndarray | None = None
+        for i in range(m):
+            for h in range(n_height):
+                for w in range(n_width):
+                    for channel in range(channels):
+                        a_slice = self._a[i][h : h + self._pool_size[0], w : w + self._pool_size[1], channel]
+                        # find the index of the input slice (as an indicator matrix) that holds the maximum value
+                        mask = a_slice == np.max(a_slice)
+                        # mask the backward propagated loss using the same mask
+                        dA[i, h : h + self._pool_size[0], w : w + self._pool_size[1], channel] += (
+                            mask * _input[i, h, w, channel]
+                        )
 
-    def _forward(self, _input: np.ndarray, training_mode: bool = False) -> np.ndarray:
-        self._z = _input
-        return 1 / (1 + np.exp(-self._z))
-
-    def _backwards(self, _input: np.ndarray):
-        sigmoid = self._forward(self._z)
-        return _input * sigmoid * (1 - sigmoid)
+        return dA
