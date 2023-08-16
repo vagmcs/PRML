@@ -1,3 +1,6 @@
+# Types
+from typing import Optional
+
 # Dependencies
 import numpy as np
 
@@ -7,7 +10,7 @@ class OneHotEncoder(object):
     OneHotEncoder encodes arrays of classes into 1-of-K class vectors.
     """
 
-    def __init__(self, k: int = None) -> None:
+    def __init__(self, k: Optional[int] = None) -> None:
         """
         Creates an encoder given a number of classes. In case the number classes is not provided,
         they are automatically inferred during the encoding step from the given array.

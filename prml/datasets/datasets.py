@@ -1,8 +1,12 @@
 # Types
-from typing import Callable, Tuple
+from typing import Callable, Optional, Tuple
+
+# Standard Library
+import struct
 
 # Dependencies
 import numpy as np
+from sklearn.utils import resample
 
 # Project
 from prml import datasets_dir
@@ -66,3 +70,39 @@ def load_planar_dataset(sample_size: int = 400) -> Tuple[np.ndarray, np.ndarray]
     y = y.T
 
     return x, y
+
+
+def load_mnist_dataset(sample_size: Optional[int] = None) -> Tuple[np.ndarray, np.ndarray]:
+    """
+    Loads the MNIST dataset. MNIST contains images of handwritten digits from 0 to 9.
+
+    :param sample_size: samples the original dataset (the sample is stratified)
+    :return: a tuple of digit images, target labels
+    """
+
+    labels_path = datasets_dir / "mnist/t10k-labels-idx1-ubyte"
+    with open(labels_path, "rb") as file:
+        magic, size = struct.unpack(">II", file.read(8))
+        if magic != 2049:
+            raise ValueError(f"Magic number mismatch, expected 2049, got {magic}")
+        labels = np.fromfile(file, np.uint8)
+
+    images_path = datasets_dir / "mnist/t10k-images-idx3-ubyte"
+    with open(images_path, "rb") as file:
+        magic, size, rows, cols = struct.unpack(">IIII", file.read(16))
+        if magic != 2051:
+            raise ValueError(f"Magic number mismatch, expected 2051, got {magic}")
+        image_data = np.fromfile(file, np.uint8)
+
+    images = []
+    for i in range(size):
+        images.append([0] * rows * cols)
+    for i in range(size):
+        img = image_data[i * rows * cols : (i + 1) * rows * cols]
+        images[i] = img.reshape(28, 28)
+
+    return (
+        (np.array(images), labels)
+        if sample_size is None
+        else resample(np.array(images), labels, n_samples=sample_size, stratify=labels)
+    )
