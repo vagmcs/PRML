@@ -69,12 +69,10 @@ class NeuralNetwork(Module):
             # Perform optimization step
             for module in self._modules:
                 if module.gradient:
-                    # linear layer
-                    if isinstance(module, (LinearLayer, ConvLayer)):
+                    if "weights" in module.gradient and "bias" in module.gradient:
                         module.weights = self._optimizer.update(module.weights, module.gradient["weights"])
                         module.bias = self._optimizer.update(module.bias, module.gradient["bias"])
-                    # batch normalization layer
-                    elif isinstance(module, BatchNorm):
+                    elif "gamma" in module.gradient and "beta" in module.gradient:
                         module.gamma = self._optimizer.update(module.gamma, module.gradient["gamma"])
                         module.beta = self._optimizer.update(module.beta, module.gradient["beta"])
 

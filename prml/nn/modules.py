@@ -10,7 +10,7 @@ import numpy as np
 
 class Module(metaclass=abc.ABCMeta):
     def __init__(self) -> None:
-        self._training_mode = False
+        self._training_mode: bool = False
 
     @property
     def weights(self) -> Optional[np.ndarray]:
@@ -55,11 +55,11 @@ class LinearLayer(Module):
             else np.ones((out_features, in_features)) * 0.01
         )
         self._bias = (
-            np.random.randn(out_features, 1) * np.sqrt(1 / in_features)
+            np.random.randn(out_features) * np.sqrt(1 / in_features)
             if random_initialization
-            else np.ones((out_features, 1)) * 0.01
+            else np.ones((out_features)) * 0.01
         )
-        self._a: np.ndarray | None = None
+        self._a: Optional[np.ndarray] = None
         self._gradient = {}
 
     @property
@@ -83,14 +83,31 @@ class LinearLayer(Module):
         return self._gradient
 
     def _forward(self, _input: np.ndarray, training_mode: bool = False) -> np.ndarray:
+        """
+        Forward pass of the linear layer
+
+        y = a @ W.T + b
+
+        :param _input: (N, D) array of training examples
+        :param training_mode: enables training mode, defaults to False
+        :return: (N, O) array of the linear transformation
+        """
         self._a = _input
-        return self._weights @ self._a + self._bias
+        return self._a @ self._weights.T + self._bias
 
     def _backwards(self, _input: np.ndarray) -> np.ndarray:
-        m = _input.shape[1]
-        self._gradient["weights"] = (1 / m) * _input @ self._a.T
-        self._gradient["bias"] = (1 / m) * np.sum(_input, axis=1, keepdims=True)
-        return self._weights.T @ _input
+        """
+        Backward pass of the linear layer
+
+        dE/dw =  1/m (δ^l @ a)
+
+        :param _input:
+        :return:
+        """
+        m, _ = _input.shape
+        self._gradient["weights"] = (1 / m) * _input.T @ self._a
+        self._gradient["bias"] = (1 / m) * np.sum(_input, axis=0, keepdims=True)
+        return _input @ self._weights
 
 
 class Dropout(Module):
@@ -101,7 +118,7 @@ class Dropout(Module):
         self._d = None
 
     def _forward(self, _input: np.ndarray, training_mode: bool = False) -> np.ndarray:
-        self._d = (np.random.rand(_input.shape[0], _input.shape[1]) < self._p).astype(float)
+        self._d = (np.random.rand(*_input.shape) < self._p).astype(float)
         return (self._d * _input) / self._p if training_mode else _input
 
     def _backwards(self, _input: np.ndarray) -> np.ndarray:
@@ -140,17 +157,17 @@ class BatchNorm(Module):
         return self._gradient
 
     def _forward(self, _inputs: np.ndarray, training_mode: bool = False) -> np.ndarray:
-        D, _ = _inputs.shape
+        _, D = _inputs.shape
 
-        self._gamma = np.ones((D, 1), dtype=_inputs.dtype) if self._gamma is None else self._gamma
-        self._beta = np.zeros((D, 1), dtype=_inputs.dtype) if self._beta is None else self._beta
+        self._gamma = np.ones((1, D), dtype=_inputs.dtype) if self._gamma is None else self._gamma
+        self._beta = np.zeros((1, D), dtype=_inputs.dtype) if self._beta is None else self._beta
 
-        running_mean = np.zeros((D, 1), dtype=_inputs.dtype) if self._running_mean is None else self._running_mean
-        running_var = np.zeros((D, 1), dtype=_inputs.dtype) if self._running_var is None else self._running_var
+        running_mean = np.zeros((1, D), dtype=_inputs.dtype) if self._running_mean is None else self._running_mean
+        running_var = np.zeros((1, D), dtype=_inputs.dtype) if self._running_var is None else self._running_var
 
         if training_mode:
-            sample_mean = _inputs.mean(axis=1, keepdims=True)
-            sample_var = _inputs.var(axis=1, keepdims=True)
+            sample_mean = _inputs.mean(axis=0, keepdims=True)
+            sample_var = _inputs.var(axis=0, keepdims=True)
 
             self._running_mean = self._momentum * running_mean + (1 - self._momentum) * sample_mean
             self._running_var = self._momentum * running_var + (1 - self._momentum) * sample_var
@@ -166,19 +183,45 @@ class BatchNorm(Module):
         return self._gamma * _inputs_norm + self._beta
 
     def _backwards(self, _inputs: np.ndarray) -> np.ndarray:
-        N = _inputs.shape[1]
+        N, _ = _inputs.shape
         x_norm, x_centered, std, gamma = self._cache
 
-        self._gradient["gamma"] = (_inputs * x_norm).sum(axis=1, keepdims=True)
-        self._gradient["beta"] = _inputs.sum(axis=1, keepdims=True)
+        self._gradient["gamma"] = (_inputs * x_norm).sum(axis=0, keepdims=True)
+        self._gradient["beta"] = _inputs.sum(axis=0, keepdims=True)
 
         dx_norm = _inputs * gamma
         dx_centered = dx_norm / std
-        dmean = -(dx_centered.sum(axis=1, keepdims=True) + 2 / N * x_centered.sum(axis=1, keepdims=True))
-        dstd = (dx_norm * x_centered * -(std ** (-2))).sum(axis=1, keepdims=True)
+        dmean = -(dx_centered.sum(axis=0, keepdims=True) + 2 / N * x_centered.sum(axis=1, keepdims=True))
+        dstd = (dx_norm * x_centered * -(std ** (-2))).sum(axis=0, keepdims=True)
         dvar = dstd / 2 / std
 
         return dx_centered + (dmean + dvar * 2 * x_centered) / N
+
+
+class Flatten(Module):
+    def __init__(self) -> None:
+        self._original_shape = None
+
+    def _forward(self, _input: np.ndarray, training_mode: bool = False) -> np.ndarray:
+        """
+        Flattens all dimensions of the input array except the first one that represents the
+        number of training examples or mini-batch size.
+
+        :param _input: (N, ...) input array
+        :param training_mode: enables training mode, defaults to False
+        :return: a flattened array
+        """
+        self._original_shape = _input.shape
+        return _input.reshape(_input.shape[0], -1)
+
+    def _backwards(self, _input: np.ndarray) -> np.ndarray:
+        """
+        Reverses the flattening operation
+
+        :param _input: the input from the previous layer
+        :return: the (N, ...) unflattened array
+        """
+        return _input.reshape(self._original_shape)
 
 
 class ConvLayer(Module):
@@ -194,7 +237,7 @@ class ConvLayer(Module):
             1 / in_channels
         )  # Xavier initialization
         self._bias = np.random.randn(1, 1, 1, out_channels) * np.sqrt(1 / in_channels)
-        self._a: np.ndarray | None = None
+        self._a: Optional[np.ndarray] = None
         self._gradient = {}
 
     @property
@@ -299,25 +342,14 @@ class ConvLayer(Module):
         return dA
 
 
-class Flatten(Module):
-    def __init__(self) -> None:
-        self._original_shape = None
-
-    def _forward(self, _input: np.ndarray, training_mode: bool = False) -> np.ndarray:
-        self._original_shape = _input.shape
-        return _input.reshape(_input.shape[0], -1).T
-
-    def _backwards(self, _input: np.ndarray) -> np.ndarray:
-        return _input.reshape(self._original_shape)
-
-
 class MaxPooling(Module):
     def __init__(self, pool_size: tuple[int, int], stride: int = 1) -> None:
         self._pool_size: tuple[int, int] = pool_size
         self._stride: int = stride
-        self._a: np.ndarray | None = None
+        self._a: Optional[np.ndarray] = None
 
     def _forward(self, _input: np.ndarray, training_mode: bool = False) -> np.ndarray:
+        self._a = _input
         m, n_height, n_width, channels = _input.shape
 
         # shape of output
@@ -338,19 +370,17 @@ class MaxPooling(Module):
                             ]
                         )
 
-        self._a = output
         return output
 
     def _backwards(self, _input: np.ndarray):
-        m, n_height, n_width, channels = self._a.shape
-
+        m, n_height, n_width, channels = _input.shape
         dA = np.zeros(self._a.shape)
 
         for i in range(m):
             for h in range(n_height):
                 for w in range(n_width):
                     for channel in range(channels):
-                        a_slice = self._a[i][h : h + self._pool_size[0], w : w + self._pool_size[1], channel]
+                        a_slice = self._a[i, h : h + self._pool_size[0], w : w + self._pool_size[1], channel]
                         # find the index of the input slice (as an indicator matrix) that holds the maximum value
                         mask = a_slice == np.max(a_slice)
                         # mask the backward propagated loss using the same mask

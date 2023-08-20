@@ -66,9 +66,6 @@ def load_planar_dataset(sample_size: int = 400) -> Tuple[np.ndarray, np.ndarray]
         x[ix] = np.c_[r * np.sin(t), r * np.cos(t)]
         y[ix] = j
 
-    x = x.T
-    y = y.T
-
     return x, y
 
 

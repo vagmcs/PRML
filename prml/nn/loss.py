@@ -12,7 +12,7 @@ _epsilon = np.finfo(float).eps
 
 
 def clip(x: np.ndarray) -> np.ndarray:
-    return x.clip(_epsilon)
+    return x.clip(min=_epsilon)
 
 
 class Loss(Module, metaclass=abc.ABCMeta):
@@ -100,10 +100,10 @@ class CrossEntropyLoss(Loss):
         """
         Computes the derivative of the loss over the predicted values.
 
-        dE/dy = - t / y
+        dE/dy = -t / y
 
         :param _input: (N, K) array of predicted values
         :param _target: (N, K) array of target classes
         :return: the derivative of the loss
-        """
-        return -np.sum(_target / clip(_input))
+        """        
+        return -_target / clip(_input)
