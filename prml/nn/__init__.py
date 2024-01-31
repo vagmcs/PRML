@@ -1,7 +1,7 @@
 # Project
-from .activations import Linear, ReLU, Sigmoid, Softmax, TanH
-from .loss import BinaryCrossEntropyLoss, CrossEntropyLoss, Loss, SSELoss
-from .modules import BatchNorm, ConvLayer, Dropout, Flatten, LinearLayer, MaxPooling, Module
+from .activations import Exp, Linear, ReLU, Sigmoid, Softmax, TanH
+from .loss import BinaryCrossEntropyLoss, CrossEntropyLoss, GaussianNLLLoss, Loss, SSELoss
+from .modules import BatchNorm, Concat, ConvLayer, Dropout, Flatten, LinearLayer, MaxPooling, Module
 from .network import NeuralNetwork
 from .optimizer import GradientDescent, Optimizer
 
@@ -12,6 +12,7 @@ __all__ = [
     "SSELoss",
     "BinaryCrossEntropyLoss",
     "CrossEntropyLoss",
+    "GaussianNLLLoss",
     "LinearLayer",
     "Linear",
     "ReLU",
@@ -25,4 +26,6 @@ __all__ = [
     "ConvLayer",
     "Flatten",
     "Softmax",
+    "Concat",
+    "Exp",
 ]

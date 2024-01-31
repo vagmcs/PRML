@@ -1,11 +1,15 @@
+# Futures
+from __future__ import annotations
+
 # Types
-from typing import Dict, Optional
+from typing import Dict, Iterable, Optional
 
 # Standard Library
 import abc
 
 # Dependencies
 import numpy as np
+from scipy.stats import truncnorm
 
 
 class Module(metaclass=abc.ABCMeta):
@@ -112,6 +116,7 @@ class LinearLayer(Module):
 
 class Dropout(Module):
     def __init__(self, p: float = 0.5):
+        super().__init__()
         if p < 0 or p > 1:
             raise ValueError(f"Dropout probability has to be between 0 and 1, but got {p}.")
         self._p = p
@@ -127,6 +132,7 @@ class Dropout(Module):
 
 class BatchNorm(Module):
     def __init__(self, momentum: float = 0.9, epsilon: float = 1e-5):
+        super().__init__()
         self._momentum = momentum
         self._epsilon = epsilon
         self._running_mean = None
@@ -200,6 +206,7 @@ class BatchNorm(Module):
 
 class Flatten(Module):
     def __init__(self) -> None:
+        super().__init__()
         self._original_shape = None
 
     def _forward(self, _input: np.ndarray, training_mode: bool = False) -> np.ndarray:
@@ -219,15 +226,39 @@ class Flatten(Module):
         Reverses the flattening operation
 
         :param _input: the input from the previous layer
-        :return: the (N, ...) unflattened array
+        :return: the (N, ...) un-flattened array
         """
         return _input.reshape(self._original_shape)
 
 
+class Concat(Module):
+    def __init__(self, module_groups: Iterable[Iterable[Module]]) -> None:
+        super().__init__()
+        self._module_groups = module_groups
+
+    def _forward(self, _input: np.ndarray, training_mode: bool = False) -> np.ndarray:
+        component_outputs = []
+        for module_group in self._module_groups:
+            __input = _input
+            for module in module_group:
+                __input = module._forward(__input, training_mode)
+            component_outputs.append(__input)
+        return np.concatenate(component_outputs, axis=1)
+
+    def _backwards(self, _input: np.ndarray) -> np.ndarray:
+        component_outputs = []
+        inputs = np.array_split(_input, len(self._module_groups), axis=1)
+        for module_group, __input in zip(self._module_groups, inputs):
+            for module in reversed(module_group):
+                __input = module._backwards(__input)
+            component_outputs.append(__input)
+        return np.sum(component_outputs, axis=0)
+
+
 class ConvLayer(Module):
-    def __init__(
-        self, in_channels: int, out_channels: int, kernel_size: tuple[int, int], stride: int = 1, padding: int = 0
-    ) -> None:
+    def __init__(self, in_channels: int, out_channels: int, kernel_size: tuple[int, int], stride: int = 1,
+                 padding: int = 0) -> None:
+        super().__init__()
         self._in_channels = in_channels
         self._out_channels = out_channels
         self._kernel_size = kernel_size
@@ -344,6 +375,7 @@ class ConvLayer(Module):
 
 class MaxPooling(Module):
     def __init__(self, pool_size: tuple[int, int], stride: int = 1) -> None:
+        super().__init__()
         self._pool_size: tuple[int, int] = pool_size
         self._stride: int = stride
         self._a: Optional[np.ndarray] = None

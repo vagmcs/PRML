@@ -105,5 +105,61 @@ class CrossEntropyLoss(Loss):
         :param _input: (N, K) array of predicted values
         :param _target: (N, K) array of target classes
         :return: the derivative of the loss
-        """        
+        """
         return -_target / clip(_input)
+
+
+class GaussianNLLLoss(Loss):
+    def __init__(self, n_components: int) -> None:
+        self._n_components = n_components
+        
+    def _gaussian(self, x, mu, variance) -> np.ndarray:
+        return np.exp(-0.5 * ((x - mu) ** 2 / variance)) / np.sqrt(2 * np.pi * variance)
+
+    def _forward(self, _input: np.ndarray, _target: np.ndarray) -> np.ndarray:
+        """
+        Computes the negative log-likelihood error of the Gaussian mixture.
+
+        E = -Σ ln(Σ pi N(t|mu,sigma))
+
+        :param _input: (N, (L + 2)K) array of concatenated parameters for the Gaussian mixture
+        :param _target: (N, L) array of target values
+        :return: the negative log-likelihood of the mixture
+        """
+        component_parameters = np.array_split(_input, self._n_components, axis=1)
+        pi, mu, var = component_parameters[0], component_parameters[1], component_parameters[2]
+        gaussian_pdf = self._gaussian(_target, mu, var)
+
+        # log-sum-exp
+        return -np.log(np.exp(np.log(pi) + np.log(gaussian_pdf)).sum(axis=1)).sum()
+
+    def _backwards(self, _input: np.ndarray, _target: np.ndarray) -> np.ndarray:
+        """
+        Computes the derivative of the loss with respect to the mixing coefficients, the component means
+        and the component variances. Then returns the derivatives as a concatanted gradient vector.
+
+        dE/dpi = pi - gamma
+
+        dE/dmu = gamma ((mu - t) / sigma^2)
+
+        dE/dsigma = gamma (D / sigma - (t - mu)^2 / sigma^3)
+
+        :param _input:  (N, (L + 2)K) array of concatenated parameters for the Gaussian mixture
+        :param _target: (N, L) array of target values
+        :return: the derivative of the loss
+        """
+
+        component_parameters = np.array_split(_input, self._n_components, axis=1)
+        pi, mu, var = component_parameters[0], component_parameters[1], component_parameters[2]
+
+        probs = pi * self._gaussian(_target, mu, var)
+        probs = probs - np.max(probs, axis=1, keepdims=True)
+        exps = np.exp(probs)
+        gamma = exps / np.sum(exps, axis=1, keepdims=True)
+
+        dpi = pi - gamma
+        dmu = gamma * (mu - _target) / var
+        sigma = np.sqrt(var)
+        dsigma = gamma * ((1 / sigma) - (_target - mu) ** 2 / sigma ** 3)
+
+        return np.concatenate([dpi, dmu, dsigma], axis=1)

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "PRML"
-version = "0.3.0-alpha.0"
+version = "0.3.0a0"
 license = "GPL-3.0-only"
 description = "PRML notes and algorithms implemented in Python."
 authors = ["Evangelos Michelioudakis <vagmcs@gmail.com>"]
@@ -34,7 +34,7 @@ pyppeteer = "^1.0.2"
 
 # enforce types for safety
 [tool.mypy]
-python_version = 3.9
+python_version = "3.9"
 exclude = '(.*\.pyi)|(dist)'
 
 pretty = true

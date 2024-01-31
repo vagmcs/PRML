@@ -9,7 +9,7 @@ import numpy as np
 
 # Project
 from prml.nn.loss import Loss
-from prml.nn.modules import BatchNorm, ConvLayer, LinearLayer, Module
+from prml.nn.modules import Module
 from prml.nn.optimizer import GradientDescent
 
 
@@ -19,6 +19,7 @@ class NeuralNetwork(Module):
     """
 
     def __init__(self, *modules: Module) -> None:
+        super().__init__()
         self._modules = list(modules)
         self._optimizer = GradientDescent()
 
