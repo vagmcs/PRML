@@ -1,5 +1,7 @@
-# Dependencies
+# Types
 from typing import Optional
+
+# Dependencies
 import numpy as np
 
 # Project
@@ -15,6 +17,7 @@ def clip(x: np.ndarray) -> np.ndarray:
 
 class Linear(Module):
     def __init__(self):
+        super().__init__()
         self._z: Optional[np.ndarray] = None
 
     def _forward(self, _input: np.ndarray, training_mode: bool = False) -> np.ndarray:
@@ -25,8 +28,22 @@ class Linear(Module):
         return _input
 
 
+class Exp(Module):
+    def __init__(self):
+        super().__init__()
+        self._z: Optional[np.ndarray] = None
+
+    def _forward(self, _input: np.ndarray, training_mode: bool = False) -> np.ndarray:
+        self._z = _input
+        return np.exp(self._z)
+
+    def _backwards(self, _input: np.ndarray):
+        return _input
+
+
 class ReLU(Module):
     def __init__(self):
+        super().__init__()
         self._z: Optional[np.ndarray] = None
 
     def _forward(self, _input: np.ndarray, training_mode: bool = False) -> np.ndarray:
@@ -39,6 +56,7 @@ class ReLU(Module):
 
 class TanH(Module):
     def __init__(self):
+        super().__init__()
         self._z: Optional[np.ndarray] = None
 
     def _forward(self, _input: np.ndarray, training_mode: bool = False) -> np.ndarray:
@@ -51,6 +69,7 @@ class TanH(Module):
 
 class Sigmoid(Module):
     def __init__(self):
+        super().__init__()
         self._z: Optional[np.ndarray] = None
 
     def _forward(self, _input: np.ndarray, training_mode: bool = False) -> np.ndarray:
@@ -64,6 +83,7 @@ class Sigmoid(Module):
 
 class Softmax(Module):
     def __init__(self) -> None:
+        super().__init__()
         self._z: Optional[np.ndarray] = None
 
     def _forward(self, _input: np.ndarray, training_mode: bool = False) -> np.ndarray:
