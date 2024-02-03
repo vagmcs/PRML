@@ -33,7 +33,7 @@ install: clean
 update: clean
 	@poetry update
 
-### pretty:  Format sources and apply code style
+### format:  Format sources and apply code style
 .PHONY: format
 format:
 	@poetry run isort .
