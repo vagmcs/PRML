@@ -1,9 +1,9 @@
 # Project
-from .activations import Exp, Linear, ReLU, Sigmoid, Softmax, TanH
+from .activations import Concat, Exp, Linear, ReLU, Sigmoid, Softmax, TanH
 from .loss import BinaryCrossEntropyLoss, CrossEntropyLoss, GaussianNLLLoss, Loss, SSELoss
-from .modules import BatchNorm, Concat, ConvLayer, Dropout, Flatten, LinearLayer, MaxPooling, Module
+from .modules import BatchNorm, ConvLayer, Dropout, Flatten, LinearLayer, MaxPooling, Module, Stack
 from .network import NeuralNetwork
-from .optimizer import GradientDescent, Optimizer
+from .optimizer import AdamW, GradientDescent, Optimizer
 
 __all__ = [
     "Module",
@@ -28,4 +28,6 @@ __all__ = [
     "Softmax",
     "Concat",
     "Exp",
+    "Stack",
+    "AdamW",
 ]

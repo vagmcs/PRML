@@ -2,14 +2,13 @@
 from __future__ import annotations
 
 # Types
-from typing import Dict, Iterable, Optional
+from typing import Dict, List, Optional
 
 # Standard Library
 import abc
 
 # Dependencies
 import numpy as np
-from scipy.stats import truncnorm
 
 
 class Module(metaclass=abc.ABCMeta):
@@ -37,7 +36,9 @@ class Module(metaclass=abc.ABCMeta):
         return {}
 
     @abc.abstractmethod
-    def _forward(self, *inputs: np.ndarray, training_mode: bool = False) -> np.ndarray:
+    def _forward(
+        self, *inputs: np.ndarray, training_mode: bool = False, pertrubed_parameters: Dict[str, np.array] = dict()
+    ) -> np.ndarray:
         pass
 
     @abc.abstractmethod
@@ -86,7 +87,9 @@ class LinearLayer(Module):
     def gradient(self) -> Dict[str, np.ndarray]:
         return self._gradient
 
-    def _forward(self, _input: np.ndarray, training_mode: bool = False) -> np.ndarray:
+    def _forward(
+        self, _input: np.ndarray, training_mode: bool = False, pertrubed_parameters: Dict[str, np.array] = dict()
+    ) -> np.ndarray:
         """
         Forward pass of the linear layer
 
@@ -97,6 +100,12 @@ class LinearLayer(Module):
         :return: (N, O) array of the linear transformation
         """
         self._a = _input
+
+        if "weights" in pertrubed_parameters:
+            return self._a @ pertrubed_parameters["weights"].T + self._bias
+        elif "bias" in pertrubed_parameters:
+            return self._a @ self._weights.T + pertrubed_parameters["bias"]
+
         return self._a @ self._weights.T + self._bias
 
     def _backwards(self, _input: np.ndarray) -> np.ndarray:
@@ -231,8 +240,8 @@ class Flatten(Module):
         return _input.reshape(self._original_shape)
 
 
-class Concat(Module):
-    def __init__(self, module_groups: Iterable[Iterable[Module]]) -> None:
+class Stack(Module):
+    def __init__(self, module_groups: List[List[Module]]) -> None:
         super().__init__()
         self._module_groups = module_groups
 
@@ -256,8 +265,9 @@ class Concat(Module):
 
 
 class ConvLayer(Module):
-    def __init__(self, in_channels: int, out_channels: int, kernel_size: tuple[int, int], stride: int = 1,
-                 padding: int = 0) -> None:
+    def __init__(
+        self, in_channels: int, out_channels: int, kernel_size: tuple[int, int], stride: int = 1, padding: int = 0
+    ) -> None:
         super().__init__()
         self._in_channels = in_channels
         self._out_channels = out_channels
@@ -291,7 +301,9 @@ class ConvLayer(Module):
     def gradient(self) -> Dict[str, np.ndarray]:
         return self._gradient
 
-    def _forward(self, _inputs: np.ndarray, training_mode: bool = False) -> np.ndarray:
+    def _forward(
+        self, _inputs: np.ndarray, training_mode: bool = False, pertrubed_parameters: Dict[str, np.array] = dict()
+    ) -> np.ndarray:
         self._a = _inputs
         (m, height, width, channels) = _inputs.shape
 
@@ -316,7 +328,17 @@ class ConvLayer(Module):
                             w * self._stride : w * self._stride + self._kernel_size[1],
                             :,
                         ]
-                        output[i, h, w, c] = np.sum(input_slice * self._weights[..., c] + self._bias[..., c])
+
+                        if "weights" in pertrubed_parameters:
+                            output[i, h, w, c] = np.sum(
+                                input_slice * pertrubed_parameters["weights"][..., c] + self._bias[..., c]
+                            )
+                        elif "bias" in pertrubed_parameters:
+                            output[i, h, w, c] = np.sum(
+                                input_slice * self._weights[..., c] + pertrubed_parameters["bias"]
+                            )
+                        else:
+                            output[i, h, w, c] = np.sum(input_slice * self._weights[..., c] + self._bias[..., c])
 
         return output
 
