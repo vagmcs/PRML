@@ -35,6 +35,7 @@ make notes
 * [4. Linear Models for Classification](https://nbviewer.jupyter.org/github/vagmcs/PRML/blob/master/notebooks/ch4_linear_models_for_classification.ipynb)
 * [5. Neural Networks](https://nbviewer.jupyter.org/github/vagmcs/PRML/blob/master/notebooks/ch5_neural_networks.ipynb)
 * [Gradient Descent Algorithms](https://nbviewer.jupyter.org/github/vagmcs/PRML/blob/master/notebooks/gradient_descent_algorithms.ipynb)
+* [6. Kernel Methods](https://nbviewer.jupyter.org/github/vagmcs/PRML/blob/master/notebooks/ch6_kernel_methods.ipynb)
 
 ## Resources
 
