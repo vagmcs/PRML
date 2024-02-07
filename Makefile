@@ -23,34 +23,34 @@ help:
 	@sed -n 's/^###//p' < $(CURRENT_DIR)/Makefile | sort
 	@echo "==============================================================="
 
-### install: Install dependencies
+### install:  Install dependencies
 .PHONY: install
 install: clean
 	@poetry install
 
-### update:  Update dependencies
+### update:   Update dependencies
 .PHONY: update
 update: clean
 	@poetry update
 
-### format:  Format sources and apply code style
+### format:   Format sources and apply code style
 .PHONY: format
 format:
 	@poetry run isort .
 	@poetry run black .
 
-### compile: Apply code style and perform type checks
+### compile:  Apply code style and perform type checks
 .PHONY: compile
 compile: format
 	@poetry check
 	@poetry run mypy .
 
-### jupyter: Start jupyter server
+### jupyter:  Start jupyter server
 .PHONY: jupyter
 jupyter:
 	@poetry run jupyter notebook -y --log-level=INFO
 
-### notes:   Create PDF from notebooks
+### notes:    Create PDF from notebooks
 .PHONY: notes
 notes:
 	@cd notebooks; \
@@ -60,7 +60,8 @@ notes:
   	ch3_linear_models_for_regression.ipynb \
 	ch4_linear_models_for_classification.ipynb \
 	ch5_neural_networks.ipynb \
-	gradient_descent_algorithms.ipynb > PRML.ipynb; \
+	gradient_descent_algorithms.ipynb \
+	ch6_kernel_methods.ipynb > PRML.ipynb; \
 	jupyter-nbconvert \
 	--log-level CRITICAL \
 	--to latex PRML.ipynb; \
@@ -70,7 +71,22 @@ notes:
 	rm -r prml.ipynb *.aux *.out *.log *.tex PRML_files >/dev/null; \
 	mv prml_no_sections.pdf ../PRML.pdf
 
-### clean:   Clean the dependency cache and remove generated files
+### markdown: Create Markdown from notebooks
+.PHONY: markdown
+markdown:
+	@cd notebooks; \
+	jupyter-nbconvert \
+	--log-level CRITICAL \
+	--output-dir=md \
+	--to markdown ch1_introduction.ipynb \
+	ch2_probability_distributions.ipynb \
+	ch3_linear_models_for_regression.ipynb \
+	ch4_linear_models_for_classification.ipynb \
+	ch5_neural_networks.ipynb \
+	gradient_descent_algorithms.ipynb \
+	ch6_kernel_methods.ipynb;
+
+### clean:    Clean the dependency cache and remove generated files
 .PHONY: clean
 clean:
 	@poetry cache clear pypi --all -n
