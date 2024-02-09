@@ -10,7 +10,7 @@ import numpy as np
 # Project
 from prml.nn.loss import Loss
 from prml.nn.modules import Module
-from prml.nn.optimizer import GradientDescent
+from prml.nn.optimizer import GradientDescent, Optimizer
 
 
 class NeuralNetwork(Module):
@@ -112,7 +112,7 @@ class NeuralNetwork(Module):
         y: np.ndarray,
         epochs: int = 1000,
         loss: Loss | None = None,
-        optimizer = None,
+        optimizer: Optimizer = None,
         batch_size: int | None = None,
         verbose: bool = True,
         report_steps: int = 10,
@@ -146,7 +146,7 @@ class NeuralNetwork(Module):
 
                 # Perform backpropagation
                 self._backwards(loss.derivative(y_hat, y_batch))
-                
+
                 # Optionally perform gradient checking
                 if check_gradients:
                     layer_gradients = self._check_gradients(x, y, loss)
@@ -166,17 +166,24 @@ class NeuralNetwork(Module):
                 for layer, module in enumerate(self._modules):
                     if module.gradient:
                         if "weights" in module.gradient and "bias" in module.gradient:
-                            module.weights = self._optimizer.update(module.weights, module.gradient["weights"], parameters_name=f"weights_{layer}")
-                            module.bias = self._optimizer.update(module.bias, module.gradient["bias"], parameters_name=f"bias_{layer}")
+                            module.weights = self._optimizer.update(
+                                module.weights, module.gradient["weights"], parameters_name=f"weights_{layer}"
+                            )
+                            module.bias = self._optimizer.update(
+                                module.bias, module.gradient["bias"], parameters_name=f"bias_{layer}"
+                            )
                         elif "gamma" in module.gradient and "beta" in module.gradient:
-                            module.gamma = self._optimizer.update(module.gamma, module.gradient["gamma"], parameters_name=f"gamma_{layer}")
-                            module.beta = self._optimizer.update(module.beta, module.gradient["beta"], parameters_name=f"beta_{layer}")
+                            module.gamma = self._optimizer.update(
+                                module.gamma, module.gradient["gamma"], parameters_name=f"gamma_{layer}"
+                            )
+                            module.beta = self._optimizer.update(
+                                module.beta, module.gradient["beta"], parameters_name=f"beta_{layer}"
+                            )
 
             # Print the cost every 'report_step' iterations
             if verbose and epoch % report_step == 0:
                 print(f"-- Epoch {epoch + 1} ---")
                 print(f"Cost: {cost}")
-
 
     def predict(self, x: np.ndarray) -> np.ndarray:
         return self._forward(x)
