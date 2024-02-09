@@ -27,6 +27,12 @@ To generate a PDF document from the notebooks just type:
 make notes
 ```
 
+To generate markdown documents from the notebooks just type:
+
+```bash
+make markdown
+```
+
 ## Notebooks
 
 * [1. Introduction](https://nbviewer.jupyter.org/github/vagmcs/PRML/blob/master/notebooks/ch1_introduction.ipynb)
