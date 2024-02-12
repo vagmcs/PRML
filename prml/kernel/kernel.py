@@ -10,5 +10,9 @@ class Kernel(metaclass=ABCMeta):
         pass
 
     @abstractclassmethod
-    def __call__(self, x: np.ndarray, z: np.ndarray) -> np.ndarray:
+    def __call__(self, x: np.ndarray, z: np.ndarray, pairwise: bool) -> np.ndarray:
+        pass
+
+    @abstractclassmethod
+    def derivative(self, x: np.ndarray, z: np.ndarray, pairwise: bool) -> np.ndarray:
         pass
