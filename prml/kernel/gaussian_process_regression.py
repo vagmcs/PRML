@@ -31,24 +31,27 @@ class GaussianProcessRegression(Regression):
         n = x.shape[0]
         self._x = x.copy()
         self._t = t.copy()
-        
+
         identity = np.eye(n)
         k = self._kernel(x, x)
-        self._precision= np.linalg.inv(k + identity / self._beta)
-        
+        self._precision = np.linalg.inv(k + identity / self._beta)
+
         for i in range(iterations):
             gradient = self._kernel.derivative(x, x)
-            update = - np.trace(self._precision @ gradient.T) + t @ self._precision @ gradient @ self._precision @ t
+            update = -np.trace(self._precision @ gradient.T) + t @ self._precision @ gradient @ self._precision @ t
 
-            self._kernel.theta += learning_rate * update    
+            self._kernel.theta += learning_rate * update
             k = self._kernel(x, x)
             self._precision = np.linalg.inv(k + identity / self._beta)
-            
+
             if i % 100 == 0:
-                ll_error = 0.5 * (np.linalg.slogdet(k + identity / self._beta)[1] + t @ self._precision @ t + len(t) * np.log(2 * np.pi))
+                ll_error = 0.5 * (
+                    np.linalg.slogdet(k + identity / self._beta)[1]
+                    + t @ self._precision @ t
+                    + len(t) * np.log(2 * np.pi)
+                )
                 print(f"-- Iterations {i}: {ll_error}")
 
-            
     def predict(self, x: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
         k = self._kernel(self._x, x)
         c = self._kernel(x, x, pairwise=False)
