@@ -42,6 +42,7 @@ make markdown
 * [5. Neural Networks](https://nbviewer.jupyter.org/github/vagmcs/PRML/blob/master/notebooks/ch5_neural_networks.ipynb)
 * [Gradient Descent Algorithms](https://nbviewer.jupyter.org/github/vagmcs/PRML/blob/master/notebooks/gradient_descent_algorithms.ipynb)
 * [6. Kernel Methods](https://nbviewer.jupyter.org/github/vagmcs/PRML/blob/master/notebooks/ch6_kernel_methods.ipynb)
+* [7. Sparse Kernel Machines](https://nbviewer.jupyter.org/github/vagmcs/PRML/blob/master/notebooks/ch7_sparse_kernel_machines.ipynb)
 
 ## Resources
 
