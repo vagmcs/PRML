@@ -140,7 +140,7 @@ class SupportVectorClassifier(Classifier):
     def __first_alpha_heuristic(self, indices: np.ndarray, epsilon: float):
         for idx in indices:
             indices = np.delete(indices, np.argwhere(indices == idx))
-            # check KKT
+            # check if they violate KKT
             if self.__kkt(idx, epsilon):
                 return idx, indices
 
