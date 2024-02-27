@@ -43,7 +43,7 @@ class SupportVectorRegressor(Regression):
         :param n_iter: number of iterations
         :param epsilon: tolerance threshold for KKT conditions
         """
-        
+
         if x.ndim == 1:
             x = x[:, None]
 
@@ -75,17 +75,17 @@ class SupportVectorRegressor(Regression):
             L, H = self.__bounds(i, j)
             if L == H:
                 continue
-            
+
             # NOTE: assume i = u and j = v
 
             # compute eta
             eta = gram[i][i] + gram[j][j] - 2 * gram[i][j]
             if eta == 0:
                 continue
-            
+
             # compute delta
             delta = (2 * self._epsilon) / eta
-                        
+
             # calculate predictions and errors
             error_i = self.predict(self._support_vectors[i, :]) - self._support_labels[i]
             error_j = self.predict(self._support_vectors[j, :]) - self._support_labels[j]
@@ -95,16 +95,20 @@ class SupportVectorRegressor(Regression):
             lambda_j_old = self._lambda[j]
             self._lambda[j] = lambda_j_old + (error_i - error_j) / eta
             self._lambda[i] = (lambda_i_old + lambda_j_old) - self._lambda[j]
-            
-            if self._lambda[i] * self._lambda[j] < 0: # if they have the same sign then the last term, involving epsilon, is zero
+
+            if (
+                self._lambda[i] * self._lambda[j] < 0
+            ):  # if they have the same sign then the last term, involving epsilon, is zero
                 if abs(self._lambda[i]) >= delta and abs(self._lambda[j]) >= delta:
                     self._lambda[j] = self._lambda[j] - np.sign(self._lambda[j]) * delta
                 else:
-                    self._lambda[j] = np.heaviside(abs(self._lambda[j]) - abs(self._lambda[i]), 0) * (lambda_i_old + lambda_j_old)
+                    self._lambda[j] = np.heaviside(abs(self._lambda[j]) - abs(self._lambda[i]), 0) * (
+                        lambda_i_old + lambda_j_old
+                    )
 
             self._lambda[j] = np.minimum(np.maximum(self._lambda[j], L), H)
             self._lambda[i] = (lambda_i_old + lambda_j_old) - self._lambda[j]
-            
+
             # update beta
             self.__update_beta(i, j, gram, error_i, error_j, lambda_i_old, lambda_j_old)
 
@@ -148,10 +152,15 @@ class SupportVectorRegressor(Regression):
         abs_error = abs(self.predict(self._support_vectors[i]) - self._support_labels[i])
         cond_a = self._lambda[i] == 0 and abs_error < self._epsilon + tolerance
         cond_b = abs(self._lambda[i]) == self.c and abs_error > self._epsilon + tolerance
-        cond_c = -self.c < self._lambda[i] < self.c and self._lambda[i] != 0 and abs_error <= self._epsilon + tolerance and abs_error >= self._epsilon - tolerance
-        
-        #abs_error == self._epsilon + tolerance 
-        return not(cond_a or cond_b or cond_c)
+        cond_c = (
+            -self.c < self._lambda[i] < self.c
+            and self._lambda[i] != 0
+            and abs_error <= self._epsilon + tolerance
+            and abs_error >= self._epsilon - tolerance
+        )
+
+        # abs_error == self._epsilon + tolerance
+        return not (cond_a or cond_b or cond_c)
 
     def __first_alpha_heuristic(self, indices: np.ndarray, tolerance: float):
         for idx in indices:
