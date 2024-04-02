@@ -61,7 +61,8 @@ notes:
 	ch4_linear_models_for_classification.ipynb \
 	ch5_neural_networks.ipynb \
 	gradient_descent_algorithms.ipynb \
-	ch6_kernel_methods.ipynb > PRML.ipynb; \
+	ch6_kernel_methods.ipynb \
+	ch7_sparse_kernel_machines.ipynb > PRML.ipynb; \
 	jupyter-nbconvert \
 	--log-level CRITICAL \
 	--to latex PRML.ipynb; \
@@ -84,7 +85,8 @@ markdown:
 	ch4_linear_models_for_classification.ipynb \
 	ch5_neural_networks.ipynb \
 	gradient_descent_algorithms.ipynb \
-	ch6_kernel_methods.ipynb;
+	ch6_kernel_methods.ipynb \
+	ch7_sparse_kernel_machines.ipynb; 
 
 ### clean:    Clean the dependency cache and remove generated files
 .PHONY: clean
