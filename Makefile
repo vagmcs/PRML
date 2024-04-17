@@ -62,7 +62,8 @@ notes:
 	ch5_neural_networks.ipynb \
 	gradient_descent_algorithms.ipynb \
 	ch6_kernel_methods.ipynb \
-	ch7_sparse_kernel_machines.ipynb > PRML.ipynb; \
+	ch7_sparse_kernel_machines.ipynb \
+	ch9_mixture_models_and_em.ipynb > PRML.ipynb; \
 	jupyter-nbconvert \
 	--log-level CRITICAL \
 	--to latex PRML.ipynb; \
@@ -86,7 +87,8 @@ markdown:
 	ch5_neural_networks.ipynb \
 	gradient_descent_algorithms.ipynb \
 	ch6_kernel_methods.ipynb \
-	ch7_sparse_kernel_machines.ipynb; 
+	ch7_sparse_kernel_machines.ipynb \
+	ch9_mixture_models_and_em.ipynb;
 
 ### clean:    Clean the dependency cache and remove generated files
 .PHONY: clean
