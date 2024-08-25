@@ -47,34 +47,32 @@ class KMeans:
     def update(self, x: np.ndarray) -> None:
         x = x[None, :] if x.ndim == 1 else x
         _, d = x.shape
-        
+
         # initialize centers randomly
         if self._centers is None:
             self._centers = np.zeros((self._n_clusters, d))
-   
+
         is_empty = self._centers.sum(axis=1) == 0
         if any(is_empty):
             i = is_empty.argmax()
             self._centers[i, :] = x
-        
+
         # assign data points to clusters (E-step)
         d = cdist(x, self._centers, metric="euclidean")
         assignments = np.argmin(d, axis=-1)
         cluster_indicator = np.eye(self._n_clusters)[assignments]
         self._history.append((self._centers.copy(), assignments.copy()))
-        
+
         # update cluster counts
-        if hasattr(self, '_r'):
+        if hasattr(self, "_r"):
             self._r += cluster_indicator
         else:
             self._r = cluster_indicator
-        
+
         # recompute the centers (M-step)
         eta = 1 / self._r
         eta = np.where(eta == np.inf, 0, eta)
         self._centers += cluster_indicator.T * eta.T * (x - self._centers)
-
-        
 
     def predict(self, x: np.ndarray) -> np.ndarray:
         d = cdist(x, self._centers, metric="euclidean")

@@ -10,6 +10,7 @@ from .gaussian import Gaussian
 from .generic_distribution import GenericDistribution
 from .multinomial import Multinomial
 from .multivariate_gaussian import MultivariateGaussian
+from .multivariate_gaussian_mixture import MultivariateGaussianMixture
 from .student_t import StudentT
 
 __all__ = [
@@ -24,5 +25,6 @@ __all__ = [
     "GenericDistribution",
     "Multinomial",
     "MultivariateGaussian",
+    "MultivariateGaussianMixture",
     "StudentT",
 ]
