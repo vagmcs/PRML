@@ -1,4 +1,3 @@
-# Project
 from .bayesian_logistic_regression import BayesianLogisticRegression
 from .bayesian_regression import BayesianRegression
 from .evidence_approximation import EvidenceApproximation

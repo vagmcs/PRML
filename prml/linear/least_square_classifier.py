@@ -7,7 +7,6 @@ import numpy as np
 # Project
 from prml.preprocessing import OneHotEncoder
 
-# Project
 from .classifier import Classifier
 
 
@@ -39,7 +38,7 @@ class LeastSquaresClassifier(Classifier):
         """
         Makes a prediction given an input.
 
-        :param x: (N, D) array of samples to predict their output
-        :return (N,) array holding the predicted classes
+        :param x: (N, D) array of samples to predict their output :return (N,) array
+            holding the predicted classes
         """
         return np.argmax(x @ self._w, axis=-1)  # type: ignore

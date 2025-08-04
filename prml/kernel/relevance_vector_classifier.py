@@ -82,8 +82,8 @@ class RelevanceVectorClassifier(Classifier):
         """
         Makes a prediction given an input.
 
-        :param x: (N, D) array of samples to predict their output
-        :return (N,) array holding the predicted classes
+        :param x: (N, D) array of samples to predict their output :return (N,) array
+            holding the predicted classes
         """
         if self._posterior_mean is None or self._posterior_sigma is None:
             raise ValueError("The model is not trained, thus predictions cannot be made!")

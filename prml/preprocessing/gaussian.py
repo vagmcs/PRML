@@ -4,7 +4,6 @@ from typing import Union
 # Dependencies
 import numpy as np
 
-# Project
 from .basis_function import BasisFunction
 
 
@@ -18,10 +17,11 @@ class GaussianFeature(BasisFunction):
     def __init__(self, mean: Union[int, float, np.ndarray], sigma: Union[int, float]):
         """
         Create Gaussian basis functions. Each basis function can either be a uni-variate
-        or a multivariate Gaussian having constant across dimensions. In the former case,
-        the mean of each Gaussian is a single number, resulting in a 1-dimensional array,
-        while the multivariate case, the mean of each Gaussian is an 1-dimensional array,
-        resulting in a 2-dimensional array of means for all basis functions.
+        or a multivariate Gaussian having constant across dimensions. In the former
+        case, the mean of each Gaussian is a single number, resulting in a 1-dimensional
+        array, while the multivariate case, the mean of each Gaussian is an
+        1-dimensional array, resulting in a 2-dimensional array of means for all basis
+        functions.
 
         Note that 1 / sigma is sometimes also called gamma.
 

@@ -7,7 +7,6 @@ import sympy as sym
 import sympy.abc as symbols
 from scipy.special import gamma
 
-# Project
 from .generic_distribution import GenericDistribution
 
 
@@ -15,7 +14,8 @@ class StudentT(GenericDistribution):
     """
     The Student's t-distribution:
 
-    p(x|mu, lambda, nu) = ( Gamma((nu + 1) / 2) * sqrt(1 / (pi * nu)) (1 + (x**2 / nu)) ** (-(nu+1) / 2)) / Gamma(nu/2)
+    p(x|mu, lambda, nu) = ( Gamma((nu + 1) / 2) * sqrt(1 / (pi * nu)) (1 + (x**2 / nu))
+    ** (-(nu+1) / 2)) / Gamma(nu/2)
     """
 
     def __init__(self, nu: int):
@@ -32,8 +32,7 @@ class StudentT(GenericDistribution):
 
     def ml(self, x: np.ndarray) -> None:
         """
-        Performs maximum likelihood estimation on the parameters
-        using the given data.
+        Performs maximum likelihood estimation on the parameters using the given data.
 
         :param x: an (N, D) array of data values
         """
@@ -42,8 +41,8 @@ class StudentT(GenericDistribution):
 
     def pdf(self, x: Union[np.ndarray, float]) -> Union[GenericDistribution, np.ndarray, float]:
         """
-        Compute the probability density function (PDF) or the probability mass function (PMF)
-        of the given values for the random variables.
+        Compute the probability density function (PDF) or the probability mass function
+        (PMF) of the given values for the random variables.
 
         :param x: (N, D) array of values or a single value for the random variables
         :return: the probability density function value

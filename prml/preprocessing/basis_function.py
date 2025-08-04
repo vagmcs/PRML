@@ -16,10 +16,9 @@ class BasisFunction(metaclass=abc.ABCMeta):
     @staticmethod
     def _make_array(x: Union[int, float, np.ndarray]) -> np.ndarray:
         """
-        Checks if the input is an array. The array should be at most
-        2-dimensional, representing one data point per row. If not, an
-        exception is raised. In case a single number is given, it creates
-        an array containing a single number.
+        Checks if the input is an array. The array should be at most 2-dimensional,
+        representing one data point per row. If not, an exception is raised. In case a
+        single number is given, it creates an array containing a single number.
 
         :param x: (N, D) array of values or float or int
         :return: a properly shaped (N, D) array

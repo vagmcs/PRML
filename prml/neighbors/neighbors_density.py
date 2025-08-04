@@ -6,7 +6,6 @@ import numpy as np
 from scipy.spatial import distance_matrix
 from scipy.special import gamma
 
-# Project
 from .neighbors import Neighbors
 
 
@@ -29,8 +28,8 @@ class NearestNeighborsDensity(Neighbors):
         """
         Makes a prediction given an input.
 
-        :param x: (N, D) array of samples to predict their output
-        :return (N,) array holding the predictions
+        :param x: (N, D) array of samples to predict their output :return (N,) array
+            holding the predictions
         """
         d = distance_matrix(x.reshape(-1, 1), self._data.reshape(-1, 1))
         radius = np.apply_along_axis(np.sort, 1, d)[:, self._k - 1]

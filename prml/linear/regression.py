@@ -27,6 +27,6 @@ class Regression(metaclass=abc.ABCMeta):
         """
         Makes a prediction given an input.
 
-        :param x: (N, D) array of samples to predict their output
-        :return a tuple of (N,) arrays, one holding the predictions, and one the variance
+        :param x: (N, D) array of samples to predict their output :return a tuple of
+            (N,) arrays, one holding the predictions, and one the variance
         """

@@ -5,7 +5,6 @@ from typing import Union
 import numpy as np
 from scipy.spatial import distance_matrix
 
-# Project
 from .neighbors import Neighbors
 
 
@@ -35,8 +34,8 @@ class KNearestNeighborsClassifier(Neighbors):
         """
         Makes a prediction given an input.
 
-        :param x: (N, D) array of samples to predict their output
-        :return (N,) array holding the probabilistic predictions
+        :param x: (N, D) array of samples to predict their output :return (N,) array
+            holding the probabilistic predictions
         """
         d = distance_matrix(x, self._data)
         indices = d.argsort()[:, : self._k]
@@ -47,8 +46,8 @@ class KNearestNeighborsClassifier(Neighbors):
         """
         Makes a prediction given an input.
 
-        :param x: (N, D) array of samples to predict their output
-        :return (N,) array holding the predictions
+        :param x: (N, D) array of samples to predict their output :return (N,) array
+            holding the predictions
         """
         d = distance_matrix(x, self._data)
         indices = d.argsort()[:, : self._k]

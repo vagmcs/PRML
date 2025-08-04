@@ -12,8 +12,9 @@ class OneHotEncoder(object):
 
     def __init__(self, k: Optional[int] = None) -> None:
         """
-        Creates an encoder given a number of classes. In case the number classes is not provided,
-        they are automatically inferred during the encoding step from the given array.
+        Creates an encoder given a number of classes. In case the number classes is not
+        provided, they are automatically inferred during the encoding step from the
+        given array.
 
         :param k: the number of classes, defaults to None
         """

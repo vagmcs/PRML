@@ -32,8 +32,7 @@ class Distribution(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def ml(self, x: np.ndarray) -> None:
         """
-        Performs maximum likelihood estimation on the parameters
-        using the given data.
+        Performs maximum likelihood estimation on the parameters using the given data.
 
         :param x: an (N, D) array of data values
         """
@@ -41,8 +40,8 @@ class Distribution(metaclass=abc.ABCMeta):
 
     def likelihood_iid(self, x: Union[np.ndarray, float]) -> float:
         """
-        Compute the likelihood of the distribution on the given data, assuming
-        that the data are independent and identically distributed.
+        Compute the likelihood of the distribution on the given data, assuming that the
+        data are independent and identically distributed.
 
         :param x: (N, D) array of data values or a single data value
         :return: the likelihood of the distribution
@@ -62,8 +61,8 @@ class Distribution(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def pdf(self, x: Union[np.ndarray, float]) -> Union[np.ndarray, float]:
         """
-        Compute the probability density function (PDF) or the probability mass function (PMF)
-        of the given values for the random variables.
+        Compute the probability density function (PDF) or the probability mass function
+        (PMF) of the given values for the random variables.
 
         :param x: (N, D) array of values or a single value for the random variables
         :return: the probability density function value

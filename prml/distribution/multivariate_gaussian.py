@@ -5,7 +5,6 @@ from typing import Optional, Union
 import numpy as np
 import sympy as sym
 
-# Project
 from .generic_distribution import GenericDistribution
 
 
@@ -18,7 +17,7 @@ class MultivariateGaussian(GenericDistribution):
 
     def __init__(self, mu: Optional[np.ndarray] = None, cov: Optional[np.ndarray] = None, dim: Optional[int] = None):
         """
-         Create a multivariate *Gaussian* distribution.
+        Create a multivariate *Gaussian* distribution.
 
         :param mu: the mean column vector
         :param cov: the covariance matrix
@@ -53,11 +52,11 @@ class MultivariateGaussian(GenericDistribution):
 
     def ml(self, x: np.ndarray, unbiased: bool = False) -> None:
         """
-        Performs maximum likelihood estimation on the parameters
-        using the given data.
+        Performs maximum likelihood estimation on the parameters using the given data.
 
         :param x: an (N, D) array of data values
-        :param unbiased: if True it computes the unbiased covariance matrix (default is False)
+        :param unbiased: if True it computes the unbiased covariance matrix (default is
+            False)
         """
         # The maximum likelihood estimator for mu and sigma squared parameters in a Gaussian
         # distribution is the sample mean, and the sample variance (biased or unbiased).
@@ -73,8 +72,8 @@ class MultivariateGaussian(GenericDistribution):
 
     def pdf(self, x: np.ndarray) -> Union[GenericDistribution, np.ndarray, float]:
         """
-        Compute the probability density function (PDF) or the probability mass function (PMF)
-        of the given values for the random variables.
+        Compute the probability density function (PDF) or the probability mass function
+        (PMF) of the given values for the random variables.
 
         :param x: (N, D) array of values or a single value for the random variables
         :return: the probability density function value

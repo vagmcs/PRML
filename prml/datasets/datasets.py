@@ -20,12 +20,13 @@ def generate_toy_data(
     uniform=False,
 ) -> Tuple[np.ndarray, np.ndarray]:
     """
-    Generates a toy dataset given a function, a domain and a sample size. Then
-    adds Gaussian noise to the samples having zero mean and the given standard deviation.
+    Generates a toy dataset given a function, a domain and a sample size. Then adds
+    Gaussian noise to the samples having zero mean and the given standard deviation.
 
     :param f: a function
     :param sample_size: the size of the sample
-    :param std: the standard deviation of the Gaussian noise or the low/upper bound of the uniform noise
+    :param std: the standard deviation of the Gaussian noise or the low/upper bound of
+        the uniform noise
     :param domain: the domain range
     :param uniform: adds uniform noise instead of Gaussian
     :return: a tuple of the input, target arrays
@@ -37,11 +38,10 @@ def generate_toy_data(
 
 def load_old_faithful() -> np.ndarray:
     """
-    Loads the old faithful dataset. Old Faithful is a hydrothermal geyser
-    in Yellowstone National Park in the state of Wyoming, USA. The data
-    comprises 272 observations, each representing a single eruption, and
-    contains two variables corresponding to the duration of the eruption,
-    and the time until the next eruption in minutes.
+    Loads the old faithful dataset. Old Faithful is a hydrothermal geyser in Yellowstone
+    National Park in the state of Wyoming, USA. The data comprises 272 observations,
+    each representing a single eruption, and contains two variables corresponding to the
+    duration of the eruption, and the time until the next eruption in minutes.
 
     :return: an array of shape (272, 2)
     """

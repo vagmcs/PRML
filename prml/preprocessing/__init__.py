@@ -1,4 +1,3 @@
-# Project
 from .gaussian import GaussianFeature
 from .one_hot_encoder import OneHotEncoder
 from .polynomial import LinearFeature, PolynomialFeature

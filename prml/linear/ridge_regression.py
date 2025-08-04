@@ -4,13 +4,12 @@ from typing import Optional, Tuple
 # Dependencies
 import numpy as np
 
-# Project
 from .regression import Regression
 
 
 class RidgeRegression(Regression):
     """
-    Ridge regression model
+    Ridge regression model.
 
     w* = argmin |t - X @ w| + lambda * |w|_2^2
     """
@@ -36,8 +35,8 @@ class RidgeRegression(Regression):
         """
         Makes a prediction given an input.
 
-        :param x: (N, D) array of samples to predict their output
-        :return a tuple of (N,) arrays, one holding the predictions, and one the variance
+        :param x: (N, D) array of samples to predict their output :return a tuple of
+            (N,) arrays, one holding the predictions, and one the variance
         """
         if self._w is None or self._var is None:
             raise ValueError("The model is not trained, thus predictions cannot be made!")

@@ -4,7 +4,6 @@ from typing import Union
 # Dependencies
 import numpy as np
 
-# Project
 from .basis_function import BasisFunction
 
 
@@ -17,11 +16,12 @@ class SigmoidFeature(BasisFunction):
 
     def __init__(self, mean: Union[int, float, np.ndarray], sigma: Union[int, float] = 1):
         """
-        Create sigmoid basis functions. Each basis function can either have a uni-variate
-        or a multivariate mean and constant a constant coefficient. In the former case,
-        the mean of each sigmoid is a single number, resulting in a 1-dimensional array,
-        while the multivariate case, the mean of each sigmoid is an 1-dimensional array,
-        resulting in a 2-dimensional array of means for all basis functions.
+        Create sigmoid basis functions. Each basis function can either have a uni-
+        variate or a multivariate mean and constant a constant coefficient. In the
+        former case, the mean of each sigmoid is a single number, resulting in a
+        1-dimensional array, while the multivariate case, the mean of each sigmoid is an
+        1-dimensional array, resulting in a 2-dimensional array of means for all basis
+        functions.
 
         :param mean: (D, 2) or (D, 1) array sigmoid function centers
         :param sigma: the spatial scale of the sigmoid basis functions

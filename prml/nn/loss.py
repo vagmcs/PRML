@@ -4,7 +4,6 @@ import abc
 # Dependencies
 import numpy as np
 
-# Project
 from .modules import Module
 
 # Find a small float to avoid division by zero
@@ -30,7 +29,7 @@ class Loss(Module, metaclass=abc.ABCMeta):
 class SSELoss(Loss):
     def _forward(self, _input: np.ndarray, _target: np.ndarray) -> np.ndarray:
         """
-        Computes the sum-of-squares error
+        Computes the sum-of-squares error.
 
         E = 1/2 Σ(y - t)^2
 
@@ -123,7 +122,8 @@ class GaussianNLLLoss(Loss):
 
         E = -Σ ln(Σ pi N(t|mu,sigma))
 
-        :param _input: (N, (L + 2)K) array of concatenated parameters for the Gaussian mixture
+        :param _input: (N, (L + 2)K) array of concatenated parameters for the Gaussian
+            mixture
         :param _target: (N, L) array of target values
         :return: the negative log-likelihood of the mixture
         """
@@ -133,8 +133,9 @@ class GaussianNLLLoss(Loss):
 
     def _backwards(self, _input: np.ndarray, _target: np.ndarray) -> np.ndarray:
         """
-        Computes the derivative of the loss with respect to the mixing coefficients, the component means
-        and the component variances. Then returns the derivatives as a concatanted gradient vector.
+        Computes the derivative of the loss with respect to the mixing coefficients, the
+        component means and the component variances. Then returns the derivatives as a
+        concatanted gradient vector.
 
         dE/dpi = pi - gamma
 

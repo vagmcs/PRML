@@ -117,8 +117,8 @@ class SupportVectorClassifier(Classifier):
         """
         Makes a prediction given an input.
 
-        :param x: (N, D) array of samples to predict their output
-        :return a tuple of (N,) arrays, one holding the target predictions, and one the y values
+        :param x: (N, D) array of samples to predict their output :return a tuple of
+            (N,) arrays, one holding the target predictions, and one the y values
         """
 
         if self.alpha is None or self._support_vectors is None or self._support_labels is None:

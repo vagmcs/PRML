@@ -5,7 +5,6 @@ from typing import Dict, Union
 import numpy as np
 import sympy as sym
 
-# Project
 from .distribution import Distribution
 
 
@@ -48,8 +47,7 @@ class GenericDistribution(Distribution):
 
     def ml(self, x: np.ndarray) -> None:
         """
-        Performs maximum likelihood estimation on the parameters
-        using the given data.
+        Performs maximum likelihood estimation on the parameters using the given data.
 
         :param x: an (N, D) array of data values
         """
@@ -57,8 +55,8 @@ class GenericDistribution(Distribution):
 
     def pdf(self, **kwargs) -> Union[np.ndarray, float]:
         """
-        Compute the likelihood of the distribution on the given data, assuming
-        that the data are independent and identically distributed.
+        Compute the likelihood of the distribution on the given data, assuming that the
+        data are independent and identically distributed.
 
         :param kwargs: a dictionary of variables to data values
         :return: the likelihood of the distribution

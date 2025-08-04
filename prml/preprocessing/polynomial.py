@@ -8,7 +8,6 @@ import itertools
 # Dependencies
 import numpy as np
 
-# Project
 from .basis_function import BasisFunction
 
 
@@ -18,9 +17,7 @@ class PolynomialFeature(BasisFunction):
 
     Transforms the input array using polynomial basis functions.
 
-    Example
-    =======
-    x = [[a, b], [c, d]]
+    Example x = [[a, b], [c, d]]
 
     y = PolynomialBasis(degree=2).transform(x)
 
@@ -63,11 +60,9 @@ class LinearFeature(PolynomialFeature):
 
     Transforms the input array by adding a bias. Identical to
 
-        PolynomialFeature(degree=1)
+    PolynomialFeature(degree=1)
 
-    Example
-    =======
-    x = [[a, b], [c, d]]
+    Example x = [[a, b], [c, d]]
 
     y = PolynomialBasis(degree=1).transform(x)
 

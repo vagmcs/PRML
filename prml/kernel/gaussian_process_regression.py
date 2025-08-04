@@ -11,7 +11,7 @@ from prml.linear.regression import Regression
 
 class GaussianProcessRegression(Regression):
     """
-    Gaussian process regression model
+    Gaussian process regression model.
 
     p(t_n+1|t_n) = N(t_n+1|k^T C_N^-1 t_N, c - k^T C_N^-1 k)
     """

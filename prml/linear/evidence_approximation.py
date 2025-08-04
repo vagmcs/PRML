@@ -4,17 +4,17 @@ from typing import Union
 # Dependencies
 import numpy as np
 
-# Project
 from .bayesian_regression import BayesianRegression
 
 
 class EvidenceApproximation(BayesianRegression):
     """
-    Sets the (hyper) parameters alpha and beta to specific values and approximates
-    them by maximizing the marginal likelihood or evidence function obtained by
-    integrating over the model parameters. This framework is known in statistics as
-    empirical bayes, type 2 maximum likelihood, generalized maximum likelihood or
-    evidence approximation.
+    Sets the (hyper) parameters alpha and beta to specific values and approximates them
+    by maximizing the marginal likelihood or evidence function obtained by integrating
+    over the model parameters.
+
+    This framework is known in statistics as empirical bayes, type 2 maximum likelihood,
+    generalized maximum likelihood or evidence approximation.
     """
 
     def __init__(self, alpha: Union[int, float] = 1, beta: Union[int, float] = 1):
@@ -22,8 +22,8 @@ class EvidenceApproximation(BayesianRegression):
 
     def fit(self, x: np.ndarray, t: np.ndarray, n_iter: int = 100) -> None:
         """
-        Maximizes the evidence function over the (hyper) parameters alpha and beta
-        given a training dataset.
+        Maximizes the evidence function over the (hyper) parameters alpha and beta given
+        a training dataset.
 
         :param x: (N, D) numpy array holding the input training data
         :param t: (N,) numpy array holding the target values
@@ -68,5 +68,7 @@ class EvidenceApproximation(BayesianRegression):
             - np.linalg.slogdet(self._precision)[1]  # type: ignore
             - n * np.log(2 * np.pi)
         ) + self._log_posterior(
-            x, t, self._mean  # type: ignore
+            x,
+            t,
+            self._mean,  # type: ignore
         )

@@ -7,13 +7,12 @@ import numpy as np
 # Project
 from prml.distribution.gaussian import Gaussian
 
-# Project
 from .classifier import Classifier
 
 
 class FisherLinearDiscriminant(Classifier):
     """
-    Fisher's Linear discriminant classifier
+    Fisher's Linear discriminant classifier.
     """
 
     def __init__(self) -> None:
@@ -59,7 +58,7 @@ class FisherLinearDiscriminant(Classifier):
         """
         Makes a prediction given an input.
 
-        :param x: (N, D) array of samples to predict their output
-        :return (N,) array holding the predicted classes
+        :param x: (N, D) array of samples to predict their output :return (N,) array
+            holding the predicted classes
         """
         return (x @ self._w > self._threshold).astype(np.int)  # type: ignore

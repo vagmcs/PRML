@@ -91,7 +91,7 @@ class LinearLayer(Module):
         self, _input: np.ndarray, training_mode: bool = False, pertrubed_parameters: Dict[str, np.array] = dict()
     ) -> np.ndarray:
         """
-        Forward pass of the linear layer
+        Forward pass of the linear layer.
 
         y = a @ W.T + b
 
@@ -110,7 +110,7 @@ class LinearLayer(Module):
 
     def _backwards(self, _input: np.ndarray) -> np.ndarray:
         """
-        Backward pass of the linear layer
+        Backward pass of the linear layer.
 
         dE/dw =  1/m (δ^l @ a)
 
@@ -220,8 +220,8 @@ class Flatten(Module):
 
     def _forward(self, _input: np.ndarray, training_mode: bool = False) -> np.ndarray:
         """
-        Flattens all dimensions of the input array except the first one that represents the
-        number of training examples or mini-batch size.
+        Flattens all dimensions of the input array except the first one that represents
+        the number of training examples or mini-batch size.
 
         :param _input: (N, ...) input array
         :param training_mode: enables training mode, defaults to False
@@ -232,7 +232,7 @@ class Flatten(Module):
 
     def _backwards(self, _input: np.ndarray) -> np.ndarray:
         """
-        Reverses the flattening operation
+        Reverses the flattening operation.
 
         :param _input: the input from the previous layer
         :return: the (N, ...) un-flattened array
@@ -377,9 +377,7 @@ class ConvLayer(Module):
                             h * self._stride : h * self._stride + self._kernel_size[0],
                             w * self._stride : w * self._stride + self._kernel_size[1],
                             :,
-                        ] += (
-                            self._weights[:, :, :, c] * _input[i, h, w, c]
-                        )
+                        ] += self._weights[:, :, :, c] * _input[i, h, w, c]
 
                         dW[:, :, :, c] += a_slice * _input[i, h, w, c]
                         db[:, :, :, c] += _input[i, h, w, c]

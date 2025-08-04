@@ -4,17 +4,14 @@ from typing import Optional, Tuple, Union
 # Dependencies
 import numpy as np
 
-# Project
 from .regression import Regression
 
 
 class BayesianRegression(Regression):
     """
-    Bayesian regression model
+    Bayesian regression model.
 
-    w ~ N(w|0, alpha^(-1)I)
-    y(x, w) = w.T * X
-    t ~ N(t|y(x, w), beta^(-1))
+    w ~ N(w|0, alpha^(-1)I) y(x, w) = w.T * X t ~ N(t|y(x, w), beta^(-1))
     """
 
     def __init__(self, alpha: Union[int, float], beta: Union[int, float]):
@@ -48,8 +45,8 @@ class BayesianRegression(Regression):
         """
         Makes a prediction given an input.
 
-        :param x: (N, D) array of samples to predict their output
-        :return a tuple of (N,) arrays, one holding the predictions, and one the variance
+        :param x: (N, D) array of samples to predict their output :return a tuple of
+            (N,) arrays, one holding the predictions, and one the variance
         """
         if self._mean is None or self._cov is None:
             raise ValueError("The model is not trained, thus predictions cannot be made!")

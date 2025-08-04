@@ -7,7 +7,6 @@ import sympy as sym
 import sympy.abc as symbols
 from scipy.special import factorial
 
-# Project
 from .generic_distribution import GenericDistribution
 
 
@@ -31,8 +30,7 @@ class Binomial(GenericDistribution):
 
     def ml(self, x: np.ndarray) -> None:
         """
-        Performs maximum likelihood estimation on the parameters
-        using the given data.
+        Performs maximum likelihood estimation on the parameters using the given data.
 
         :param x: an (N, D) array of data values
         """
@@ -44,8 +42,8 @@ class Binomial(GenericDistribution):
 
     def pdf(self, x: Union[np.ndarray, int]) -> Union[GenericDistribution, np.ndarray, float]:
         """
-        Compute the probability density function (PDF) or the probability mass function (PMF)
-        of the given values for the random variables.
+        Compute the probability density function (PDF) or the probability mass function
+        (PMF) of the given values for the random variables.
 
         :param x: (N, D) array of values or a single value for the random variables
         :return: the probability density function value

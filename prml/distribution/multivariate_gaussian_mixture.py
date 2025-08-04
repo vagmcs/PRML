@@ -4,7 +4,6 @@ from typing import Optional, Union
 # Dependencies
 import numpy as np
 
-# Project
 from .generic_distribution import GenericDistribution
 from .multivariate_gaussian import MultivariateGaussian
 
@@ -35,8 +34,8 @@ class MultivariateGaussianMixture(GenericDistribution):
 
     def ml(self, x: np.ndarray, k_means_init: bool = False) -> None:
         """
-        Performs maximum likelihood estimation on the parameters
-        using the given data by running the EM algorithm.
+        Performs maximum likelihood estimation on the parameters using the given data by
+        running the EM algorithm.
 
         :param x: an (N, D) array of data values
         :param k_means_init: initializes parameters using k-means
@@ -97,7 +96,7 @@ class MultivariateGaussianMixture(GenericDistribution):
                     ]
                 ).T
             )[0]
-        
+
         self._coefficients = _coefficients
         self._components = [
             MultivariateGaussian(_means[i][:, None], _covariances[i]) for i in range(self._n_components)
@@ -105,8 +104,8 @@ class MultivariateGaussianMixture(GenericDistribution):
 
     def pdf(self, x: np.ndarray) -> Union[GenericDistribution, np.ndarray, float]:
         """
-        Compute the probability density function (PDF) or the probability mass function (PMF)
-        of the given values for the random variables.
+        Compute the probability density function (PDF) or the probability mass function
+        (PMF) of the given values for the random variables.
 
         :param x: (N, D) array of values or a single value for the random variables
         :return: the probability density function value

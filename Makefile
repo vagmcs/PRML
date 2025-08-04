@@ -11,7 +11,9 @@ define LOGO
 
 endef
 
-CURRENT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
+CURRENT_DIR:=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
+PROJECT_NAME:=$(shell poetry version | sed -e 's/[ ].*//g' | tr '-' '_')
+PROJECT_VERSION:=$(shell poetry version | sed -e 's/.*[ ]//g')
 
 $(info $(LOGO))
 
@@ -23,34 +25,35 @@ help:
 	@sed -n 's/^###//p' < $(CURRENT_DIR)/Makefile | sort
 	@echo "==============================================================="
 
-### install:  Install dependencies
-.PHONY: install
-install: clean
-	@poetry install
+### clean    : Clean the dependency cache and remove generated files
+.PHONY: clean
+clean:
+	@poetry cache clear pypi --all -n
+	@if [ -d "dist" ]; then rm -Rf $(CURRENT_DIR)/dist; fi
 
-### update:   Update dependencies
-.PHONY: update
-update: clean
-	@poetry update
-
-### format:   Format sources and apply code style
+### format   : Format source
 .PHONY: format
 format:
-	@poetry run isort .
-	@poetry run black .
+	@poetry run pyupgrade --py39-plus **/*.py || true
+	@poetry run nbqa pyupgrade --py39-plus **/*.ipynb || true
+	@poetry run isort $(PROJECT_NAME)
+	@poetry run nbqa isort notebooks --float-to-top
+	@poetry run ruff format notebooks $(PROJECT_NAME)
+	@poetry run docformatter $(PROJECT_NAME)|| true
 
-### compile:  Apply code style and perform type checks
-.PHONY: compile
-compile: format
+### compile  : Apply code styling and perform type checks
+.PHONY: lint
+lint:
 	@poetry check
-	@poetry run mypy .
+	@poetry run ruff check --fix notebooks $(PROJECT_NAME)
+	@poetry run mypy $(PROJECT_NAME)
 
-### jupyter:  Start jupyter server
+### jupyter  : Start jupyter server
 .PHONY: jupyter
 jupyter:
 	@poetry run jupyter notebook -y --log-level=INFO
 
-### notes:    Create PDF from notebooks
+### notes    : Create PDF from notebooks
 .PHONY: notes
 notes:
 	@cd notebooks; \
@@ -73,7 +76,7 @@ notes:
 	rm -r prml.ipynb *.aux *.out *.log *.tex PRML_files >/dev/null; \
 	mv prml_no_sections.pdf ../PRML.pdf
 
-### markdown: Create Markdown from notebooks
+### markdown : Create Markdown from notebooks
 .PHONY: markdown
 markdown:
 	@cd notebooks; \
@@ -89,9 +92,3 @@ markdown:
 	ch6_kernel_methods.ipynb \
 	ch7_sparse_kernel_machines.ipynb \
 	ch9_mixture_models_and_em.ipynb;
-
-### clean:    Clean the dependency cache and remove generated files
-.PHONY: clean
-clean:
-	@poetry cache clear pypi --all -n
-	@if [ -d "dist" ]; then rm -Rf $(CURRENT_DIR)/dist; fi

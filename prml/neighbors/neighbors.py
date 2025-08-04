@@ -35,6 +35,6 @@ class Neighbors(metaclass=abc.ABCMeta):
         """
         Makes a prediction given an input.
 
-        :param x: (N, D) array of samples to predict their output
-        :return (N,) array holding the predictions
+        :param x: (N, D) array of samples to predict their output :return (N,) array
+            holding the predictions
         """

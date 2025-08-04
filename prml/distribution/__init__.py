@@ -1,4 +1,3 @@
-# Project
 from .bernoulli import Bernoulli
 from .beta import Beta
 from .binomial import Binomial

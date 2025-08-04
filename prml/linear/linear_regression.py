@@ -4,16 +4,14 @@ from typing import Optional, Tuple
 # Dependencies
 import numpy as np
 
-# Project
 from .regression import Regression
 
 
 class LinearRegression(Regression):
     """
-    Linear regression model
+    Linear regression model.
 
-    y = X @ w
-    t ~ N(t|X @ w, var)
+    y = X @ w t ~ N(t|X @ w, var)
     """
 
     def __init__(self) -> None:
@@ -36,8 +34,8 @@ class LinearRegression(Regression):
 
     def fit_lms(self, x: np.ndarray, t: np.ndarray, eta: float = 0.01, n_iter: int = 1000) -> None:
         """
-        Stochastic gradient descent using the sum of squares error
-        function is called the Least Mean Squares (LMS).
+        Stochastic gradient descent using the sum of squares error function is called
+        the Least Mean Squares (LMS).
 
         :param x: (N, D) numpy array holding the input training data
         :param t: (N,) numpy array holding the target values
@@ -62,8 +60,8 @@ class LinearRegression(Regression):
         """
         Makes a prediction given an input.
 
-        :param x: (N, D) array of samples to predict their output
-        :return a tuple of (N,) arrays, one holding the predictions, and one the variance
+        :param x: (N, D) array of samples to predict their output :return a tuple of
+            (N,) arrays, one holding the predictions, and one the variance
         """
 
         if self._w is None or self._var is None:

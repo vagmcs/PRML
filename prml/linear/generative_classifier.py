@@ -7,7 +7,6 @@ import numpy as np
 # Project
 from prml.distribution.multivariate_gaussian import MultivariateGaussian
 
-# Project
 from .classifier import Classifier
 
 
@@ -44,8 +43,8 @@ class GenerativeClassifier(Classifier):
         """
         Makes a prediction given an input.
 
-        :param x: (N, D) array of samples to predict their output
-        :return (N,) array holding the predicted classes
+        :param x: (N, D) array of samples to predict their output :return (N,) array
+            holding the predicted classes
         """
         alpha_k = []
         for prior, density in zip(self._class_priors, self._class_densities):

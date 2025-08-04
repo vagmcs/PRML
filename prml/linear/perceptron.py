@@ -4,7 +4,6 @@ from typing import Optional
 # Dependencies
 import numpy as np
 
-# Project
 from .classifier import Classifier
 
 
@@ -45,7 +44,7 @@ class Perceptron(Classifier):
         """
         Makes a prediction given an input.
 
-        :param x: (N, D) array of samples to predict their output
-        :return (N,) array holding the predicted classes
+        :param x: (N, D) array of samples to predict their output :return (N,) array
+            holding the predicted classes
         """
         return np.sign(x @ self._w).astype(np.int32)  # type: ignore
