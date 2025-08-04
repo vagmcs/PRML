@@ -1,9 +1,6 @@
 # Futures
 from __future__ import annotations
 
-# Types
-from typing import Dict, List, Optional
-
 # Standard Library
 import abc
 
@@ -16,7 +13,7 @@ class Module(metaclass=abc.ABCMeta):
         self._training_mode: bool = False
 
     @property
-    def weights(self) -> Optional[np.ndarray]:
+    def weights(self) -> np.ndarray | None:
         return None
 
     @weights.setter
@@ -24,7 +21,7 @@ class Module(metaclass=abc.ABCMeta):
         pass
 
     @property
-    def bias(self) -> Optional[np.ndarray]:
+    def bias(self) -> np.ndarray | None:
         return None
 
     @bias.setter
@@ -32,12 +29,12 @@ class Module(metaclass=abc.ABCMeta):
         pass
 
     @property
-    def gradient(self) -> Dict[str, np.ndarray]:
+    def gradient(self) -> dict[str, np.ndarray]:
         return {}
 
     @abc.abstractmethod
     def _forward(
-        self, *inputs: np.ndarray, training_mode: bool = False, pertrubed_parameters: Dict[str, np.array] = dict()
+        self, *inputs: np.ndarray, training_mode: bool = False, pertrubed_parameters: dict[str, np.array] = dict()
     ) -> np.ndarray:
         pass
 
@@ -62,13 +59,13 @@ class LinearLayer(Module):
         self._bias = (
             np.random.randn(out_features) * np.sqrt(1 / in_features)
             if random_initialization
-            else np.ones((out_features)) * 0.01
+            else np.ones(out_features) * 0.01
         )
-        self._a: Optional[np.ndarray] = None
+        self._a: np.ndarray | None = None
         self._gradient = {}
 
     @property
-    def weights(self) -> Optional[np.ndarray]:
+    def weights(self) -> np.ndarray | None:
         return self._weights
 
     @weights.setter
@@ -76,7 +73,7 @@ class LinearLayer(Module):
         self._weights = weights
 
     @property
-    def bias(self) -> Optional[np.ndarray]:
+    def bias(self) -> np.ndarray | None:
         return self._bias
 
     @bias.setter
@@ -84,11 +81,11 @@ class LinearLayer(Module):
         self._bias = bias
 
     @property
-    def gradient(self) -> Dict[str, np.ndarray]:
+    def gradient(self) -> dict[str, np.ndarray]:
         return self._gradient
 
     def _forward(
-        self, _input: np.ndarray, training_mode: bool = False, pertrubed_parameters: Dict[str, np.array] = dict()
+        self, _input: np.ndarray, training_mode: bool = False, pertrubed_parameters: dict[str, np.array] = dict()
     ) -> np.ndarray:
         """
         Forward pass of the linear layer.
@@ -152,7 +149,7 @@ class BatchNorm(Module):
         self._gradient = {}
 
     @property
-    def gamma(self) -> Optional[np.ndarray]:
+    def gamma(self) -> np.ndarray | None:
         return self._gamma
 
     @gamma.setter
@@ -160,7 +157,7 @@ class BatchNorm(Module):
         self._gamma = gamma
 
     @property
-    def beta(self) -> Optional[np.ndarray]:
+    def beta(self) -> np.ndarray | None:
         return self._beta
 
     @beta.setter
@@ -168,7 +165,7 @@ class BatchNorm(Module):
         self._beta = beta
 
     @property
-    def gradient(self) -> Dict[str, np.ndarray]:
+    def gradient(self) -> dict[str, np.ndarray]:
         return self._gradient
 
     def _forward(self, _inputs: np.ndarray, training_mode: bool = False) -> np.ndarray:
@@ -241,7 +238,7 @@ class Flatten(Module):
 
 
 class Stack(Module):
-    def __init__(self, module_groups: List[List[Module]]) -> None:
+    def __init__(self, module_groups: list[list[Module]]) -> None:
         super().__init__()
         self._module_groups = module_groups
 
@@ -278,11 +275,11 @@ class ConvLayer(Module):
             1 / in_channels
         )  # Xavier initialization
         self._bias = np.random.randn(1, 1, 1, out_channels) * np.sqrt(1 / in_channels)
-        self._a: Optional[np.ndarray] = None
+        self._a: np.ndarray | None = None
         self._gradient = {}
 
     @property
-    def weights(self) -> Optional[np.ndarray]:
+    def weights(self) -> np.ndarray | None:
         return self._weights
 
     @weights.setter
@@ -290,7 +287,7 @@ class ConvLayer(Module):
         self._weights = weights
 
     @property
-    def bias(self) -> Optional[np.ndarray]:
+    def bias(self) -> np.ndarray | None:
         return self._bias
 
     @bias.setter
@@ -298,11 +295,11 @@ class ConvLayer(Module):
         self._bias = bias
 
     @property
-    def gradient(self) -> Dict[str, np.ndarray]:
+    def gradient(self) -> dict[str, np.ndarray]:
         return self._gradient
 
     def _forward(
-        self, _inputs: np.ndarray, training_mode: bool = False, pertrubed_parameters: Dict[str, np.array] = dict()
+        self, _inputs: np.ndarray, training_mode: bool = False, pertrubed_parameters: dict[str, np.array] = dict()
     ) -> np.ndarray:
         self._a = _inputs
         (m, height, width, channels) = _inputs.shape
@@ -398,7 +395,7 @@ class MaxPooling(Module):
         super().__init__()
         self._pool_size: tuple[int, int] = pool_size
         self._stride: int = stride
-        self._a: Optional[np.ndarray] = None
+        self._a: np.ndarray | None = None
 
     def _forward(self, _input: np.ndarray, training_mode: bool = False) -> np.ndarray:
         self._a = _input

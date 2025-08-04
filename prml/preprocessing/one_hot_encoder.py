@@ -5,7 +5,7 @@ from typing import Optional
 import numpy as np
 
 
-class OneHotEncoder(object):
+class OneHotEncoder:
     """
     OneHotEncoder encodes arrays of classes into 1-of-K class vectors.
     """
