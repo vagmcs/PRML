@@ -4,10 +4,14 @@ from collections.abc import Callable
 # Dependencies
 import matplotlib.pyplot as plt
 import numpy as np
+from numpy.typing import NDArray
 
 
 def plot_2d_decision_boundary(
-    model: Callable[[np.ndarray], np.ndarray], x: np.ndarray, y: np.ndarray, step: float = 0.01
+    model: Callable[[NDArray[np.floating]], NDArray[np.floating]],
+    x: NDArray[np.floating],
+    y: NDArray[np.floating],
+    step: float = 0.01,
 ) -> None:
     """
     Plots the decision boundary defined by a given classification function on a

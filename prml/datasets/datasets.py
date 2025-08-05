@@ -4,6 +4,7 @@ from collections.abc import Callable
 
 # Dependencies
 import numpy as np
+from numpy.typing import NDArray
 from sklearn.utils import resample
 
 # Project
@@ -11,12 +12,12 @@ from prml import datasets_dir
 
 
 def generate_toy_data(
-    f: Callable[[np.ndarray], np.ndarray],
+    f: Callable[[NDArray[np.floating]], NDArray[np.floating]],
     sample_size: int,
     std: float,
     domain: tuple[float, float] = (0, 1),
     uniform: bool = False,
-) -> tuple[np.ndarray, np.ndarray]:
+) -> tuple[NDArray[np.floating], NDArray[np.floating]]:
     """
     Generates a toy dataset given a function, a domain and a sample size. Then adds
     Gaussian noise to the samples having zero mean and the given standard deviation.
@@ -34,7 +35,7 @@ def generate_toy_data(
     return x, t
 
 
-def load_old_faithful() -> np.ndarray:
+def load_old_faithful() -> NDArray[np.floating]:
     """
     Loads the old faithful dataset. Old Faithful is a hydrothermal geyser in Yellowstone
     National Park in the state of Wyoming, USA. The data comprises 272 observations,
@@ -46,7 +47,7 @@ def load_old_faithful() -> np.ndarray:
     return np.genfromtxt(datasets_dir / "old_faithful.csv", dtype=float, delimiter=",", skip_header=1)
 
 
-def load_planar_dataset(sample_size: int = 400) -> tuple[np.ndarray, np.ndarray]:
+def load_planar_dataset(sample_size: int = 400) -> tuple[NDArray[np.floating], NDArray[np.uint8]]:
     """
     Generates a binary class dataset having non-linear decision boundary.
 
@@ -60,7 +61,7 @@ def load_planar_dataset(sample_size: int = 400) -> tuple[np.ndarray, np.ndarray]
     a = 4
 
     x = np.zeros((sample_size, 2))
-    y = np.zeros((sample_size, 1), dtype="uint8")
+    y = np.zeros((sample_size, 1), dtype=np.uint8)
 
     for j in range(2):
         ix = range(n * j, n * (j + 1))

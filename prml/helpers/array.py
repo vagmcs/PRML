@@ -1,6 +1,5 @@
 # Types
-from typing import Any
-from typing import cast
+from typing import Any, cast
 
 # Standard Library
 from enum import IntEnum
