@@ -18,7 +18,7 @@ class BayesianLogisticRegression(Classifier):
     def _sigmoid(x):
         return 1 / (1 + np.exp(-x))
 
-    def fit(self, x: np.ndarray, t: np.ndarray, n_iter: int = 1000):
+    def fit(self, x: np.ndarray, t: np.ndarray, n_iter: int = 1000) -> None:
         w = np.zeros(np.size(x, 1))
         self.w_mean = np.copy(w)
         self.w_precision = self.alpha * np.eye(np.size(x, 1))

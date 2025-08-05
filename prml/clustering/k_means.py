@@ -10,20 +10,20 @@ class KMeans:
 
         self._n_clusters = n_clusters
         self._centers: np.ndarray | None = None
-        self._history: list[(np.ndarray, np.ndarray)] = list()
+        self._history: list[tuple[np.ndarray, np.ndarray]] = list()
 
     @property
-    def centers(self) -> np.ndarray:
+    def centers(self) -> np.ndarray | None:
         return self._centers
 
     @property
-    def history(self) -> list[(np.ndarray, np.ndarray)]:
+    def history(self) -> list[tuple[np.ndarray, np.ndarray]]:
         return self._history
 
     def fit(self, x: np.ndarray, n_iter: int = 100) -> None:
         n, d = x.shape
 
-        # initialize centers randomly
+        # initialize centers at random
         self._centers = x[np.random.choice(len(x), self._n_clusters, replace=False)]
 
         # optimize
@@ -64,10 +64,10 @@ class KMeans:
         self._history.append((self._centers.copy(), assignments.copy()))
 
         # update cluster counts
-        if hasattr(self, "_r"):
-            self._r += cluster_indicator
-        else:
+        if not hasattr(self, "_r"):
             self._r = cluster_indicator
+        else:
+            self._r += cluster_indicator
 
         # recompute the centers (M-step)
         eta = 1 / self._r
@@ -75,5 +75,8 @@ class KMeans:
         self._centers += cluster_indicator.T * eta.T * (x - self._centers)
 
     def predict(self, x: np.ndarray) -> np.ndarray:
-        d = cdist(x, self._centers, metric="euclidean")
-        return np.argmin(d, axis=-1)
+        if self._centers is None:
+            raise RuntimeError("Model centers are not initialized. Call 'fit' before 'predict'.")
+
+        distances = cdist(x, self._centers, metric="euclidean")
+        return np.asarray(np.argmin(distances, axis=-1))

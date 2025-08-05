@@ -34,9 +34,9 @@ class BayesianRegression(Regression):
         mean_prev, precision_prev = self._mean, self._precision
 
         self._precision = precision_prev + self._beta * x.T @ x
-        self._cov = np.linalg.inv(self._precision)  # type: ignore
+        self._cov = np.linalg.inv(self._precision)
 
-        self._mean = np.linalg.solve(self._precision, precision_prev @ mean_prev + self._beta * x.T @ t)  # type: ignore
+        self._mean = np.linalg.solve(self._precision, precision_prev @ mean_prev + self._beta * x.T @ t)
 
     def predict(self, x: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
         """

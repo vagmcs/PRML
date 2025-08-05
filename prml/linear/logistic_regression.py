@@ -24,9 +24,9 @@ class LogisticRegression(Classifier):
             # shuffle the data
             indices = np.random.permutation(indices)
             for i in indices:
-                self._w = self._w - eta * (self._sigmoid(np.dot(self._w.T, x[i])) - t[i]) * x[i]  # type: ignore
+                self._w = self._w - eta * (self._sigmoid(np.dot(self._w.T, x[i])) - t[i]) * x[i]
 
-    def fit(self, x: np.ndarray, t: np.ndarray, n_iter: int = 1000):
+    def fit(self, x: np.ndarray, t: np.ndarray, n_iter: int = 1000) -> None:
         n, d = x.shape
         self._w = np.zeros(d)
 
@@ -45,7 +45,7 @@ class LogisticRegression(Classifier):
 
 
 class SoftmaxRegression(Classifier):
-    def __init__(self):
+    def __init__(self) -> None:
         self._w: np.ndarray | None = None
 
     @staticmethod
@@ -66,7 +66,7 @@ class SoftmaxRegression(Classifier):
             # shuffle the data
             indices = np.random.permutation(indices)
             for i in indices:
-                self._w = self._w - eta * (self._softmax(x[i] @ self._w) - t_one_hot[i]) * x[i, None].T  # type: ignore
+                self._w = self._w - eta * (self._softmax(x[i] @ self._w) - t_one_hot[i]) * x[i, None].T
 
     def predict(self, x: np.ndarray) -> np.ndarray:
         return np.argmax(self._softmax(x @ self._w), axis=1)

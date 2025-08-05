@@ -49,7 +49,7 @@ class LinearRegression(Regression):
             # shuffle the data
             indices = np.random.permutation(indices)
             for i in indices:
-                self._w = self._w + eta * (t[i] - np.dot(self._w.T, x[i])) * x[i]  # type: ignore
+                self._w = self._w + eta * (t[i] - np.dot(self._w.T, x[i])) * x[i]
 
         self._var = np.mean(np.square(x @ self._w - t))
 

@@ -33,8 +33,8 @@ def plot_2d_decision_boundary(
     z = z.reshape(xx.shape)
 
     # Plot the contour and training examples
-    plt.contourf(xx, yy, z, cmap=plt.cm.coolwarm)
-    plt.scatter(x[:, 0], x[:, 1], c=y, cmap=plt.cm.coolwarm)
+    plt.contourf(xx, yy, z, cmap="coolwarm")
+    plt.scatter(x[:, 0], x[:, 1], c=y, cmap="coolwarm")
     plt.xlabel("$X_1$")
     plt.ylabel("$X_2$")
     plt.show()

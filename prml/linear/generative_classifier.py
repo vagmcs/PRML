@@ -34,7 +34,7 @@ class GenerativeClassifier(Classifier):
 
         shared_sigma = sum([(n[k] / np.sum(n)) * sigma[k] for k in range(n_classes)])
         for k in range(n_classes):
-            self._class_densities.append(MultivariateGaussian(mu[k][:, None], shared_sigma))  # type: ignore
+            self._class_densities.append(MultivariateGaussian(mu[k][:, None], shared_sigma))
 
     def predict(self, x: np.ndarray) -> np.ndarray:
         """

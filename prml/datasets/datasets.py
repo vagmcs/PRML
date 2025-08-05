@@ -15,7 +15,7 @@ def generate_toy_data(
     sample_size: int,
     std: float,
     domain: tuple[float, float] = (0, 1),
-    uniform=False,
+    uniform: bool = False,
 ) -> tuple[np.ndarray, np.ndarray]:
     """
     Generates a toy dataset given a function, a domain and a sample size. Then adds
