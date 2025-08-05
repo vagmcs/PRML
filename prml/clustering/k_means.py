@@ -1,6 +1,20 @@
+# Standard Library
+from dataclasses import dataclass
+
 # Dependencies
 import numpy as np
+from numpy.typing import NDArray
 from scipy.spatial.distance import cdist
+
+# Project
+from prml.helpers import array
+from prml.helpers.array import Axis
+
+
+@dataclass(frozen=True)
+class Step:
+    centers: NDArray[np.floating]
+    assignments: NDArray[np.uint32]
 
 
 class KMeans:
@@ -9,59 +23,62 @@ class KMeans:
             raise RuntimeError("The number of clusters cannot be less than 2.")
 
         self._n_clusters = n_clusters
-        self._centers: np.ndarray | None = None
-        self._history: list[tuple[np.ndarray, np.ndarray]] = list()
+        self._centers: NDArray[np.floating] | None = None
+
+        # keeps track of
+        self._history: list[Step] = []
 
     @property
-    def centers(self) -> np.ndarray | None:
+    def centers(self) -> NDArray[np.floating] | None:
         return self._centers
 
     @property
-    def history(self) -> list[tuple[np.ndarray, np.ndarray]]:
+    def history(self) -> list[Step]:
         return self._history
 
-    def fit(self, x: np.ndarray, n_iter: int = 100) -> None:
-        n, d = x.shape
+    def fit(self, x: NDArray[np.floating], n_iter: int = 100) -> None:
+        array.validate_2d(x)
 
-        # initialize centers at random
+        # initialize centers at random from the dataset
         self._centers = x[np.random.choice(len(x), self._n_clusters, replace=False)]
 
         # optimize
         for _ in range(n_iter):
-            prev_centers = np.copy(self._centers)
+            prev_centers = self._centers.copy()
 
             # assign data points to clusters (E-step)
-            r = np.zeros((n, self._n_clusters))
-            d = cdist(x, self._centers, metric="euclidean")
-            assignments = np.argmin(d, axis=-1)
+            assignments = self.predict(x)
             r = np.eye(self._n_clusters)[assignments]
-            self._history.append((self._centers.copy(), assignments.copy()))
+
+            # update history
+            self._history.append(Step(self._centers.copy(), assignments.copy()))
 
             # recompute the centers (M-step)
-            self._centers = np.sum(x[:, None, :] * r[:, :, None], axis=0) / r.sum(axis=0)[:, None]
+            self._centers = array.cast_f(np.sum(x[:, None, :] * r[:, :, None], Axis.ROWS) / r.sum(Axis.ROWS)[:, None])
 
             # check for convergence
             if np.allclose(prev_centers, self._centers):
                 break
 
-    def update(self, x: np.ndarray) -> None:
+    def update(self, x: NDArray[np.floating]) -> None:
         x = x[None, :] if x.ndim == 1 else x
         _, d = x.shape
 
-        # initialize centers randomly
+        # initialize centers to zero
         if self._centers is None:
             self._centers = np.zeros((self._n_clusters, d))
 
-        is_empty = self._centers.sum(axis=1) == 0
+        # if there are zero cluster centers, set the next data point as a center
+        is_empty = array.cast_bool(self._centers.sum(Axis.COLS) == 0)
         if any(is_empty):
-            i = is_empty.argmax()
-            self._centers[i, :] = x
+            self._centers[is_empty.argmax(), :] = x
 
         # assign data points to clusters (E-step)
-        d = cdist(x, self._centers, metric="euclidean")
-        assignments = np.argmin(d, axis=-1)
+        assignments = self.predict(x)
         cluster_indicator = np.eye(self._n_clusters)[assignments]
-        self._history.append((self._centers.copy(), assignments.copy()))
+
+        # update history
+        self._history.append(Step(self._centers.copy(), assignments.copy()))
 
         # update cluster counts
         if not hasattr(self, "_r"):
@@ -71,12 +88,12 @@ class KMeans:
 
         # recompute the centers (M-step)
         eta = 1 / self._r
-        eta = np.where(eta == np.inf, 0, eta)
+        eta = np.where(eta == np.inf, 0.0, eta)  # do not update cluster centers that have zero counts
         self._centers += cluster_indicator.T * eta.T * (x - self._centers)
 
-    def predict(self, x: np.ndarray) -> np.ndarray:
+    def predict(self, x: NDArray[np.floating]) -> NDArray[np.unsignedinteger]:
         if self._centers is None:
             raise RuntimeError("Model centers are not initialized. Call 'fit' before 'predict'.")
 
         distances = cdist(x, self._centers, metric="euclidean")
-        return np.asarray(np.argmin(distances, axis=-1))
+        return array.cast_uint(np.argmin(distances, Axis.COLS))
