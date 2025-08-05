@@ -1,16 +1,9 @@
 # Pattern Recognition and Machine Learning (PMRL)
 
 [![nbviewer](https://raw.githubusercontent.com/jupyter/design/master/logos/Badges/nbviewer_badge.svg)](https://nbviewer.jupyter.org/github/vagmcs/prml/tree/master/)
-[![License: LGPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
-[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 
 The project contains notes and proofs as Jupyter notebooks, as well as, Python code implementing algorithms as presented in the book "Pattern Recognition and Machine Learning" by Christopher Bishop.
-
-## License
-
-This program comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under certain conditions; See the [GNU General Public License v3 for more details](http://www.gnu.org/licenses/gpl-3.0.en.html).
-
 
 ## Instructions
 
@@ -52,3 +45,7 @@ make markdown
 * [An overview of gradient descent optimization algorithms](https://www.ruder.io/optimizing-gradient-descent) by Sebastian Ruder
 * [An updated overview of recent gradient descent algorithms](https://johnchenresearch.github.io/demon) by John Chen
 * [3Blue1Brown YouTube Channel](https://www.youtube.com/@3blue1brown)
+
+## License
+
+This program comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under certain conditions; See the [GNU General Public License v3 for more details](http://www.gnu.org/licenses/gpl-3.0.en.html).
