@@ -58,4 +58,4 @@ class FisherLinearDiscriminant(Classifier):
         :param x: (N, D) array of samples to predict their output :return (N,) array
             holding the predicted classes
         """
-        return (x @ self._w > self._threshold).astype(np.int)  # type: ignore
+        return (x @ self._w > self._threshold).astype(np.uint32)  # type: ignore

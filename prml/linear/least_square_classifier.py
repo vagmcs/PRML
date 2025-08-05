@@ -28,7 +28,7 @@ class LeastSquaresClassifier(Classifier):
         :param t: (N,) array holding the target classes
         """
 
-        t_one_hot = OneHotEncoder.encode(t)
+        t_one_hot = OneHotEncoder().encode(t)
         self._w = np.linalg.pinv(x) @ t_one_hot
 
     def predict(self, x: np.ndarray) -> np.ndarray:

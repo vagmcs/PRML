@@ -1,5 +1,9 @@
+# Types
+from typing import cast
+
 # Dependencies
 import numpy as np
+from numpy.typing import NDArray
 
 # Project
 from prml.linear.classifier import Classifier
@@ -11,8 +15,9 @@ class LogisticRegression(Classifier):
         self._w: np.ndarray | None = None
 
     @staticmethod
-    def _sigmoid(x):
-        return 1 / (1 + np.exp(-x))
+    def _sigmoid(x: NDArray[np.floating]) -> NDArray[np.floating]:
+        expr = 1.0 / (1.0 + np.exp(-x))
+        return cast(NDArray[np.floating], expr)
 
     def fit_lms(self, x: np.ndarray, t: np.ndarray, eta: float, n_iter: int = 1000) -> None:
         x = x[:, None] if x.ndim == 1 else x
@@ -52,13 +57,14 @@ class SoftmaxRegression(Classifier):
     def _softmax(a: np.ndarray) -> np.ndarray:
         a_max = np.max(a, axis=-1, keepdims=True)
         exp_a = np.exp(a - a_max)
-        return exp_a / np.sum(exp_a, axis=-1, keepdims=True)
+        expr = exp_a / np.sum(exp_a, axis=-1, keepdims=True)
+        return cast(NDArray[np.floating], expr)
 
     def fit(self, x: np.ndarray, t: np.ndarray, eta: float = 0.01, n_iter: int = 1000) -> None:
         x = x[:, None] if x.ndim == 1 else x
         n, d = x.shape
         indices = np.arange(n)
-        t_one_hot = OneHotEncoder.encode(t)
+        t_one_hot = OneHotEncoder().encode(t)
         n_classes = t_one_hot.shape[1]
 
         self._w = np.random.random((d, n_classes))
@@ -69,4 +75,5 @@ class SoftmaxRegression(Classifier):
                 self._w = self._w - eta * (self._softmax(x[i] @ self._w) - t_one_hot[i]) * x[i, None].T
 
     def predict(self, x: np.ndarray) -> np.ndarray:
-        return np.argmax(self._softmax(x @ self._w), axis=1)
+        expr = np.argmax(self._softmax(x @ self._w), axis=1)
+        return cast(NDArray[np.floating], expr)

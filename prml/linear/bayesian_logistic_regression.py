@@ -1,5 +1,9 @@
+# Types
+from typing import cast
+
 # Dependencies
 import numpy as np
+from numpy.typing import NDArray
 
 # Project
 from prml.linear.classifier import Classifier
@@ -15,8 +19,9 @@ class BayesianLogisticRegression(Classifier):
         self.w_precision: np.ndarray | None = None
 
     @staticmethod
-    def _sigmoid(x):
-        return 1 / (1 + np.exp(-x))
+    def _sigmoid(x: NDArray[np.floating]) -> NDArray[np.floating]:
+        expr = 1.0 / (1.0 + np.exp(-x))
+        return cast(NDArray[np.floating], expr)
 
     def fit(self, x: np.ndarray, t: np.ndarray, n_iter: int = 1000) -> None:
         w = np.zeros(np.size(x, 1))
@@ -38,6 +43,9 @@ class BayesianLogisticRegression(Classifier):
         self.w_precision = hessian
 
     def predict(self, x: np.ndarray) -> np.ndarray:
+        if self.w_mean is None or self.w_precision is None:
+            raise RuntimeError("Model mean and covariance are not initialized. Call 'fit' before 'predict'.")
+
         mu_a = x @ self.w_mean
         var_a = np.sum(np.linalg.solve(self.w_precision, x.T).T * x, axis=1)
         return self._sigmoid(mu_a / np.sqrt(1 + np.pi * var_a / 8))
