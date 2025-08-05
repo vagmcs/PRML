@@ -1,6 +1,3 @@
-# Types
-from typing import Union
-
 # Dependencies
 import numpy as np
 from scipy.spatial import distance_matrix
@@ -13,7 +10,7 @@ class KNearestNeighborsClassifier(Neighbors):
     K-nearest neighbor classifier.
     """
 
-    def __init__(self, k: int, x: Union[int, float, np.ndarray], t: Union[int, float, np.ndarray]):
+    def __init__(self, k: int, x: int | float | np.ndarray, t: int | float | np.ndarray):
         """
         Creates a nearest neighbor classifier.
 

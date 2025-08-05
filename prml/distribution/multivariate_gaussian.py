@@ -1,6 +1,3 @@
-# Types
-from typing import Optional, Union
-
 # Dependencies
 import numpy as np
 import sympy as sym
@@ -15,7 +12,7 @@ class MultivariateGaussian(GenericDistribution):
     p(x|mu, cov) = exp{-0.5 * (x - mu)^T @ cov^-1 @ (x - mu)} / (2pi)^(D/2) / |cov|^0.5
     """
 
-    def __init__(self, mu: Optional[np.ndarray] = None, cov: Optional[np.ndarray] = None, dim: Optional[int] = None):
+    def __init__(self, mu: np.ndarray | None = None, cov: np.ndarray | None = None, dim: int | None = None):
         """
         Create a multivariate *Gaussian* distribution.
 
@@ -70,7 +67,7 @@ class MultivariateGaussian(GenericDistribution):
             * sym.exp(-0.5 * ((xx - sym.Matrix(self.mu)).T * sym.Matrix(self.cov).inv() * (xx - sym.Matrix(self.mu))))
         )
 
-    def pdf(self, x: np.ndarray) -> Union[GenericDistribution, np.ndarray, float]:
+    def pdf(self, x: np.ndarray) -> GenericDistribution | np.ndarray | float:
         """
         Compute the probability density function (PDF) or the probability mass function
         (PMF) of the given values for the random variables.

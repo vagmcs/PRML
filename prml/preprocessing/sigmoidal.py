@@ -1,6 +1,3 @@
-# Types
-from typing import Union
-
 # Dependencies
 import numpy as np
 
@@ -14,7 +11,7 @@ class SigmoidFeature(BasisFunction):
     1 / (1 + exp(c @ (mean - x))
     """
 
-    def __init__(self, mean: Union[int, float, np.ndarray], sigma: Union[int, float] = 1):
+    def __init__(self, mean: int | float | np.ndarray, sigma: int | float = 1):
         """
         Create sigmoid basis functions. Each basis function can either have a uni-
         variate or a multivariate mean and constant a constant coefficient. In the
@@ -40,7 +37,7 @@ class SigmoidFeature(BasisFunction):
             raise ValueError(f"Spatial scale should be a number, but '{type(sigma)}' is given.")
         self._sigma = sigma
 
-    def transform(self, x: Union[int, float, np.ndarray]) -> np.ndarray:
+    def transform(self, x: int | float | np.ndarray) -> np.ndarray:
         """
         Transform input array using sigmoid basis functions.
 

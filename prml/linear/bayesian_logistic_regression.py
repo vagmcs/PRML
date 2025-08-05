@@ -1,6 +1,3 @@
-# Types
-from typing import Optional
-
 # Dependencies
 import numpy as np
 
@@ -14,8 +11,8 @@ class BayesianLogisticRegression(Classifier):
         :param alpha: precision parameter of the prior
         """
         self.alpha = alpha
-        self.w_mean: Optional[np.ndarray] = None
-        self.w_precision: Optional[np.ndarray] = None
+        self.w_mean: np.ndarray | None = None
+        self.w_precision: np.ndarray | None = None
 
     @staticmethod
     def _sigmoid(x):

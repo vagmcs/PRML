@@ -1,6 +1,3 @@
-# Types
-from typing import Union
-
 # Standard Library
 import abc
 
@@ -38,7 +35,7 @@ class Distribution(metaclass=abc.ABCMeta):
         """
         pass
 
-    def likelihood_iid(self, x: Union[np.ndarray, float]) -> float:
+    def likelihood_iid(self, x: np.ndarray | float) -> float:
         """
         Compute the likelihood of the distribution on the given data, assuming that the
         data are independent and identically distributed.
@@ -48,7 +45,7 @@ class Distribution(metaclass=abc.ABCMeta):
         """
         return np.product(self.pdf(x))
 
-    def log_likelihood_iid(self, x: Union[np.ndarray, float]) -> float:
+    def log_likelihood_iid(self, x: np.ndarray | float) -> float:
         """
         Compute the logarithm of the likelihood of the distribution on the given data,
         assuming that the data are independent and identically distributed.
@@ -59,7 +56,7 @@ class Distribution(metaclass=abc.ABCMeta):
         return sum(np.log(self.pdf(x)))
 
     @abc.abstractmethod
-    def pdf(self, x: Union[np.ndarray, float]) -> Union[np.ndarray, float]:
+    def pdf(self, x: np.ndarray | float) -> np.ndarray | float:
         """
         Compute the probability density function (PDF) or the probability mass function
         (PMF) of the given values for the random variables.

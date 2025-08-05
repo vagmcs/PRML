@@ -1,6 +1,3 @@
-# Types
-from typing import List, Optional
-
 # Dependencies
 import numpy as np
 
@@ -17,7 +14,7 @@ def clip(x: np.ndarray) -> np.ndarray:
 class Linear(Module):
     def __init__(self):
         super().__init__()
-        self._z: Optional[np.ndarray] = None
+        self._z: np.ndarray | None = None
 
     def _forward(self, _input: np.ndarray, training_mode: bool = False) -> np.ndarray:
         self._z = _input
@@ -30,7 +27,7 @@ class Linear(Module):
 class Exp(Module):
     def __init__(self):
         super().__init__()
-        self._z: Optional[np.ndarray] = None
+        self._z: np.ndarray | None = None
 
     def _forward(self, _input: np.ndarray, training_mode: bool = False) -> np.ndarray:
         self._z = _input
@@ -43,7 +40,7 @@ class Exp(Module):
 class ReLU(Module):
     def __init__(self):
         super().__init__()
-        self._z: Optional[np.ndarray] = None
+        self._z: np.ndarray | None = None
 
     def _forward(self, _input: np.ndarray, training_mode: bool = False) -> np.ndarray:
         self._z = _input
@@ -64,7 +61,7 @@ class ReLU(Module):
 class TanH(Module):
     def __init__(self):
         super().__init__()
-        self._z: Optional[np.ndarray] = None
+        self._z: np.ndarray | None = None
 
     def _forward(self, _input: np.ndarray, training_mode: bool = False) -> np.ndarray:
         self._z = _input
@@ -77,7 +74,7 @@ class TanH(Module):
 class Sigmoid(Module):
     def __init__(self):
         super().__init__()
-        self._z: Optional[np.ndarray] = None
+        self._z: np.ndarray | None = None
 
     def _forward(self, _input: np.ndarray, training_mode: bool = False) -> np.ndarray:
         self._z = _input
@@ -91,7 +88,7 @@ class Sigmoid(Module):
 class Softmax(Module):
     def __init__(self) -> None:
         super().__init__()
-        self._z: Optional[np.ndarray] = None
+        self._z: np.ndarray | None = None
 
     def _forward(self, _input: np.ndarray, training_mode: bool = False) -> np.ndarray:
         self._z = _input
@@ -115,7 +112,7 @@ class Softmax(Module):
 
 
 class Concat(Module):
-    def __init__(self, activations: List[Module]) -> None:
+    def __init__(self, activations: list[Module]) -> None:
         super().__init__()
         self._activations = activations
 

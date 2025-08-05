@@ -1,6 +1,3 @@
-# Types
-from typing import Tuple
-
 # Standard Library
 import abc
 
@@ -23,7 +20,7 @@ class Regression(metaclass=abc.ABCMeta):
         """
 
     @abc.abstractmethod
-    def predict(self, x: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
+    def predict(self, x: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
         """
         Makes a prediction given an input.
 

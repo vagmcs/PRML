@@ -1,6 +1,3 @@
-# Types
-from typing import Optional, Tuple, Union
-
 # Dependencies
 import numpy as np
 
@@ -14,12 +11,12 @@ class BayesianRegression(Regression):
     w ~ N(w|0, alpha^(-1)I) y(x, w) = w.T * X t ~ N(t|y(x, w), beta^(-1))
     """
 
-    def __init__(self, alpha: Union[int, float], beta: Union[int, float]):
+    def __init__(self, alpha: int | float, beta: int | float):
         self._alpha = alpha
         self._beta = beta
-        self._mean: Optional[np.ndarray] = None
-        self._precision: Optional[np.ndarray] = None
-        self._cov: Optional[np.ndarray] = None
+        self._mean: np.ndarray | None = None
+        self._precision: np.ndarray | None = None
+        self._cov: np.ndarray | None = None
 
     def fit(self, x: np.ndarray, t: np.ndarray) -> None:
         """
@@ -41,7 +38,7 @@ class BayesianRegression(Regression):
 
         self._mean = np.linalg.solve(self._precision, precision_prev @ mean_prev + self._beta * x.T @ t)  # type: ignore
 
-    def predict(self, x: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
+    def predict(self, x: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
         """
         Makes a prediction given an input.
 

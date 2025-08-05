@@ -34,8 +34,8 @@ clean:
 ### format   : Format source
 .PHONY: format
 format:
-	@poetry run pyupgrade --py39-plus **/*.py || true
-	@poetry run nbqa pyupgrade --py39-plus **/*.ipynb || true
+	@poetry run pyupgrade --py310-plus $(PROJECT_NAME)/**/*.py || true
+	@poetry run nbqa pyupgrade --py310-plus **/*.ipynb || true
 	@poetry run isort $(PROJECT_NAME)
 	@poetry run nbqa isort notebooks --float-to-top
 	@poetry run ruff format notebooks $(PROJECT_NAME)

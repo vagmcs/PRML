@@ -1,6 +1,3 @@
-# Types
-from typing import Union
-
 # Dependencies
 import numpy as np
 import sympy as sym
@@ -16,7 +13,7 @@ class Bernoulli(GenericDistribution):
     p(x|mu) = mu^x * (1 - mu)^(x - 1)
     """
 
-    def __init__(self, mu: Union[sym.Symbol, int, float] = symbols.mu):
+    def __init__(self, mu: sym.Symbol | int | float = symbols.mu):
         """
         Create a *Bernoulli* distribution.
 
@@ -37,7 +34,7 @@ class Bernoulli(GenericDistribution):
         # Update the formula to use the sample mean.
         self._formula = self.mu**symbols.x * (1 - self.mu) ** (1 - symbols.x)
 
-    def pdf(self, x: Union[np.ndarray, bool, int]) -> Union[GenericDistribution, np.ndarray, float]:
+    def pdf(self, x: np.ndarray | bool | int) -> GenericDistribution | np.ndarray | float:
         """
         Compute the probability density function (PDF) or the probability mass function
         (PMF) of the given values for the random variables.

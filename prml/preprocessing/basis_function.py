@@ -1,6 +1,3 @@
-# Types
-from typing import Union
-
 # Standard Library
 import abc
 
@@ -14,7 +11,7 @@ class BasisFunction(metaclass=abc.ABCMeta):
     """
 
     @staticmethod
-    def _make_array(x: Union[int, float, np.ndarray]) -> np.ndarray:
+    def _make_array(x: int | float | np.ndarray) -> np.ndarray:
         """
         Checks if the input is an array. The array should be at most 2-dimensional,
         representing one data point per row. If not, an exception is raised. In case a
@@ -36,7 +33,7 @@ class BasisFunction(metaclass=abc.ABCMeta):
             raise ValueError(f"Incompatible type '{type(x)}'.")
 
     @abc.abstractmethod
-    def transform(self, x: Union[int, float, np.ndarray]) -> np.ndarray:
+    def transform(self, x: int | float | np.ndarray) -> np.ndarray:
         """
         Transforms input array using the basis functions.
 

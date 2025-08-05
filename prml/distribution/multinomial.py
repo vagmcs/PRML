@@ -1,6 +1,3 @@
-# Types
-from typing import Optional, Union
-
 # Dependencies
 import numpy as np
 import sympy as sym
@@ -16,7 +13,7 @@ class Multinomial(GenericDistribution):
     p(x|N,mu) = (N! / x_1!x_2!...x_K!) prod_{k=1}^K mu_k^x_k
     """
 
-    def __init__(self, n: int, mu: Optional[np.ndarray] = None, dim: Optional[int] = None):
+    def __init__(self, n: int, mu: np.ndarray | None = None, dim: int | None = None):
         """
         Create a *Multinomial* distribution.
 
@@ -41,7 +38,7 @@ class Multinomial(GenericDistribution):
     def ml(self, x: np.ndarray) -> None:
         pass
 
-    def pdf(self, x: Union[np.ndarray]) -> Union[GenericDistribution, np.ndarray, float]:
+    def pdf(self, x: np.ndarray) -> GenericDistribution | np.ndarray | float:
         """
         Compute the probability density function (PDF) or the probability mass function
         (PMF) of the given values for the random variables.

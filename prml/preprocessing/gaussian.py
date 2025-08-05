@@ -1,6 +1,3 @@
-# Types
-from typing import Union
-
 # Dependencies
 import numpy as np
 
@@ -14,7 +11,7 @@ class GaussianFeature(BasisFunction):
     exp(-0.5 * ||x - mean||^2 / sigma)
     """
 
-    def __init__(self, mean: Union[int, float, np.ndarray], sigma: Union[int, float]):
+    def __init__(self, mean: int | float | np.ndarray, sigma: int | float):
         """
         Create Gaussian basis functions. Each basis function can either be a uni-variate
         or a multivariate Gaussian having constant across dimensions. In the former
@@ -42,7 +39,7 @@ class GaussianFeature(BasisFunction):
             raise ValueError(f"Spatial scale should be a number, but '{type(sigma)}' is given.")
         self._sigma = sigma
 
-    def transform(self, x: Union[int, float, np.ndarray]) -> np.ndarray:
+    def transform(self, x: int | float | np.ndarray) -> np.ndarray:
         """
         Transform input array using gaussian basis functions.
 

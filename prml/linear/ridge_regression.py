@@ -1,6 +1,3 @@
-# Types
-from typing import Optional, Tuple
-
 # Dependencies
 import numpy as np
 
@@ -15,8 +12,8 @@ class RidgeRegression(Regression):
     """
 
     def __init__(self, alpha: float = 1):
-        self._w: Optional[np.ndarray] = None
-        self._var: Optional[np.ndarray] = None
+        self._w: np.ndarray | None = None
+        self._var: np.ndarray | None = None
         self._alpha = alpha
 
     def fit(self, x: np.ndarray, t: np.ndarray) -> None:
@@ -31,7 +28,7 @@ class RidgeRegression(Regression):
         self._w = np.linalg.pinv(x.T @ x + self._alpha * eye) @ x.T @ t
         self._var = np.mean(np.square(x @ self._w - t))
 
-    def predict(self, x: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
+    def predict(self, x: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
         """
         Makes a prediction given an input.
 

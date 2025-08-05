@@ -1,6 +1,3 @@
-# Types
-from typing import Optional, Union
-
 # Dependencies
 import numpy as np
 import sympy as sym
@@ -15,7 +12,7 @@ class Categorical(GenericDistribution):
     p(x|mu) = prod_{k=1}^K mu_k^x_k
     """
 
-    def __init__(self, mu: Optional[np.ndarray] = None, dim: Optional[int] = None):
+    def __init__(self, mu: np.ndarray | None = None, dim: int | None = None):
         """
         Create a *Categorical* distribution.
 
@@ -46,7 +43,7 @@ class Categorical(GenericDistribution):
         # Update the formula to use the sample mean.
         self._formula = sym.prod(np.power(self.mu, sym.MatrixSymbol("x", self.D, 1)))
 
-    def pdf(self, x: Union[np.ndarray]) -> Union[GenericDistribution, np.ndarray, float]:
+    def pdf(self, x: np.ndarray) -> GenericDistribution | np.ndarray | float:
         """
         Compute the probability density function (PDF) or the probability mass function
         (PMF) of the given values for the random variables.

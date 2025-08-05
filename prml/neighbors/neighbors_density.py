@@ -1,6 +1,3 @@
-# Types
-from typing import Union
-
 # Dependencies
 import numpy as np
 from scipy.spatial import distance_matrix
@@ -14,7 +11,7 @@ class NearestNeighborsDensity(Neighbors):
     Nearest neighbour method for density estimation.
     """
 
-    def __init__(self, k: int, data: Union[int, float, np.ndarray]):
+    def __init__(self, k: int, data: int | float | np.ndarray):
         """
         Creates a nearest neighbor estimator.
 

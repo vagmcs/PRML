@@ -1,6 +1,3 @@
-# Types
-from typing import Optional, Union
-
 # Dependencies
 import numpy as np
 import sympy as sym
@@ -16,7 +13,7 @@ class Dirichlet(GenericDistribution):
     p(x|a) = (Γ(a_0) / Γ(a_1)...Γ(a_K)) * prod_k x_k ^ (a_k - 1)
     """
 
-    def __init__(self, alpha: Optional[np.ndarray] = None, dim: Optional[int] = None):
+    def __init__(self, alpha: np.ndarray | None = None, dim: int | None = None):
         """
         Create a *Dirichlet* distribution.
 
@@ -43,7 +40,7 @@ class Dirichlet(GenericDistribution):
         """
         pass
 
-    def pdf(self, x: Union[np.ndarray, float]) -> Union[GenericDistribution, np.ndarray, float]:
+    def pdf(self, x: np.ndarray | float) -> GenericDistribution | np.ndarray | float:
         """
         Compute the probability density function (PDF) or the probability mass function
         (PMF) of the given values for the random variables.

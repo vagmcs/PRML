@@ -1,6 +1,3 @@
-# Types
-from typing import List
-
 # Dependencies
 import numpy as np
 
@@ -15,8 +12,8 @@ class GenerativeClassifier(Classifier):
         """
         Creates a generative classifier.
         """
-        self._class_priors: List[float] = []
-        self._class_densities: List[MultivariateGaussian] = []
+        self._class_priors: list[float] = []
+        self._class_densities: list[MultivariateGaussian] = []
 
     def fit(self, x: np.ndarray, t: np.ndarray) -> None:
         """

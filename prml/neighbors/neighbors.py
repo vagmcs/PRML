@@ -1,6 +1,3 @@
-# Types
-from typing import Union
-
 # Standard Library
 import abc
 
@@ -13,7 +10,7 @@ class Neighbors(metaclass=abc.ABCMeta):
     Nearest neighbors base abstract class.
     """
 
-    def __init__(self, k: int, data: Union[int, float, np.ndarray]):
+    def __init__(self, k: int, data: int | float | np.ndarray):
         """
         :param k: number of nearest neighbors
         :param data: (N, D) array holding the input training data

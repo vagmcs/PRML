@@ -1,6 +1,3 @@
-# Types
-from typing import Union
-
 # Standard Library
 import functools
 import itertools
@@ -34,7 +31,7 @@ class PolynomialFeature(BasisFunction):
             raise ValueError(f"Degree should be of type 'int', but type '{type(degree)}' is given.")
         self._degree = degree
 
-    def transform(self, x: Union[float, np.ndarray]) -> np.ndarray:
+    def transform(self, x: float | np.ndarray) -> np.ndarray:
         """
         Transforms input array using polynomial basis functions.
 

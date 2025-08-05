@@ -1,6 +1,3 @@
-# Types
-from typing import Optional
-
 # Dependencies
 import numpy as np
 
@@ -19,7 +16,7 @@ class FisherLinearDiscriminant(Classifier):
         """
         Creates a least squares classifier.
         """
-        self._w: Optional[np.ndarray] = None
+        self._w: np.ndarray | None = None
         self._threshold = 0.0
 
     def fit(self, x: np.ndarray, t: np.ndarray) -> None:

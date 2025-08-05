@@ -1,8 +1,6 @@
-# Types
-from typing import Callable, Optional, Tuple
-
 # Standard Library
 import struct
+from collections.abc import Callable
 
 # Dependencies
 import numpy as np
@@ -16,9 +14,9 @@ def generate_toy_data(
     f: Callable[[np.ndarray], np.ndarray],
     sample_size: int,
     std: float,
-    domain: Tuple[float, float] = (0, 1),
+    domain: tuple[float, float] = (0, 1),
     uniform=False,
-) -> Tuple[np.ndarray, np.ndarray]:
+) -> tuple[np.ndarray, np.ndarray]:
     """
     Generates a toy dataset given a function, a domain and a sample size. Then adds
     Gaussian noise to the samples having zero mean and the given standard deviation.
@@ -48,7 +46,7 @@ def load_old_faithful() -> np.ndarray:
     return np.genfromtxt(datasets_dir / "old_faithful.csv", dtype=float, delimiter=",", skip_header=1)
 
 
-def load_planar_dataset(sample_size: int = 400) -> Tuple[np.ndarray, np.ndarray]:
+def load_planar_dataset(sample_size: int = 400) -> tuple[np.ndarray, np.ndarray]:
     """
     Generates a binary class dataset having non-linear decision boundary.
 
@@ -74,7 +72,7 @@ def load_planar_dataset(sample_size: int = 400) -> Tuple[np.ndarray, np.ndarray]
     return x, y
 
 
-def load_mnist_dataset(sample_size: Optional[int] = None) -> Tuple[np.ndarray, np.ndarray]:
+def load_mnist_dataset(sample_size: int | None = None) -> tuple[np.ndarray, np.ndarray]:
     """
     Loads the MNIST dataset. MNIST contains images of handwritten digits from 0 to 9.
 

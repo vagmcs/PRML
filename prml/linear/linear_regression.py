@@ -1,6 +1,3 @@
-# Types
-from typing import Optional, Tuple
-
 # Dependencies
 import numpy as np
 
@@ -18,8 +15,8 @@ class LinearRegression(Regression):
         """
         Creates a linear regression model.
         """
-        self._w: Optional[np.ndarray] = None
-        self._var: Optional[np.ndarray] = None
+        self._w: np.ndarray | None = None
+        self._var: np.ndarray | None = None
 
     def fit(self, x: np.ndarray, t: np.ndarray) -> None:
         """
@@ -56,7 +53,7 @@ class LinearRegression(Regression):
 
         self._var = np.mean(np.square(x @ self._w - t))
 
-    def predict(self, x: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
+    def predict(self, x: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
         """
         Makes a prediction given an input.
 

@@ -1,5 +1,5 @@
-# Types
-from typing import Callable
+# Standard Library
+from collections.abc import Callable
 
 # Dependencies
 import matplotlib.pyplot as plt

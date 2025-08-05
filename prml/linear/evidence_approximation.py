@@ -1,6 +1,3 @@
-# Types
-from typing import Union
-
 # Dependencies
 import numpy as np
 
@@ -17,7 +14,7 @@ class EvidenceApproximation(BayesianRegression):
     generalized maximum likelihood or evidence approximation.
     """
 
-    def __init__(self, alpha: Union[int, float] = 1, beta: Union[int, float] = 1):
+    def __init__(self, alpha: int | float = 1, beta: int | float = 1):
         super().__init__(alpha, beta)
 
     def fit(self, x: np.ndarray, t: np.ndarray, n_iter: int = 100) -> None:

@@ -1,8 +1,8 @@
 # Futures
 from __future__ import annotations
 
-# Types
-from typing import Iterator
+# Standard Library
+from collections.abc import Iterator
 
 # Dependencies
 import numpy as np

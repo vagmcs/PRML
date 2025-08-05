@@ -1,6 +1,3 @@
-# Types
-from typing import Union
-
 # Dependencies
 import numpy as np
 import sympy as sym
@@ -39,7 +36,7 @@ class StudentT(GenericDistribution):
         # TODO: Requires Expectation-Maximization
         pass
 
-    def pdf(self, x: Union[np.ndarray, float]) -> Union[GenericDistribution, np.ndarray, float]:
+    def pdf(self, x: np.ndarray | float) -> GenericDistribution | np.ndarray | float:
         """
         Compute the probability density function (PDF) or the probability mass function
         (PMF) of the given values for the random variables.

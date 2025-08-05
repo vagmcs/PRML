@@ -1,6 +1,3 @@
-# Types
-from typing import Dict, Union
-
 # Dependencies
 import numpy as np
 import sympy as sym
@@ -28,7 +25,7 @@ class GenericDistribution(Distribution):
         """
         return self._formula
 
-    def change_notation(self, theta_substitution: Dict[str, str]) -> "GenericDistribution":
+    def change_notation(self, theta_substitution: dict[str, str]) -> "GenericDistribution":
         """
         Change the notation of variables in the PDF function.
 
@@ -53,7 +50,7 @@ class GenericDistribution(Distribution):
         """
         raise Exception("Cannot apply maximum likelihood estimation on a generic distribution.")
 
-    def pdf(self, **kwargs) -> Union[np.ndarray, float]:
+    def pdf(self, **kwargs) -> np.ndarray | float:
         """
         Compute the likelihood of the distribution on the given data, assuming that the
         data are independent and identically distributed.

@@ -1,6 +1,3 @@
-# Types
-from typing import Optional
-
 # Dependencies
 import numpy as np
 
@@ -11,7 +8,7 @@ from prml.preprocessing import OneHotEncoder
 
 class LogisticRegression(Classifier):
     def __init__(self) -> None:
-        self._w: Optional[np.ndarray] = None
+        self._w: np.ndarray | None = None
 
     @staticmethod
     def _sigmoid(x):
@@ -49,7 +46,7 @@ class LogisticRegression(Classifier):
 
 class SoftmaxRegression(Classifier):
     def __init__(self):
-        self._w: Optional[np.ndarray] = None
+        self._w: np.ndarray | None = None
 
     @staticmethod
     def _softmax(a: np.ndarray) -> np.ndarray:

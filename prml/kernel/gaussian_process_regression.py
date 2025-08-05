@@ -1,6 +1,3 @@
-# Types
-from typing import Tuple, Union
-
 # Dependencies
 import numpy as np
 
@@ -16,7 +13,7 @@ class GaussianProcessRegression(Regression):
     p(t_n+1|t_n) = N(t_n+1|k^T C_N^-1 t_N, c - k^T C_N^-1 k)
     """
 
-    def __init__(self, kernel: Kernel, beta: Union[int, float]) -> None:
+    def __init__(self, kernel: Kernel, beta: int | float) -> None:
         """
         Creates a linear regression model.
         """
@@ -52,7 +49,7 @@ class GaussianProcessRegression(Regression):
                 )
                 print(f"-- Iterations {i}: {ll_error}")
 
-    def predict(self, x: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
+    def predict(self, x: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
         k = self._kernel(self._x, x)
         c = self._kernel(x, x, pairwise=False)
         k_precision = k.T @ self._precision

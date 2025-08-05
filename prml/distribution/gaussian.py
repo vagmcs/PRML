@@ -1,6 +1,3 @@
-# Types
-from typing import Union
-
 # Standard Library
 import math
 
@@ -21,8 +18,8 @@ class Gaussian(GenericDistribution):
 
     def __init__(
         self,
-        mu: Union[sym.Symbol, int, float] = symbols.mu,
-        var: Union[sym.Symbol, int, float] = sym.symbols("sigma^2"),
+        mu: sym.Symbol | int | float = symbols.mu,
+        var: sym.Symbol | int | float = sym.symbols("sigma^2"),
     ):
         """
         Create a *Gaussian* distribution.
@@ -48,7 +45,7 @@ class Gaussian(GenericDistribution):
         # Update the formula to use the sample mean and variance.
         self._formula = sym.exp(-((symbols.x - self.mu) ** 2) / (2 * self.var)) / sym.sqrt(2 * np.pi * self.var)
 
-    def pdf(self, x: Union[np.ndarray, float]) -> Union[GenericDistribution, np.ndarray, float]:
+    def pdf(self, x: np.ndarray | float) -> GenericDistribution | np.ndarray | float:
         """
         Compute the probability density function (PDF) or the probability mass function
         (PMF) of the given values for the random variables.

@@ -1,6 +1,3 @@
-# Types
-from typing import Tuple
-
 # Dependencies
 import numpy as np
 
@@ -25,7 +22,7 @@ class GaussianProcessClassifier(Classifier):
         gram = self._kernel(x, x)
         self._precision = np.linalg.inv(gram + np.eye(len(gram)) * self._beta)
 
-    def predict(self, x: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
+    def predict(self, x: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
         if x.ndim == 1:
             x = x[:, None]
         k = self._kernel(self._x, x)

@@ -1,6 +1,3 @@
-# Types
-from typing import Optional, Union
-
 # Dependencies
 import numpy as np
 
@@ -18,9 +15,9 @@ class MultivariateGaussianMixture(GenericDistribution):
     def __init__(
         self,
         n_components: int,
-        coefficients: Optional[np.ndarray] = None,
-        mu: Optional[list[np.ndarray]] = None,
-        cov: Optional[list[np.ndarray]] = None,
+        coefficients: np.ndarray | None = None,
+        mu: list[np.ndarray] | None = None,
+        cov: list[np.ndarray] | None = None,
     ) -> None:
         self._n_components = n_components
         self._coefficients = coefficients
@@ -102,7 +99,7 @@ class MultivariateGaussianMixture(GenericDistribution):
             MultivariateGaussian(_means[i][:, None], _covariances[i]) for i in range(self._n_components)
         ]
 
-    def pdf(self, x: np.ndarray) -> Union[GenericDistribution, np.ndarray, float]:
+    def pdf(self, x: np.ndarray) -> GenericDistribution | np.ndarray | float:
         """
         Compute the probability density function (PDF) or the probability mass function
         (PMF) of the given values for the random variables.

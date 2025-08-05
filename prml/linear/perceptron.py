@@ -1,6 +1,3 @@
-# Types
-from typing import Optional
-
 # Dependencies
 import numpy as np
 
@@ -16,7 +13,7 @@ class Perceptron(Classifier):
         """
         Creates a perceptron classifier.
         """
-        self._w: Optional[np.ndarray] = None
+        self._w: np.ndarray | None = None
 
     def fit(self, x: np.ndarray, t: np.ndarray) -> None:
         """

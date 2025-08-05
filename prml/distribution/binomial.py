@@ -1,6 +1,3 @@
-# Types
-from typing import Union
-
 # Dependencies
 import numpy as np
 import sympy as sym
@@ -17,7 +14,7 @@ class Binomial(GenericDistribution):
     p(x|N, mu) = (N!/(N - x)!x!) * mu^x * (1 - mu)^(N - x)
     """
 
-    def __init__(self, n: int, mu: Union[sym.Symbol, int, float] = symbols.mu):
+    def __init__(self, n: int, mu: sym.Symbol | int | float = symbols.mu):
         """
         Creates a *Binomial* distribution.
 
@@ -40,7 +37,7 @@ class Binomial(GenericDistribution):
         # Update the formula to use the sample mean.
         self._formula = sym.binomial(self.n, symbols.x) * self.mu**symbols.x * (1 - self.mu) ** (self.n - symbols.x)
 
-    def pdf(self, x: Union[np.ndarray, int]) -> Union[GenericDistribution, np.ndarray, float]:
+    def pdf(self, x: np.ndarray | int) -> GenericDistribution | np.ndarray | float:
         """
         Compute the probability density function (PDF) or the probability mass function
         (PMF) of the given values for the random variables.

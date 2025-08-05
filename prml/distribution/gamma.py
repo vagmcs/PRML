@@ -1,6 +1,3 @@
-# Types
-from typing import Union
-
 # Dependencies
 import numpy as np
 import sympy as sym
@@ -17,7 +14,7 @@ class Gamma(GenericDistribution):
     p(x|a, b) = 1 / Gamma(a) * b^a * x^(a-1) * exp{-b * x}
     """
 
-    def __init__(self, a: Union[sym.Symbol, int, float] = symbols.a, b: Union[sym.Symbol, int, float] = symbols.b):
+    def __init__(self, a: sym.Symbol | int | float = symbols.a, b: sym.Symbol | int | float = symbols.b):
         """
         Create a *Gamma* distribution.
 
@@ -36,7 +33,7 @@ class Gamma(GenericDistribution):
         """
         pass
 
-    def pdf(self, x: Union[np.ndarray, float]) -> Union[GenericDistribution, np.ndarray, float]:
+    def pdf(self, x: np.ndarray | float) -> GenericDistribution | np.ndarray | float:
         """
         Compute the probability density function (PDF) or the probability mass function
         (PMF) of the given values for the random variables.
