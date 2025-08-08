@@ -28,15 +28,15 @@ make markdown
 
 ## Notebooks
 
-* [1. Introduction](https://nbviewer.jupyter.org/github/vagmcs/PRML/blob/master/notebooks/ch1_introduction.ipynb)
-* [2. Probability Distributions](https://nbviewer.jupyter.org/github/vagmcs/PRML/blob/master/notebooks/ch2_probability_distributions.ipynb)
-* [3. Linear Models for Regression](https://nbviewer.jupyter.org/github/vagmcs/PRML/blob/master/notebooks/ch3_linear_models_for_regression.ipynb)
-* [4. Linear Models for Classification](https://nbviewer.jupyter.org/github/vagmcs/PRML/blob/master/notebooks/ch4_linear_models_for_classification.ipynb)
-* [5. Neural Networks](https://nbviewer.jupyter.org/github/vagmcs/PRML/blob/master/notebooks/ch5_neural_networks.ipynb)
-* [Gradient Descent Algorithms](https://nbviewer.jupyter.org/github/vagmcs/PRML/blob/master/notebooks/gradient_descent_algorithms.ipynb)
-* [6. Kernel Methods](https://nbviewer.jupyter.org/github/vagmcs/PRML/blob/master/notebooks/ch6_kernel_methods.ipynb)
-* [7. Sparse Kernel Machines](https://nbviewer.jupyter.org/github/vagmcs/PRML/blob/master/notebooks/ch7_sparse_kernel_machines.ipynb)
-* [9. Mixture Models and EM](https://nbviewer.jupyter.org/github/vagmcs/PRML/blob/master/notebooks/ch9_mixture_models_and_em.ipynb)
+* [1. Introduction](https://nbviewer.jupyter.org/github/vagmcs/PRML/blob/main/notebooks/ch1_introduction.ipynb)
+* [2. Probability Distributions](https://nbviewer.jupyter.org/github/vagmcs/PRML/blob/main/notebooks/ch2_probability_distributions.ipynb)
+* [3. Linear Models for Regression](https://nbviewer.jupyter.org/github/vagmcs/PRML/blob/main/notebooks/ch3_linear_models_for_regression.ipynb)
+* [4. Linear Models for Classification](https://nbviewer.jupyter.org/github/vagmcs/PRML/blob/main/notebooks/ch4_linear_models_for_classification.ipynb)
+* [5. Neural Networks](https://nbviewer.jupyter.org/github/vagmcs/PRML/blob/main/notebooks/ch5_neural_networks.ipynb)
+* [Gradient Descent Algorithms](https://nbviewer.jupyter.org/github/vagmcs/PRML/blob/main/notebooks/gradient_descent_algorithms.ipynb)
+* [6. Kernel Methods](https://nbviewer.jupyter.org/github/vagmcs/PRML/blob/main/notebooks/ch6_kernel_methods.ipynb)
+* [7. Sparse Kernel Machines](https://nbviewer.jupyter.org/github/vagmcs/PRML/blob/main/notebooks/ch7_sparse_kernel_machines.ipynb)
+* [9. Mixture Models and EM](https://nbviewer.jupyter.org/github/vagmcs/PRML/blob/main/notebooks/ch9_mixture_models_and_em.ipynb)
 
 ## Resources
 
