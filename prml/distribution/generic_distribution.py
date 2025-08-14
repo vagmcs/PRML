@@ -1,8 +1,10 @@
 # Dependencies
 import numpy as np
 import sympy as sym
+from numpy.typing import NDArray
 
-from .distribution import Distribution
+# Project
+from prml.distribution import Distribution
 
 
 class GenericDistribution(Distribution):
@@ -19,7 +21,7 @@ class GenericDistribution(Distribution):
         self._formula = formula
 
     @property
-    def formula(self):
+    def formula(self) -> sym.Expr:
         """
         :return: the symbolic formula of the distribution
         """
@@ -42,7 +44,7 @@ class GenericDistribution(Distribution):
 
         return GenericDistribution(self._formula.subs(theta))
 
-    def ml(self, x: np.ndarray) -> None:
+    def ml(self, x: NDArray[np.floating]) -> None:
         """
         Performs maximum likelihood estimation on the parameters using the given data.
 
@@ -50,7 +52,7 @@ class GenericDistribution(Distribution):
         """
         raise Exception("Cannot apply maximum likelihood estimation on a generic distribution.")
 
-    def pdf(self, **kwargs) -> np.ndarray | float:
+    def pdf(self, **kwargs) -> float | NDArray[np.floating]:
         """
         Compute the likelihood of the distribution on the given data, assuming that the
         data are independent and identically distributed.
@@ -71,7 +73,7 @@ class GenericDistribution(Distribution):
 
         return result.astype(float)
 
-    def draw(self, sample_size: int) -> np.ndarray:
+    def draw(self, sample_size: int) -> NDArray[np.floating]:
         """
         Draw samples from the distribution.
 

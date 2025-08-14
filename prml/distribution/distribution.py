@@ -4,16 +4,20 @@ import abc
 # Dependencies
 import numpy as np
 import sympy as sym
+from numpy.typing import NDArray
+
+# Project
+from prml.helpers import array
 
 
-class Distribution(metaclass=abc.ABCMeta):
+class Distribution(abc.ABC):
     """
     Probability distribution base abstract class.
     """
 
     @property
     @abc.abstractmethod
-    def formula(self) -> sym.Expr:
+    def formula(self) -> sym.Expr | None:
         """
         :return: the symbolic formula of the distribution
         """
@@ -24,10 +28,10 @@ class Distribution(metaclass=abc.ABCMeta):
         """
         :return: the latex representation of the distribution
         """
-        return "$" + sym.latex(self.formula) + "$"
+        return f"${sym.latex(self.formula)}$"
 
     @abc.abstractmethod
-    def ml(self, x: np.ndarray) -> None:
+    def ml(self, x: NDArray[np.floating]) -> None:
         """
         Performs maximum likelihood estimation on the parameters using the given data.
 
@@ -35,7 +39,7 @@ class Distribution(metaclass=abc.ABCMeta):
         """
         pass
 
-    def likelihood_iid(self, x: np.ndarray | float) -> float:
+    def likelihood_iid(self, x: float | NDArray[np.floating]) -> float:
         """
         Compute the likelihood of the distribution on the given data, assuming that the
         data are independent and identically distributed.
@@ -43,9 +47,10 @@ class Distribution(metaclass=abc.ABCMeta):
         :param x: (N, D) array of data values or a single data value
         :return: the likelihood of the distribution
         """
-        return np.product(self.pdf(x))
+        probs = array.to_array(self.pdf(x))
+        return float(np.prod(probs))
 
-    def log_likelihood_iid(self, x: np.ndarray | float) -> float:
+    def log_likelihood_iid(self, x: float | NDArray[np.floating]) -> float:
         """
         Compute the logarithm of the likelihood of the distribution on the given data,
         assuming that the data are independent and identically distributed.
@@ -53,10 +58,11 @@ class Distribution(metaclass=abc.ABCMeta):
         :param x: (N, D) array of data values or a single data value
         :return: the logarithm of the likelihood of the distribution
         """
-        return sum(np.log(self.pdf(x)))
+        probs = array.to_array(self.pdf(x))
+        return float(np.sum(np.log(probs)))
 
     @abc.abstractmethod
-    def pdf(self, x: np.ndarray | float) -> np.ndarray | float:
+    def pdf(self, x: float | NDArray[np.floating]) -> float | NDArray[np.floating]:
         """
         Compute the probability density function (PDF) or the probability mass function
         (PMF) of the given values for the random variables.
@@ -67,7 +73,7 @@ class Distribution(metaclass=abc.ABCMeta):
         pass
 
     @abc.abstractmethod
-    def draw(self, sample_size: int) -> np.ndarray:
+    def draw(self, sample_size: int) -> NDArray[np.floating]:
         """
         Draw samples from the distribution.
 
@@ -84,7 +90,6 @@ class Distribution(metaclass=abc.ABCMeta):
         :param other: another distribution
         :return: a GenericDistribution object
         """
-        pass
 
-    def __str__(self):
+    def __str__(self) -> str:
         return str(self.formula)

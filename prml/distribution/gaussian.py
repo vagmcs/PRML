@@ -6,7 +6,8 @@ import numpy as np
 import sympy as sym
 import sympy.abc as symbols
 
-from .generic_distribution import GenericDistribution
+# Project
+from prml.distribution.generic_distribution import GenericDistribution
 
 
 class Gaussian(GenericDistribution):
