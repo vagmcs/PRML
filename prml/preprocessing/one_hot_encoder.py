@@ -1,5 +1,10 @@
 # Dependencies
 import numpy as np
+from numpy.typing import NDArray
+
+# Project
+from prml.helpers import array
+from prml.helpers.array import Axis
 
 
 class OneHotEncoder:
@@ -17,7 +22,7 @@ class OneHotEncoder:
         """
         self._k = k
 
-    def encode(self, class_indices: np.ndarray) -> np.ndarray:
+    def encode(self, class_indices: NDArray[np.uint32]) -> NDArray[np.uint8]:
         """
         Encodes an array of class indices into one-of-K coding.
 
@@ -25,15 +30,15 @@ class OneHotEncoder:
         :return: (N, K) array holding the one-of-K encodings
         """
 
-        n_classes = np.max(class_indices) + 1 if self._k is None else self._k
-        return np.eye(n_classes)[class_indices]  # type: ignore
+        n_classes = int(np.max(class_indices)) + 1 if self._k is None else self._k
+        return np.eye(n_classes, dtype=np.uint8)[class_indices]
 
     @staticmethod
-    def decode(onehot: np.ndarray) -> np.ndarray:
+    def decode(onehot: NDArray[np.uint8]) -> NDArray[np.uint32]:
         """
         Decodes the one-of-K code into class indices.
 
         :param onehot: (N, K) array containing one-of-K codings
         :return: (N,) array of class indices
         """
-        return np.argmax(onehot, axis=1)  # type: ignore
+        return array.cast_uint(np.argmax(onehot, axis=Axis.COLS))

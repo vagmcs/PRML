@@ -73,7 +73,7 @@ def load_planar_dataset(sample_size: int = 400) -> tuple[NDArray[np.floating], N
     return x, y
 
 
-def load_mnist_dataset(sample_size: int | None = None) -> tuple[np.ndarray, np.ndarray]:
+def load_mnist_dataset(sample_size: int | None = None) -> tuple[NDArray[np.uint8], NDArray[np.uint8]]:
     """
     Loads the MNIST dataset. MNIST contains images of handwritten digits from 0 to 9.
 

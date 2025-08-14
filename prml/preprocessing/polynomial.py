@@ -4,8 +4,11 @@ import itertools
 
 # Dependencies
 import numpy as np
+from numpy.typing import NDArray
 
-from .basis_function import BasisFunction
+# Project
+from prml.helpers import array
+from prml.preprocessing.basis_function import BasisFunction
 
 
 class PolynomialFeature(BasisFunction):
@@ -21,7 +24,7 @@ class PolynomialFeature(BasisFunction):
     y = [[1, a, b, a^2, a * b, b^2], [1, c, d, c^2, c * d, d^2]]
     """
 
-    def __init__(self, degree: int = 2):
+    def __init__(self, degree: int = 2) -> None:
         """
         Create polynomial basis functions.
 
@@ -31,7 +34,7 @@ class PolynomialFeature(BasisFunction):
             raise ValueError(f"Degree should be of type 'int', but type '{type(degree)}' is given.")
         self._degree = degree
 
-    def transform(self, x: float | np.ndarray) -> np.ndarray:
+    def transform(self, x: float | NDArray[np.floating]) -> NDArray[np.floating]:
         """
         Transforms input array using polynomial basis functions.
 
@@ -40,7 +43,8 @@ class PolynomialFeature(BasisFunction):
         """
 
         # check if proper array is given or create one if not
-        x = self._make_array(x)
+        x = array.to_array(x)
+
         # create a list of ones for the zero powers
         features = [np.ones(len(x))]
 

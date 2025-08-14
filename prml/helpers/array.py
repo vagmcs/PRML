@@ -32,6 +32,28 @@ def validate_2d(x: NDArray) -> tuple[int, int]:
     return x.shape[0], x.shape[1]
 
 
+def to_array(x: int | float | NDArray) -> NDArray:
+    """
+    Checks if the input is an array. The array should be at most 2-dimensional,
+    representing one data point per row. If not, an exception is raised. In case a
+    single number is given, it creates an array containing a single number.
+
+    :param x: (N, D) array of values or float or int
+    :return: a properly shaped (N, D) array
+    """
+    if isinstance(x, np.ndarray):
+        if x.ndim > 2:
+            raise ValueError(
+                "Input data should be an (N, D) array, where N is the number of samples "
+                "and D is the dimension of each sample."
+            )
+        return x[:, None] if x.ndim == 1 else x  # create proper shape for 1-dimensional arrays
+    elif isinstance(x, (int, float)):
+        return np.array([[x]])
+    else:
+        raise ValueError(f"Incompatible type '{type(x)}'.")
+
+
 def cast_f(x: Any) -> NDArray[np.float64]:
     return cast(NDArray[np.float64], x)
 
