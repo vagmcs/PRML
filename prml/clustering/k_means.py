@@ -54,7 +54,9 @@ class KMeans:
             self._history.append(Step(self._centers.copy(), assignments.copy()))
 
             # recompute the centers (M-step)
-            self._centers = array.cast_f(np.sum(x[:, None, :] * r[:, :, None], Axis.ROWS) / r.sum(Axis.ROWS)[:, None])
+            self._centers = array.cast_float(
+                np.sum(x[:, None, :] * r[:, :, None], Axis.ROWS) / r.sum(Axis.ROWS)[:, None]
+            )
 
             # check for convergence
             if np.allclose(prev_centers, self._centers):

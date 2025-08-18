@@ -14,6 +14,12 @@ class Axis(IntEnum):
     COLS = 1
 
 
+def validate_1d(x: NDArray):
+    if x.ndim > 1:
+        raise RuntimeError(f"Provided array must be 1D, found: {x.shape}")
+    return x.shape[0]
+
+
 def validate_2d(x: NDArray) -> tuple[int, int]:
     """
     Checks that the provided array has only 2 dimensions.
@@ -54,7 +60,7 @@ def to_array(x: int | float | NDArray) -> NDArray:
         raise ValueError(f"Incompatible type '{type(x)}'.")
 
 
-def cast_f(x: Any) -> NDArray[np.float64]:
+def cast_float(x: Any) -> NDArray[np.float64]:
     return cast(NDArray[np.float64], x)
 
 

@@ -48,6 +48,11 @@ lint:
 	@poetry run ruff check --fix notebooks $(PROJECT_NAME)
 	@poetry run mypy $(PROJECT_NAME)
 
+### test     : Run tests
+.PHONY: test
+test:
+	@poetry run pytest
+
 ### jupyter  : Start jupyter server
 .PHONY: jupyter
 jupyter:

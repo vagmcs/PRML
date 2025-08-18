@@ -50,6 +50,9 @@ nbqa = "^1.9.1"
 isort = "^6.0.1"
 ruff = "^0.12.7"
 mypy = "^1.17.0"
+pytest = "^8.4.1"
+pytest-cov = "^6.2.1"
+pytest-sugar = "^1.0.0"
 pyupgrade = "^3.20.0"
 pre-commit = "^4.2.0"
 commitizen = "^4.8.3"
@@ -147,6 +150,20 @@ exclude = [
 
 [tool.ruff.format]
 docstring-code-format = true
+
+
+[tool.pytest.ini_options]
+addopts = "--capture=no --doctest-modules --cov=prml --no-cov-on-fail"
+doctest_optionflags = [
+"NUMBER",
+"NORMALIZE_WHITESPACE",
+"DONT_ACCEPT_TRUE_FOR_1",
+"IGNORE_EXCEPTION_DETAIL"
+]
+
+
+[tool.coverage.run]
+data_file = "coverage/.coverage"
 
 
 [build-system]
