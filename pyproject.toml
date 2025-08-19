@@ -34,8 +34,8 @@ include = "prml"
 
 [tool.poetry.dependencies]
 python = ">=3.10.0,<3.13"
-numpy = "^1.24.2"
-pandas = "^1.5.3"
+numpy = "^2.2.6"
+pandas = "^2.3.1"
 scipy = "^1.10.1"
 sympy = "^1.11.1"
 mpmath = "^1.2.1"
@@ -58,7 +58,7 @@ pre-commit = "^4.2.0"
 commitizen = "^4.8.3"
 nbconvert = "^7.16.6"
 nbmerge = "^0.0.4"
-pyppeteer = "^1.0.2"
+pyppeteer = "^2.0.0"
 
 
 [tool.mypy]
