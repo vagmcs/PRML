@@ -41,7 +41,7 @@ sympy = "^1.11.1"
 mpmath = "^1.2.1"
 matplotlib = "^3.7.1"
 jupyter = "^1.0.0"
-scikit-learn = "^1.1.2"
+scikit-learn = "^1.7.2"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -55,7 +55,7 @@ pytest-cov = "^7.0.0"
 pytest-sugar = "^1.0.0"
 pyupgrade = "^3.21.0"
 pre-commit = "^4.5.0"
-commitizen = "^4.10.0"
+commitizen = "^4.11.0"
 nbconvert = "^7.16.6"
 nbmerge = "^0.0.4"
 pyppeteer = "^2.0.0"
